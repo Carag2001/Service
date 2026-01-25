@@ -6,7 +6,7 @@
 <title>Rachel.D Services - Jardinage, Ménage & Débarras</title>
 
 <style>
-/* ================= VARIABLES COULEURS ================= */
+/* ================= VARIABLES ================= */
 :root{
     --violet-main:#b98bff;
     --violet-light:#e0c3ff;
@@ -15,12 +15,9 @@
 }
 
 /* ================= RESET ================= */
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
+/* ================= BODY ================= */
 body{
     font-family:'Georgia',serif;
     color:#ffffff;
@@ -75,7 +72,7 @@ h1{
     background:linear-gradient(45deg,var(--violet-main),var(--violet-light),var(--violet-main));
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    text-shadow:0 0 25px var(--violet-glow);
+    text-shadow:0 0 30px var(--violet-glow);
 }
 .tagline{
     margin-top:1rem;
@@ -101,18 +98,32 @@ nav a{
     padding:1.3rem 2.5rem;
     text-decoration:none;
     font-weight:600;
-    transition:0.3s;
+    letter-spacing:2px;
+    position:relative;
+    overflow:hidden;
+    transition:0.4s;
 }
+nav a::after{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(90deg,transparent,rgba(185,139,255,0.3),transparent);
+    transition:0.6s;
+}
+nav a:hover::after{left:100%}
 nav a:hover{
-    background:rgba(185,139,255,0.15);
     color:#fff;
-    text-shadow:0 0 10px var(--violet-main);
+    text-shadow:0 0 12px var(--violet-main);
 }
 
-/* ================= SECTIONS ================= */
+/* ================= PAGES ================= */
 .page{display:none}
 .page.active{display:block}
 
+/* ================= HERO ================= */
 .hero{
     padding:6rem 0;
     text-align:center;
@@ -151,13 +162,25 @@ nav a:hover{
     background:rgba(20,10,40,0.92);
     border-radius:18px;
     padding:3rem;
-    border:2px solid var(--violet-main);
+    border:2px solid transparent;
     box-shadow:0 20px 50px rgba(185,139,255,0.3);
-    transition:0.4s;
+    position:relative;
+    overflow:hidden;
+    transition:0.5s;
 }
+.service-card::before{
+    content:'';
+    position:absolute;
+    inset:-2px;
+    background:linear-gradient(45deg,var(--violet-main),var(--violet-light),var(--violet-main));
+    z-index:-1;
+    opacity:0;
+    transition:0.5s;
+}
+.service-card:hover::before{opacity:1}
 .service-card:hover{
-    transform:translateY(-10px);
-    box-shadow:0 30px 70px rgba(185,139,255,0.6);
+    transform:translateY(-12px) scale(1.02);
+    box-shadow:0 30px 70px rgba(185,139,255,0.7);
 }
 .service-card h3{
     font-size:2rem;
@@ -166,9 +189,7 @@ nav a:hover{
     padding-bottom:.8rem;
     margin-bottom:1.5rem;
 }
-.service-card ul{
-    list-style:none;
-}
+.service-card ul{list-style:none}
 .service-card li{
     padding:.6rem 0 .6rem 1.5rem;
     position:relative;
@@ -180,22 +201,46 @@ nav a:hover{
     color:var(--violet-main);
 }
 
-/* ================= CTA ================= */
+/* ================= BOUTONS (STYLE DU 1ER CODE) ================= */
 .cta-button{
     display:inline-block;
-    margin-top:1.5rem;
-    padding:1.2rem 3rem;
+    margin-top:1.8rem;
+    padding:1.3rem 3.2rem;
     border-radius:50px;
-    background:linear-gradient(135deg,var(--violet-main),var(--violet-light));
-    color:#2b164f;
+    background:linear-gradient(135deg,var(--violet-main),var(--violet-light),var(--violet-main));
+    background-size:300% 300%;
+    color:#1a0f2e;
     font-weight:700;
     text-decoration:none;
+    letter-spacing:2px;
+    position:relative;
+    overflow:hidden;
     box-shadow:0 10px 30px rgba(185,139,255,0.6);
     transition:0.4s;
+    animation:gradientMove 3s ease infinite;
 }
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.cta-button::after{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);
+    transition:0.6s;
+}
+.cta-button:hover::after{left:100%}
+
 .cta-button:hover{
-    transform:scale(1.08);
-    box-shadow:0 20px 50px rgba(185,139,255,0.8);
+    transform:translateY(-6px) scale(1.07);
+    box-shadow:0 25px 60px rgba(185,139,255,0.9);
 }
 
 /* ================= CONTACT ================= */
@@ -204,10 +249,10 @@ nav a:hover{
     border-radius:20px;
     padding:4rem;
     border:3px solid var(--violet-main);
-    box-shadow:0 30px 70px rgba(185,139,255,0.5);
+    box-shadow:0 30px 70px rgba(185,139,255,0.6);
 }
 .contact-item{
-    margin:1.5rem 0;
+    margin:1.6rem 0;
     font-size:1.3rem;
 }
 .phone-link{
@@ -257,7 +302,29 @@ footer{
 </nav>
 
 <div id="accueil" class="page active">
-<div class="hero"><h2>Bienvenue</h2><p>Des solutions professionnelles pour votre quotidien</p></div>
+<div class="hero">
+    <h2>Bienvenue</h2>
+    <p>Des solutions professionnelles pour votre quotidien</p>
+</div>
+<div class="container">
+<div class="services-grid">
+<div class="service-card">
+<h3>Jardinage</h3>
+<p>Entretien et embellissement de vos espaces verts.</p>
+<a class="cta-button" href="#" onclick="showPage('jardinage')">Découvrir</a>
+</div>
+<div class="service-card">
+<h3>Ménage</h3>
+<p>Nettoyage intérieur et extérieur haut de gamme.</p>
+<a class="cta-button" href="#" onclick="showPage('menage')">Découvrir</a>
+</div>
+<div class="service-card">
+<h3>Débarras</h3>
+<p>Évacuation rapide et responsable.</p>
+<a class="cta-button" href="#" onclick="showPage('debarras')">Découvrir</a>
+</div>
+</div>
+</div>
 </div>
 
 <div id="contact" class="page">
