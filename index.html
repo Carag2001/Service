@@ -11,8 +11,8 @@
 body{
     font-family:'Georgia',serif;
     line-height:1.6;
-    color:#ffffff;
-    background:#000000;
+    color:#fff;
+    background:#000;
     overflow-x:hidden;
 }
 
@@ -22,14 +22,11 @@ body::before{
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at 20% 50%, rgba(46,204,113,0.15), transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(46,204,113,0.1), transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(109,255,156,0.08), transparent 40%);
-    pointer-events:none;
+        radial-gradient(circle at 20% 50%, rgba(46,204,113,.15), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(46,204,113,.1), transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(109,255,156,.08), transparent 40%);
     z-index:0;
-    animation:bgPulse 15s ease-in-out infinite;
 }
-@keyframes bgPulse{0%,100%{opacity:1}50%{opacity:.7}}
 
 /* PARTICULES */
 .gold-particle{
@@ -40,21 +37,19 @@ body::before{
     border-radius:50%;
     z-index:1;
     animation:float 20s infinite;
-    box-shadow:0 0 10px #2ECC71,0 0 20px #2ECC71;
+    box-shadow:0 0 10px #2ECC71;
 }
 @keyframes float{
-    0%{transform:translateY(100vh) scale(0);opacity:0}
+    0%{transform:translateY(100vh);opacity:0}
     10%,90%{opacity:1}
-    100%{transform:translateY(-100vh) translateX(100px) scale(1);opacity:0}
+    100%{transform:translateY(-100vh);opacity:0}
 }
 
 /* HEADER */
 header{
     background:linear-gradient(135deg,#000,#1a1a1a,#000);
-    color:#2ECC71;
     padding:4rem 0;
     border-bottom:3px solid #2ECC71;
-    box-shadow:0 10px 40px rgba(46,204,113,.3);
 }
 .container{
     max-width:1200px;
@@ -68,19 +63,14 @@ h1{
     background:linear-gradient(45deg,#2ECC71,#6DFF9C,#2ECC71);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    letter-spacing:3px;
 }
-.tagline{
-    font-size:1.5rem;
-    text-shadow:0 0 10px rgba(46,204,113,.5);
-}
+.tagline{font-size:1.5rem}
 
 /* NAV */
 nav{
     background:rgba(0,0,0,.95);
     position:sticky;
     top:0;
-    z-index:100;
     border-bottom:2px solid #2ECC71;
 }
 nav ul{
@@ -93,9 +83,7 @@ nav a{
     padding:1.5rem 2.5rem;
     text-decoration:none;
     font-weight:600;
-    letter-spacing:2px;
 }
-nav a:hover{color:#6DFF9C}
 
 /* PAGES */
 .page{display:none}
@@ -103,21 +91,16 @@ nav a:hover{color:#6DFF9C}
 
 /* HERO */
 .hero{
-    background:linear-gradient(135deg,rgba(0,0,0,.9),rgba(26,26,26,.8));
-    color:#2ECC71;
-    padding:6rem 0;
+    padding:5rem 0;
     text-align:center;
     border-bottom:2px solid #2ECC71;
 }
-.hero h2{
-    font-size:3rem;
-}
-.hero p{font-size:1.5rem}
+.hero h2{font-size:3rem;color:#2ECC71}
 
 /* SERVICES */
 .services-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
     gap:3rem;
     padding:3rem 0;
 }
@@ -132,7 +115,18 @@ nav a:hover{color:#6DFF9C}
     border-bottom:2px solid #2ECC71;
     padding-bottom:1rem;
 }
-.service-card li{list-style:none;padding:.6rem 0}
+.service-card ul{
+    list-style:none;
+    margin-top:1rem;
+}
+.service-card li{
+    padding:.5rem 0;
+}
+.price{
+    margin-top:1.5rem;
+    font-weight:bold;
+    color:#6DFF9C;
+}
 
 /* CONTACT */
 .contact-info{
@@ -143,7 +137,6 @@ nav a:hover{color:#6DFF9C}
     max-width:700px;
     margin:auto;
 }
-.contact-item{margin:1.5rem 0}
 .phone-link{
     color:#6DFF9C;
     font-size:1.6rem;
@@ -152,8 +145,6 @@ nav a:hover{color:#6DFF9C}
 
 /* FOOTER */
 footer{
-    background:#000;
-    color:#2ECC71;
     text-align:center;
     padding:3rem 0;
     border-top:3px solid #2ECC71;
@@ -178,7 +169,6 @@ footer{
 
 <nav>
 <ul>
-<li><a href="#" onclick="showPage('accueil')">Accueil</a></li>
 <li><a href="#" onclick="showPage('jardinage')">Jardinage</a></li>
 <li><a href="#" onclick="showPage('menage')">Ménage</a></li>
 <li><a href="#" onclick="showPage('debarras')">Débarras</a></li>
@@ -186,20 +176,128 @@ footer{
 </ul>
 </nav>
 
-<div id="accueil" class="page active">
-<div class="hero"><h2>Bienvenue</h2><p>Des solutions d'excellence</p></div>
+<!-- JARDINAGE -->
+<div id="jardinage" class="page active">
+<div class="hero"><h2>Jardinage</h2></div>
+<div class="container services-grid">
+<div class="service-card">
+<h3>Entretien courant</h3>
+<ul>
+<li>Tonte de pelouse</li>
+<li>Taille de haies</li>
+<li>Désherbage</li>
+<li>Ramassage de feuilles</li>
+</ul>
+<div class="price">À partir de 25€ / heure</div>
 </div>
 
+<div class="service-card">
+<h3>Aménagement</h3>
+<ul>
+<li>Plantation fleurs & arbustes</li>
+<li>Création de massifs</li>
+<li>Petits aménagements</li>
+</ul>
+<div class="price">Sur devis</div>
+</div>
+
+<div class="service-card">
+<h3>Entretien saisonnier</h3>
+<ul>
+<li>Printemps / Automne</li>
+<li>Préparation hiver</li>
+<li>Taille spécifique</li>
+</ul>
+<div class="price">À partir de 60€</div>
+</div>
+</div>
+</div>
+
+<!-- MENAGE -->
+<div id="menage" class="page">
+<div class="hero"><h2>Ménage</h2></div>
+<div class="container services-grid">
+<div class="service-card">
+<h3>Ménage intérieur</h3>
+<ul>
+<li>Sols & surfaces</li>
+<li>Cuisine & salle de bain</li>
+<li>Dépoussiérage</li>
+</ul>
+<div class="price">À partir de 20€ / heure</div>
+</div>
+
+<div class="service-card">
+<h3>Ménage extérieur</h3>
+<ul>
+<li>Terrasses</li>
+<li>Balcons</li>
+<li>Vitres extérieures</li>
+</ul>
+<div class="price">À partir de 25€ / heure</div>
+</div>
+
+<div class="service-card">
+<h3>Prestations spécifiques</h3>
+<ul>
+<li>Fin de bail</li>
+<li>Après travaux</li>
+<li>Grand nettoyage</li>
+</ul>
+<div class="price">Sur devis</div>
+</div>
+</div>
+</div>
+
+<!-- DEBARRAS -->
+<div id="debarras" class="page">
+<div class="hero"><h2>Débarras</h2></div>
+<div class="container services-grid">
+<div class="service-card">
+<h3>Logements</h3>
+<ul>
+<li>Maison</li>
+<li>Appartement</li>
+<li>Cave / grenier</li>
+</ul>
+<div class="price">À partir de 150€</div>
+</div>
+
+<div class="service-card">
+<h3>Encombrants</h3>
+<ul>
+<li>Meubles</li>
+<li>Électroménager</li>
+<li>Déchets divers</li>
+</ul>
+<div class="price">Selon volume</div>
+</div>
+
+<div class="service-card">
+<h3>Options</h3>
+<ul>
+<li>Nettoyage après débarras</li>
+<li>Tri & recyclage</li>
+<li>Intervention urgente</li>
+</ul>
+<div class="price">Sur devis</div>
+</div>
+</div>
+</div>
+
+<!-- CONTACT -->
 <div id="contact" class="page">
-<div class="hero"><h2>Contact</h2><p>Rachel Dauber</p></div>
+<div class="hero"><h2>Contact</h2></div>
 <div class="contact-info">
-<div class="contact-item">📞 <a class="phone-link" href="tel:0745216705">07 45 21 67 05</a></div>
-<div class="contact-item">📍 Hennebont et alentours</div>
+<p><strong>Rachel Dauber</strong></p>
+<p><a class="phone-link" href="tel:0745216705">📞 07 45 21 67 05</a></p>
+<p>Hennebont et alentours</p>
+<p>Devis gratuit – intervention rapide</p>
 </div>
 </div>
 
 <footer>
-<p>© 2026 Rachel Dauber Services</p>
+<p>© 2026 Rachel Dauber Services – Bretagne</p>
 </footer>
 
 <script>
