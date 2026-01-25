@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rachel Dauber Services - Jardinage, Ménage & Débarras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #000000;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(218, 165, 32, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(218, 165, 32, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 215, 0, 0.08) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 15s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .gold-particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: #DAA520;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: float-particle 20s infinite;
+            box-shadow: 0 0 10px #DAA520, 0 0 20px #DAA520;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            color: #DAA520;
+            padding: 4rem 0;
+            box-shadow: 0 10px 40px rgba(218, 165, 32, 0.3);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 3px solid #DAA520;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(218, 165, 32, 0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(218, 165, 32, 0.8), 0 0 40px rgba(218, 165, 32, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+            background: linear-gradient(45deg, #DAA520, #FFD700, #DAA520);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(218, 165, 32, 0.8), 0 0 40px rgba(218, 165, 32, 0.5);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(255, 215, 0, 1), 0 0 60px rgba(255, 215, 0, 0.7);
+            }
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.95);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 30px rgba(218, 165, 32, 0.4);
+            border-bottom: 2px solid #DAA520;
+            backdrop-filter: blur(10px);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav li {
+            margin: 0;
+            position: relative;
+        }
+
+        nav a {
+            color: #DAA520;
+            text-decoration: none;
+            padding: 1.5rem 2.5rem;
+            transition: all 0.4s;
+            display: block;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #DAA520, #FFD700, #DAA520);
+            transition: all 0.4s;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::before {
+            width: 100%;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(218, 165, 32, 0.2), transparent);
+            transition: all 0.6s;
+        }
+
+        nav a:hover::after {
+            left: 100%;
+        }
+
+        nav a:hover {
+            color: #FFD700;
+            background: rgba(218, 165, 32, 0.1);
+            text-shadow: 0 0 10px rgba(218, 165, 32, 0.8);
+        }
+
+        .page {
+            display: none;
+            min-height: calc(100vh - 300px);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(26,26,26,0.8) 100%);
+            color: #DAA520;
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 2px solid #DAA520;
+            margin-bottom: 3rem;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.2), transparent);
+            border-radius: 50%;
+            top: -300px;
+            right: -200px;
+            animation: rotate 20s linear infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.15), transparent);
+            border-radius: 50%;
+            bottom: -200px;
+            left: -100px;
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px rgba(218, 165, 32, 0.8);
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(45deg, #DAA520, #FFD700, #DAA520);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            padding: 3rem 0;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(0, 0, 0, 0.95) 100%);
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(218, 165, 32, 0.3);
+            transition: all 0.5s;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #DAA520, #FFD700, #DAA520, #FFD700);
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s;
+            background-size: 300% 300%;
+            animation: gradientMove 3s ease infinite;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 50px rgba(218, 165, 32, 0.6);
+        }
+
+        .service-card h3 {
+            color: #DAA520;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+            letter-spacing: 2px;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #DAA520;
+        }
+
+        .service-card p {
+            position: relative;
+            z-index: 1;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            color: #ffffff;
+            line-height: 1.8;
+        }
+
+        .service-card ul {
+            list-style: none;
+            padding-left: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-card li {
+            padding: 0.8rem 0;
+            padding-left: 2rem;
+            position: relative;
+            font-size: 1.05rem;
+            transition: all 0.3s;
+            color: #ffffff;
+        }
+
+        .service-card li:hover {
+            transform: translateX(10px);
+            color: #DAA520;
+        }
+
+        .service-card li:before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            color: #DAA520;
+            font-size: 1rem;
+            text-shadow: 0 0 10px rgba(218, 165, 32, 0.8);
+        }
+
+        .content-section {
+            padding: 3rem 0;
+        }
+
+        .contact-info {
+            background: linear-gradient(135deg, rgba(26, 26, 26, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%);
+            padding: 4rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(218, 165, 32, 0.4);
+            max-width: 700px;
+            margin: 2rem auto;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid #DAA520;
+        }
+
+        .contact-info::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(218, 165, 32, 0.2), transparent);
+            border-radius: 50%;
+            top: -150px;
+            right: -100px;
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { 
+                transform: scale(1); 
+                opacity: 0.5; 
+            }
+            50% { 
+                transform: scale(1.2); 
+                opacity: 0.8; 
+            }
+        }
+
+        .contact-info h3 {
+            color: #DAA520;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            text-align: center;
+            text-shadow: 0 0 20px rgba(218, 165, 32, 0.8);
+            position: relative;
+            z-index: 1;
+            letter-spacing: 3px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0;
+            font-size: 1.3rem;
+            position: relative;
+            z-index: 1;
+            background: rgba(218, 165, 32, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            transition: all 0.4s;
+            border-left: 4px solid #DAA520;
+        }
+
+        .contact-item:hover {
+            background: rgba(218, 165, 32, 0.2);
+            transform: translateX(15px);
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.3);
+        }
+
+        .contact-item strong {
+            color: #DAA520;
+            min-width: 180px;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(218, 165, 32, 0.5);
+        }
+
+        .phone-link {
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.6rem;
+            padding: 0.7rem 2rem;
+            border-radius: 50px;
+            transition: all 0.4s;
+            border: 2px solid #DAA520;
+            background: rgba(218, 165, 32, 0.1);
+            text-shadow: 0 0 10px rgba(218, 165, 32, 0.8);
+        }
+
+        .phone-link:hover {
+            background: rgba(218, 165, 32, 0.3);
+            transform: scale(1.1);
+            box-shadow: 0 10px 40px rgba(218, 165, 32, 0.5);
+            border-color: #FFD700;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #DAA520;
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 4rem;
+            box-shadow: 0 -10px 40px rgba(218, 165, 32, 0.3);
+            border-top: 3px solid #DAA520;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            font-size: 1.1rem;
+            text-shadow: 0 0 5px rgba(218, 165, 32, 0.5);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
+            color: #000000;
+            padding: 1.3rem 3rem;
+            text-decoration: none;
+            border-radius: 50px;
+            margin-top: 1.5rem;
+            transition: all 0.4s;
+            font-size: 1.2rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 50px rgba(218, 165, 32, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 2rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav li {
+                width: 100%;
+            }
+
+            nav a {
+                padding: 1rem 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .contact-item strong {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="gold-particle" style="left: 10%; animation-delay: 0s;"></div>
+    <div class="gold-particle" style="left: 30%; animation-delay: 3s;"></div>
+    <div class="gold-particle" style="left: 50%; animation-delay: 6s;"></div>
+    <div class="gold-particle" style="left: 70%; animation-delay: 9s;"></div>
+    <div class="gold-particle" style="left: 90%; animation-delay: 12s;"></div>
+    <div class="gold-particle" style="left: 20%; animation-delay: 15s;"></div>
+    <div class="gold-particle" style="left: 60%; animation-delay: 18s;"></div>
+
+    <header>
+        <div class="container">
+            <h1>Rachel Dauber Services</h1>
+            <p class="tagline">Excellence & Prestige à votre service</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showPage('accueil'); return false;">Accueil</a></li>
+            <li><a href="#" onclick="showPage('jardinage'); return false;">Jardinage</a></li>
+            <li><a href="#" onclick="showPage('menage'); return false;">Ménage</a></li>
+            <li><a href="#" onclick="showPage('debarras'); return false;">Débarras</a></li>
+            <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div id="accueil" class="page active">
+        <div class="hero">
+            <div class="container">
+                <h2>Bienvenue</h2>
+                <p>Des solutions d'excellence pour l'entretien de votre patrimoine</p>
+            </div>
+        </div>
+        <div class="container">
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Jardinage</h3>
+                    <p>Un entretien d'exception pour vos espaces verts. Nos experts transforment votre jardin en un véritable écrin de verdure avec passion et professionnalisme.</p>
+                    <a href="#" onclick="showPage('jardinage'); return false;" class="cta-button">Découvrir</a>
+                </div>
+                <div class="service-card">
+                    <h3>Ménage</h3>
+                    <p>Services de nettoyage haut de gamme intérieur et extérieur. Nous redonnons à votre cadre de vie tout son éclat avec minutie et discrétion.</p>
+                    <a href="#" onclick="showPage('menage'); return false;" class="cta-button">Découvrir</a>
+                </div>
+                <div class="service-card">
+                    <h3>Débarras</h3>
+                    <p>Évacuation professionnelle et gestion responsable de vos déchets. Un service rapide, efficace et respectueux de l'environnement.</p>
+                    <a href="#" onclick="showPage('debarras'); return false;" class="cta-button">Découvrir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="jardinage" class="page">
+        <div class="hero">
+            <div class="container">
+                <h2>Services de Jardinage</h2>
+                <p>L'art du jardin à la française</p>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Entretien de jardin</h3>
+                        <ul>
+                            <li>Tonte de pelouse professionnelle</li>
+                            <li>Taille de haies sur mesure</li>
+                            <li>Désherbage minutieux</li>
+                            <li>Ramassage de feuilles</li>
+                            <li>Scarification et aération</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <h3>Aménagement paysager</h3>
+                        <ul>
+                            <li>Plantation de fleurs et arbustes</li>
+                            <li>Création de massifs élégants</li>
+                            <li>Aménagement de terrasses</li>
+                            <li>Conseils personnalisés en jardinage</li>
+                            <li>Décoration végétale raffinée</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <h3>Entretien saisonnier</h3>
+                        <ul>
+                            <li>Préparation printanière du jardin</li>
+                            <li>Entretien estival régulier</li>
+                            <li>Nettoyage automnal complet</li>
+                            <li>Protection hivernale adaptée</li>
+                            <li>Taille fruitière spécialisée</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="menage" class="page">
+        <div class="hero">
+            <div class="container">
+                <h2>Services de Ménage</h2>
+                <p>L'excellence du nettoyage professionnel</p>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Ménage Intérieur</h3>
+                        <ul>
+                            <li>Nettoyage intégral des sols et surfaces</li>
+                            <li>Dépoussiérage minutieux</li>
+                            <li>Nettoyage approfondi cuisine et salle de bain</li>
+                            <li>Nettoyage des vitres intérieures</li>
+                            <li>Aspirateur et lavage professionnel des sols</li>
+                            <li>Désinfection complète</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <h3>Ménage Extérieur</h3>
+                        <ul>
+                            <li>Nettoyage de terrasses et balcons</li>
+                            <li>Lavage des vitres extérieures</li>
+                            <li>Nettoyage de façades</li>
+                            <li>Nettoyage des gouttières</li>
+                            <li>Entretien des espaces extérieurs</li>
+                            <li>Nettoyage haute pression</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <h3>Services personnalisés</h3>
+                        <ul>
+                            <li>Ménage régulier ou ponctuel</li>
+                            <li>Nettoyage après travaux</li>
+                            <li>Grand nettoyage de printemps</li>
+                            <li>Nettoyage de fin de bail</li>
+                            <li>Entretien de locaux professionnels</li>
+                            <li>Services sur mesure adaptés</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="debarras" class="page">
+        <div class="hero">
+            <div class="container">
+                <h2>Service de Débarras</h2>
+                <p>Évacuation rapide et professionnelle</p>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h3>Débarras de maison</h3>
+                        <ul>
+                            <li>Débarras complet ou partiel</li>
+                            <li>Évacuation de meubles et mobilier</li>
+                            <li>Débarras de cave et grenier</li>
+                            <li>Débarras après succession</li>
+                            <li>Vidage de logement intégral</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <h3>Évacuation de déchets</h3>
+                        <ul>
+                            <li>Enlèvement d'encombrants</li>
+                            <li>Évacuation de gravats</li>
+                            <li>Déchets verts et organiques</li>
+                            <li>Tri sélectif et recyclage responsable</li>
+                            <li>Transport professionnel en déchetterie</li>
+                        </ul>
+                    </div>
+                    <div class="service-card">
+                        <h3>Services complémentaires</h3>
+                        <ul>
+                            <li>Nettoyage après débarras</li>
+                            <li>Transport et évacuation sécurisés</li>
+                            <li>Valorisation des objets récupérables</li>
+                            <li>Respect de l'environnement</li>
+                            <li>Intervention rapide et efficace</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact" class="page">
+        <div class="hero">
+            <div class="container">
+                <h2>Contactez-nous</h2>
+                <p>Rachel Dauber à votre écoute</p>
+            </div>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <div class="contact-info">
+                    <h3>Nos Coordonnées</h3>
+                    <div class="contact-item">
+                        <strong>Directrice :</strong>
+                        <span>Rachel Dauber</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>Téléphone :</strong>
+                        <a href="tel:0745216705" class="phone-link">07 45 21 67 05</a>
+                    </div>
+                    <div class="contact-item">
+                        <strong>Zone :</strong>
+                        <span>Hennebont et alentours, Bretagne</span>
+                    </div>
+                    <div style="margin-top: 3rem; text-align: center;">
+                        <p style="font-size: 1.2rem; background: rgba(218, 165, 32, 0.1); padding: 2rem; border-radius: 15px; border: 2px solid #DAA520; color: #DAA520;">
+                            Disponible du lundi au samedi<br>
+                            Devis gratuit sur simple appel<br>
+                            Intervention rapide garantie
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Rachel Dauber Services - Tous droits réservés</p>
+            <p>Jardinage - Ménage - Débarras | Hennebont, Bretagne</p>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            return false;
+        }
+    </script>
+</body>
+</html>
