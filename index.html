@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services Digitaux Pro | Développement & Support</title>
+    <title>CRG Services | Développement Web, Discord & FiveM</title>
     <style>
         * {
             margin: 0;
@@ -45,6 +45,32 @@
             font-weight: bold;
             text-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040, 0 0 30px #ff0040;
             animation: neonPulse 2s infinite;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            color: #ff0040;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #ff0040;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px #ff0040;
+        }
+
+        .social-link:hover {
+            background: #ff0040;
+            color: #000;
+            text-shadow: none;
+            box-shadow: 0 0 20px rgba(255, 0, 64, 0.6);
+            transform: translateY(-3px);
         }
 
         @keyframes neonPulse {
@@ -412,7 +438,7 @@
 <body>
     <header>
         <nav>
-            <div class="logo">💻 SERVICES DIGITAUX PRO</div>
+            <div class="logo">💻 CRG SERVICES</div>
             <ul>
                 <li><a href="#accueil">Accueil</a></li>
                 <li><a href="#services">Services</a></li>
@@ -422,7 +448,7 @@
     </header>
 
     <section class="hero" id="accueil">
-        <h1>DÉVELOPPEUR FULL STACK</h1>
+        <h1>CRG SERVICES</h1>
         <p>Solutions professionnelles pour vos projets web, Discord et FiveM</p>
         <a href="#contact" class="cta-button">DÉMARRER UN PROJET</a>
     </section>
@@ -765,73 +791,72 @@
         <p style="font-size: 1.2rem; margin-bottom: 2rem;">Discutons de votre projet ensemble</p>
         
         <div class="contact-form">
-            <form id="contactForm">
+            <form action="https://formsubmit.co/omegaofficiel02@gmail.com" method="POST">
+                <!-- Configuration FormSubmit -->
+                <input type="hidden" name="_subject" value="Nouvelle demande depuis CRG Services!">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="box">
+                
                 <div class="form-group">
                     <label for="name">Nom complet</label>
-                    <input type="text" id="name" required>
+                    <input type="text" id="name" name="name" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" id="email" required>
+                    <input type="email" id="email" name="email" required>
                 </div>
                 
                 <div class="form-group">
                     <label for="service">Service souhaité</label>
-                    <select id="service" required>
+                    <select id="service" name="service" required>
                         <option value="">Sélectionnez un service</option>
-                        <option value="fivem">Serveur FiveM</option>
-                        <option value="discord-server">Serveur Discord</option>
-                        <option value="website">Site Web</option>
-                        <option value="bot">Bot Discord</option>
-                        <option value="support">Soutien Administratif</option>
-                        <option value="custom">Projet personnalisé</option>
+                        <option value="Serveur FiveM">Serveur FiveM</option>
+                        <option value="Serveur Discord">Serveur Discord</option>
+                        <option value="Site Web">Site Web</option>
+                        <option value="Bot Discord">Bot Discord</option>
+                        <option value="Soutien Administratif">Soutien Administratif</option>
+                        <option value="Projet personnalisé">Projet personnalisé</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="budget">Budget estimé</label>
-                    <select id="budget">
+                    <select id="budget" name="budget">
                         <option value="">Sélectionnez une fourchette</option>
-                        <option value="200-500">200€ - 500€</option>
-                        <option value="500-1000">500€ - 1000€</option>
-                        <option value="1000-2000">1000€ - 2000€</option>
-                        <option value="2000+">2000€+</option>
+                        <option value="200€ - 500€">200€ - 500€</option>
+                        <option value="500€ - 1000€">500€ - 1000€</option>
+                        <option value="1000€ - 2000€">1000€ - 2000€</option>
+                        <option value="2000€+">2000€+</option>
                     </select>
                 </div>
                 
                 <div class="form-group">
                     <label for="message">Décrivez votre projet en détail</label>
-                    <textarea id="message" rows="5" required placeholder="Expliquez vos besoins, vos attentes, le délai souhaité..."></textarea>
+                    <textarea id="message" name="message" rows="5" required placeholder="Expliquez vos besoins, vos attentes, le délai souhaité..."></textarea>
                 </div>
                 
                 <button type="submit" class="submit-button">ENVOYER LA DEMANDE</button>
             </form>
+
+            <div class="social-links">
+                <a href="https://discord.com/users/woody_2009" target="_blank" class="social-link">💬 Discord: woody_2009</a>
+            </div>
+            <div class="social-links">
+                <a href="https://instagram.com/carag_2001" target="_blank" class="social-link">📸 Instagram</a>
+                <a href="https://tiktok.com/@_0_woody_0_" target="_blank" class="social-link">🎵 TikTok</a>
+            </div>
         </div>
     </section>
 
     <footer>
-        <p style="font-size: 1.2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #ff0040;">&copy; 2026 SERVICES DIGITAUX PRO</p>
+        <p style="font-size: 1.2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #ff0040;">&copy; 2026 CRG SERVICES</p>
         <p style="opacity: 0.8;">Auto-Entrepreneur • Développement sur mesure • Support réactif</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.6;">Tous droits réservés</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">📧 omegaofficiel02@gmail.com • 💬 Discord: woody_2009</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.6;">Tous droits réservés</p>
     </footer>
 
     <script>
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('.submit-button');
-            submitBtn.textContent = 'ENVOI EN COURS...';
-            submitBtn.style.opacity = '0.6';
-            
-            setTimeout(() => {
-                alert('✓ Merci pour votre demande ! Je vous répondrai dans les plus brefs délais par email.');
-                this.reset();
-                submitBtn.textContent = 'ENVOYER LA DEMANDE';
-                submitBtn.style.opacity = '1';
-            }, 1000);
-        });
-
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
