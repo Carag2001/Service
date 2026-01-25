@@ -3,90 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rachel.D Services - Jardinage, Ménage & Débarras</title>
+<title>Rachel Dauber Services</title>
 
 <style>
-/* ================= VARIABLES ================= */
 :root{
-    --violet-main:#b98bff;
+    --violet:#b98bff;
     --violet-light:#e0c3ff;
-    --violet-dark:#2b164f;
-    --violet-glow:rgba(185,139,255,0.8);
+    --violet-dark:#1a0f2e;
+    --glow:rgba(185,139,255,.8);
 }
 
-/* ================= RESET ================= */
 *{margin:0;padding:0;box-sizing:border-box}
 
-/* ================= BODY ================= */
 body{
-    font-family:'Georgia',serif;
-    color:#ffffff;
+    font-family:Georgia,serif;
     background:#120a1f;
-    overflow-x:hidden;
-    position:relative;
+    color:#fff;
 }
 
-/* ================= FOND FLEURS ================= */
+/* 🌸 FOND FLORAL (DISCRET) */
 body::before{
     content:'';
     position:fixed;
     inset:0;
     background:
-        url("https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1600") center/cover no-repeat,
-        radial-gradient(circle at 30% 40%, rgba(185,139,255,0.25), transparent 50%),
-        radial-gradient(circle at 70% 70%, rgba(220,190,255,0.2), transparent 50%);
-    opacity:0.25;
-    z-index:0;
-    pointer-events:none;
+      linear-gradient(rgba(18,10,31,.85),rgba(18,10,31,.85)),
+      url("https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1600")
+      center/cover no-repeat;
+    z-index:-1;
 }
 
-/* ================= PARTICULES ================= */
-.gold-particle{
-    position:fixed;
-    width:4px;
-    height:4px;
-    background:var(--violet-main);
-    border-radius:50%;
-    box-shadow:0 0 12px var(--violet-glow);
-    animation:float 20s infinite;
-    z-index:1;
-}
-@keyframes float{
-    from{transform:translateY(110vh);opacity:0}
-    20%{opacity:1}
-    to{transform:translateY(-20vh) translateX(80px);opacity:0}
-}
-
-/* ================= HEADER ================= */
+/* HEADER */
 header{
-    background:linear-gradient(135deg,#1a0f2e,#2b164f);
-    padding:4rem 0;
+    padding:4rem 1rem;
     text-align:center;
-    border-bottom:3px solid var(--violet-main);
-    box-shadow:0 15px 40px rgba(185,139,255,0.4);
-    position:relative;
-    z-index:2;
+    border-bottom:2px solid var(--violet);
 }
 h1{
-    font-size:3.5rem;
-    background:linear-gradient(45deg,var(--violet-main),var(--violet-light),var(--violet-main));
+    font-size:3rem;
+    background:linear-gradient(45deg,var(--violet),var(--violet-light));
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    text-shadow:0 0 30px var(--violet-glow);
+    text-shadow:0 0 25px var(--glow);
 }
-.tagline{
-    margin-top:1rem;
-    font-size:1.4rem;
-}
+.tagline{margin-top:1rem;font-size:1.2rem}
 
-/* ================= NAV ================= */
+/* NAV */
 nav{
-    position:sticky;
-    top:0;
-    background:rgba(20,10,40,0.95);
-    backdrop-filter:blur(10px);
-    border-bottom:2px solid var(--violet-main);
-    z-index:100;
+    background:rgba(20,10,40,.95);
+    border-bottom:2px solid var(--violet);
 }
 nav ul{
     display:flex;
@@ -94,197 +59,103 @@ nav ul{
     list-style:none;
 }
 nav a{
-    color:var(--violet-main);
-    padding:1.3rem 2.5rem;
+    padding:1.2rem 2rem;
+    color:var(--violet);
     text-decoration:none;
     font-weight:600;
-    letter-spacing:2px;
-    position:relative;
-    overflow:hidden;
-    transition:0.4s;
 }
-nav a::after{
-    content:'';
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(90deg,transparent,rgba(185,139,255,0.3),transparent);
-    transition:0.6s;
-}
-nav a:hover::after{left:100%}
 nav a:hover{
     color:#fff;
-    text-shadow:0 0 12px var(--violet-main);
+    text-shadow:0 0 10px var(--violet);
 }
 
-/* ================= PAGES ================= */
-.page{display:none}
-.page.active{display:block}
-
-/* ================= HERO ================= */
-.hero{
-    padding:6rem 0;
-    text-align:center;
-    background:linear-gradient(135deg,rgba(26,15,46,0.85),rgba(0,0,0,0.7));
-    border-bottom:2px solid var(--violet-main);
+/* SECTIONS */
+.section{
+    padding:4rem 1rem;
 }
-.hero h2{
-    font-size:3rem;
-    background:linear-gradient(45deg,var(--violet-main),var(--violet-light));
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-.hero p{
-    font-size:1.4rem;
-    max-width:800px;
-    margin:auto;
-}
-
-/* ================= CONTAINER ================= */
 .container{
-    max-width:1200px;
+    max-width:1100px;
     margin:auto;
-    padding:0 20px;
-    position:relative;
-    z-index:2;
 }
 
-/* ================= SERVICES ================= */
-.services-grid{
+/* SERVICES */
+.services{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-    gap:3rem;
-    padding:4rem 0;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:2.5rem;
 }
-.service-card{
-    background:rgba(20,10,40,0.92);
+.card{
+    background:rgba(20,10,40,.95);
+    border:2px solid var(--violet);
     border-radius:18px;
-    padding:3rem;
-    border:2px solid transparent;
-    box-shadow:0 20px 50px rgba(185,139,255,0.3);
-    position:relative;
-    overflow:hidden;
-    transition:0.5s;
+    padding:2.5rem;
+    box-shadow:0 20px 50px rgba(0,0,0,.6);
 }
-.service-card::before{
-    content:'';
-    position:absolute;
-    inset:-2px;
-    background:linear-gradient(45deg,var(--violet-main),var(--violet-light),var(--violet-main));
-    z-index:-1;
-    opacity:0;
-    transition:0.5s;
-}
-.service-card:hover::before{opacity:1}
-.service-card:hover{
-    transform:translateY(-12px) scale(1.02);
-    box-shadow:0 30px 70px rgba(185,139,255,0.7);
-}
-.service-card h3{
-    font-size:2rem;
+.card h3{
+    font-size:1.8rem;
+    margin-bottom:1rem;
     color:var(--violet-light);
-    border-bottom:2px solid var(--violet-main);
-    padding-bottom:.8rem;
-    margin-bottom:1.5rem;
 }
-.service-card ul{list-style:none}
-.service-card li{
-    padding:.6rem 0 .6rem 1.5rem;
-    position:relative;
-}
-.service-card li::before{
-    content:"✿";
-    position:absolute;
-    left:0;
-    color:var(--violet-main);
-}
+.card p{line-height:1.6}
 
-/* ================= BOUTONS (STYLE DU 1ER CODE) ================= */
-.cta-button{
+/* BOUTONS PREMIUM */
+.btn{
     display:inline-block;
-    margin-top:1.8rem;
-    padding:1.3rem 3.2rem;
+    margin-top:1.5rem;
+    padding:1.2rem 3rem;
     border-radius:50px;
-    background:linear-gradient(135deg,var(--violet-main),var(--violet-light),var(--violet-main));
+    background:linear-gradient(135deg,var(--violet),var(--violet-light),var(--violet));
     background-size:300% 300%;
     color:#1a0f2e;
     font-weight:700;
     text-decoration:none;
-    letter-spacing:2px;
+    box-shadow:0 10px 30px var(--glow);
     position:relative;
     overflow:hidden;
-    box-shadow:0 10px 30px rgba(185,139,255,0.6);
-    transition:0.4s;
-    animation:gradientMove 3s ease infinite;
+    animation:grad 3s ease infinite;
 }
-
-@keyframes gradientMove{
+@keyframes grad{
     0%{background-position:0% 50%}
     50%{background-position:100% 50%}
     100%{background-position:0% 50%}
 }
-
-.cta-button::after{
+.btn::after{
     content:'';
     position:absolute;
     top:0;
     left:-100%;
     width:100%;
     height:100%;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);
-    transition:0.6s;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);
 }
-.cta-button:hover::after{left:100%}
+.btn:hover::after{left:100%}
+.btn:hover{transform:translateY(-4px)}
 
-.cta-button:hover{
-    transform:translateY(-6px) scale(1.07);
-    box-shadow:0 25px 60px rgba(185,139,255,0.9);
+/* CONTACT */
+.contact{
+    background:rgba(20,10,40,.95);
+    border:2px solid var(--violet);
+    border-radius:18px;
+    padding:3rem;
+    text-align:center;
 }
-
-/* ================= CONTACT ================= */
-.contact-info{
-    background:rgba(20,10,40,0.95);
-    border-radius:20px;
-    padding:4rem;
-    border:3px solid var(--violet-main);
-    box-shadow:0 30px 70px rgba(185,139,255,0.6);
-}
-.contact-item{
-    margin:1.6rem 0;
-    font-size:1.3rem;
-}
-.phone-link{
+.contact a{
     color:var(--violet-light);
-    font-size:1.6rem;
+    font-size:1.4rem;
     text-decoration:none;
 }
 
-/* ================= FOOTER ================= */
+/* FOOTER */
 footer{
-    background:#120a1f;
-    border-top:3px solid var(--violet-main);
-    padding:3rem 0;
+    padding:2rem;
     text-align:center;
-    box-shadow:0 -10px 40px rgba(185,139,255,0.4);
-}
-
-/* ================= RESPONSIVE ================= */
-@media(max-width:768px){
-    h1{font-size:2.5rem}
-    .hero h2{font-size:2rem}
-    nav ul{flex-direction:column}
+    border-top:2px solid var(--violet);
+    margin-top:4rem;
 }
 </style>
 </head>
 
 <body>
-
-<div class="gold-particle" style="left:10%;animation-delay:0s"></div>
-<div class="gold-particle" style="left:30%;animation-delay:4s"></div>
-<div class="gold-particle" style="left:60%;animation-delay:8s"></div>
-<div class="gold-particle" style="left:80%;animation-delay:12s"></div>
 
 <header>
     <h1>Des services utiles, simples et efficaces</h1>
@@ -293,62 +164,50 @@ footer{
 
 <nav>
 <ul>
-<li><a href="#" onclick="showPage('accueil')">Accueil</a></li>
-<li><a href="#" onclick="showPage('jardinage')">Jardinage</a></li>
-<li><a href="#" onclick="showPage('menage')">Ménage</a></li>
-<li><a href="#" onclick="showPage('debarras')">Débarras</a></li>
-<li><a href="#" onclick="showPage('contact')">Contact</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#contact">Contact</a></li>
 </ul>
 </nav>
 
-<div id="accueil" class="page active">
-<div class="hero">
-    <h2>Bienvenue</h2>
-    <p>Des solutions professionnelles pour votre quotidien</p>
-</div>
+<section id="services" class="section">
 <div class="container">
-<div class="services-grid">
-<div class="service-card">
-<h3>Jardinage</h3>
-<p>Entretien et embellissement de vos espaces verts.</p>
-<a class="cta-button" href="#" onclick="showPage('jardinage')">Découvrir</a>
-</div>
-<div class="service-card">
-<h3>Ménage</h3>
-<p>Nettoyage intérieur et extérieur haut de gamme.</p>
-<a class="cta-button" href="#" onclick="showPage('menage')">Découvrir</a>
-</div>
-<div class="service-card">
-<h3>Débarras</h3>
-<p>Évacuation rapide et responsable.</p>
-<a class="cta-button" href="#" onclick="showPage('debarras')">Découvrir</a>
-</div>
-</div>
-</div>
+<div class="services">
+
+<div class="card">
+<h3>🌿 Jardinage</h3>
+<p>Tonte, taille, entretien complet de vos espaces verts.</p>
+<a class="btn" href="#contact">Demander un devis</a>
 </div>
 
-<div id="contact" class="page">
-<div class="hero"><h2>Contact</h2><p>Rachel Dauber</p></div>
+<div class="card">
+<h3>🧼 Ménage</h3>
+<p>Nettoyage intérieur & extérieur, régulier ou ponctuel.</p>
+<a class="btn" href="#contact">Demander un devis</a>
+</div>
+
+<div class="card">
+<h3>🚚 Débarras</h3>
+<p>Évacuation rapide de meubles et encombrants.</p>
+<a class="btn" href="#contact">Demander un devis</a>
+</div>
+
+</div>
+</div>
+</section>
+
+<section id="contact" class="section">
 <div class="container">
-<div class="contact-info">
-<div class="contact-item"><strong>Téléphone :</strong> <a href="tel:0745216705" class="phone-link">07 45 21 67 05</a></div>
-<div class="contact-item"><strong>Zone :</strong> Hennebont et alentours</div>
+<div class="contact">
+<p><strong>Rachel Dauber</strong></p>
+<p><a href="tel:0745216705">📞 07 45 21 67 05</a></p>
+<p>Hennebont et alentours</p>
 </div>
 </div>
-</div>
+</section>
 
 <footer>
-<p>© 2026 Rachel Dauber Services</p>
-<p>Jardinage • Ménage • Débarras – Bretagne</p>
+<p>© 2026 Rachel Dauber Services – Bretagne</p>
 </footer>
-
-<script>
-function showPage(id){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    window.scrollTo({top:0,behavior:'smooth'});
-}
-</script>
 
 </body>
 </html>
