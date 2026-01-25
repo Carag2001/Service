@@ -938,59 +938,51 @@
             // Créer l'embed Discord stylé
             const embed = {
                 username: "CRG SERVICES",
-                avatar_url: "https://i.imgur.com/4M34hi2.png",
+                avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png",
                 embeds: [{
-                    author: {
-                        name: "SYSTÈME DE CONTACT CRG SERVICES",
-                        icon_url: "https://i.imgur.com/4M34hi2.png"
-                    },
                     title: "NOUVELLE DEMANDE CLIENT",
-                    description: "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nUn nouveau prospect vient de soumettre une demande via le site web\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━",
-                    color: 5814783,
+                    description: "Un nouveau prospect souhaite travailler avec CRG Services",
+                    color: 2201331,
                     fields: [
                         {
-                            name: "▸ INFORMATIONS CLIENT",
-                            value: `\`\`\`yaml\nNom: ${name}\nEmail: ${email}\`\`\``,
+                            name: "CLIENT",
+                            value: name,
+                            inline: true
+                        },
+                        {
+                            name: "EMAIL",
+                            value: email,
+                            inline: true
+                        },
+                        {
+                            name: "SERVICE",
+                            value: service,
                             inline: false
                         },
                         {
-                            name: "▸ SERVICE DEMANDÉ",
-                            value: `\`\`\`fix\n${service}\`\`\``,
+                            name: "BUDGET",
+                            value: budget,
                             inline: true
                         },
                         {
-                            name: "▸ BUDGET ESTIMÉ",
-                            value: `\`\`\`css\n${budget}\`\`\``,
-                            inline: true
-                        },
-                        {
-                            name: "▸ DATE & HEURE",
-                            value: `\`\`\`ini\n[${new Date().toLocaleString('fr-FR', { 
+                            name: "DATE",
+                            value: new Date().toLocaleString('fr-FR', { 
                                 day: '2-digit',
                                 month: 'long',
                                 year: 'numeric',
                                 hour: '2-digit',
                                 minute: '2-digit'
-                            })}]\`\`\``,
-                            inline: false
+                            }),
+                            inline: true
                         },
                         {
-                            name: "▸ DESCRIPTION DU PROJET",
-                            value: `\`\`\`${message.length > 900 ? message.substring(0, 897) + '...' : message}\`\`\``,
-                            inline: false
-                        },
-                        {
-                            name: "▸ ACTIONS RECOMMANDÉES",
-                            value: "```diff\n+ Répondre dans les 24h\n+ Vérifier la disponibilité\n+ Préparer un devis personnalisé\n```",
+                            name: "MESSAGE",
+                            value: message.length > 1024 ? message.substring(0, 1021) + '...' : message,
                             inline: false
                         }
                     ],
-                    thumbnail: {
-                        url: "https://i.imgur.com/4M34hi2.png"
-                    },
                     footer: {
-                        text: "CRG SERVICES • SYSTÈME DE GESTION CLIENT • SITE WEB OFFICIEL",
-                        icon_url: "https://i.imgur.com/4M34hi2.png"
+                        text: "CRG SERVICES - Système de contact"
                     },
                     timestamp: new Date().toISOString()
                 }]
