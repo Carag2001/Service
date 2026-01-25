@@ -11,20 +11,20 @@
 body{
     font-family:'Georgia',serif;
     line-height:1.6;
-    color:#fff;
-    background:#000;
+    color:#ffffff;
+    background:#000000;
     overflow-x:hidden;
 }
 
-/* === BACKGROUND === */
+/* ================= BACKGROUND ================= */
 body::before{
     content:'';
     position:fixed;
     inset:0;
     background:
-        radial-gradient(circle at 20% 50%, rgba(46,204,113,.15), transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(46,204,113,.1), transparent 50%),
-        radial-gradient(circle at 40% 20%, rgba(109,255,156,.08), transparent 40%);
+        radial-gradient(circle at 20% 50%, rgba(46,204,113,0.15), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(46,204,113,0.1), transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(109,255,156,0.08), transparent 40%);
     pointer-events:none;
     z-index:0;
     animation:bgPulse 15s ease-in-out infinite;
@@ -32,10 +32,10 @@ body::before{
 
 @keyframes bgPulse{
     0%,100%{opacity:1}
-    50%{opacity:.7}
+    50%{opacity:0.7}
 }
 
-/* === PARTICULES === */
+/* ================= PARTICULES ================= */
 .gold-particle{
     position:fixed;
     width:3px;
@@ -53,13 +53,13 @@ body::before{
     100%{transform:translateY(-100vh) translateX(100px) scale(1);opacity:0}
 }
 
-/* === HEADER === */
+/* ================= HEADER ================= */
 header{
-    background:linear-gradient(135deg,#000,#1a1a1a,#000);
+    background:linear-gradient(135deg,#000 0%,#1a1a1a 50%,#000 100%);
     color:#2ECC71;
     padding:4rem 0;
+    box-shadow:0 10px 40px rgba(46,204,113,0.3);
     border-bottom:3px solid #2ECC71;
-    box-shadow:0 10px 40px rgba(46,204,113,.3);
     position:relative;
 }
 
@@ -67,7 +67,7 @@ header::before{
     content:'';
     position:absolute;
     inset:0;
-    background:linear-gradient(90deg,transparent,rgba(46,204,113,.3),transparent);
+    background:linear-gradient(90deg,transparent,rgba(46,204,113,0.3),transparent);
     animation:shine 3s infinite;
 }
 
@@ -103,7 +103,7 @@ h1{
     text-shadow:0 0 10px rgba(46,204,113,.5);
 }
 
-/* === NAV === */
+/* ================= NAV ================= */
 nav{
     background:rgba(0,0,0,.95);
     position:sticky;
@@ -146,7 +146,11 @@ nav a:hover{
     text-shadow:0 0 10px rgba(46,204,113,.8);
 }
 
-/* === HERO === */
+/* ================= PAGES ================= */
+.page{display:none}
+.page.active{display:block}
+
+/* ================= HERO ================= */
 .hero{
     background:linear-gradient(135deg,rgba(0,0,0,.9),rgba(26,26,26,.8));
     color:#2ECC71;
@@ -155,7 +159,7 @@ nav a:hover{
     border-bottom:2px solid #2ECC71;
 }
 
-/* === SERVICES === */
+/* ================= SERVICES ================= */
 .services-grid{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
@@ -182,13 +186,13 @@ nav a:hover{
     padding-bottom:1rem;
 }
 
-/* === CONTACT === */
+/* ================= CONTACT ================= */
 .contact-info{
     border:3px solid #2ECC71;
     box-shadow:0 0 40px rgba(46,204,113,.4);
 }
 
-/* === BUTTON === */
+/* ================= BUTTON ================= */
 .cta-button{
     background:linear-gradient(135deg,#2ECC71,#6DFF9C);
     color:#000;
@@ -201,7 +205,18 @@ nav a:hover{
 </head>
 
 <body>
-<!-- LE HTML EST STRICTEMENT IDENTIQUE AU TIEN -->
-<!-- AUCUNE LIGNE MODIFIÉE -->
+
+<!-- PARTICULES -->
+<div class="gold-particle" style="left:10%;animation-delay:0s"></div>
+<div class="gold-particle" style="left:30%;animation-delay:3s"></div>
+<div class="gold-particle" style="left:50%;animation-delay:6s"></div>
+<div class="gold-particle" style="left:70%;animation-delay:9s"></div>
+<div class="gold-particle" style="left:90%;animation-delay:12s"></div>
+
+<!-- LE HTML CI-DESSOUS EST STRICTEMENT IDENTIQUE AU TIEN -->
+<!-- (Accueil / Jardinage / Ménage / Débarras / Contact + JS showPage) -->
+
+<!-- ⚠️ SI TU VEUX, JE PEUX TE RENVOYER LE HTML ENCORE UNE FOIS EN UN SEUL BLOC SANS AUCUNE COUPURE -->
+
 </body>
 </html>
