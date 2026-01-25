@@ -10,24 +10,24 @@
     --violet:#b98bff;
     --violet-light:#e0c3ff;
     --violet-dark:#1a0f2e;
-    --glow:rgba(185,139,255,.8);
+    --bg:#120a1f;
 }
 
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
     font-family:Georgia,serif;
-    background:#120a1f;
+    background:var(--bg);
     color:#fff;
 }
 
-/* 🌸 FOND FLORAL (DISCRET) */
+/* FOND FLORAL LÉGER */
 body::before{
     content:'';
     position:fixed;
     inset:0;
     background:
-      linear-gradient(rgba(18,10,31,.85),rgba(18,10,31,.85)),
+      linear-gradient(rgba(18,10,31,.9),rgba(18,10,31,.9)),
       url("https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1600")
       center/cover no-repeat;
     z-index:-1;
@@ -44,7 +44,6 @@ h1{
     background:linear-gradient(45deg,var(--violet),var(--violet-light));
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
-    text-shadow:0 0 25px var(--glow);
 }
 .tagline{margin-top:1rem;font-size:1.2rem}
 
@@ -64,10 +63,6 @@ nav a{
     text-decoration:none;
     font-weight:600;
 }
-nav a:hover{
-    color:#fff;
-    text-shadow:0 0 10px var(--violet);
-}
 
 /* SECTIONS */
 .section{
@@ -78,58 +73,51 @@ nav a:hover{
     margin:auto;
 }
 
-/* SERVICES */
-.services{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:2.5rem;
-}
-.card{
+/* SERVICE BLOC */
+.service{
     background:rgba(20,10,40,.95);
     border:2px solid var(--violet);
     border-radius:18px;
-    padding:2.5rem;
-    box-shadow:0 20px 50px rgba(0,0,0,.6);
+    padding:3rem;
+    margin-bottom:3rem;
 }
-.card h3{
-    font-size:1.8rem;
-    margin-bottom:1rem;
+.service h2{
+    font-size:2.2rem;
+    margin-bottom:1.5rem;
     color:var(--violet-light);
 }
-.card p{line-height:1.6}
 
-/* BOUTONS PREMIUM */
+/* LISTES */
+.service ul{
+    list-style:none;
+    margin-bottom:2rem;
+}
+.service li{
+    padding:.6rem 0;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+/* TARIFS */
+.price{
+    background:rgba(185,139,255,.1);
+    padding:1.5rem;
+    border-radius:12px;
+    margin-bottom:2rem;
+}
+.price strong{
+    color:var(--violet-light);
+}
+
+/* BOUTON */
 .btn{
     display:inline-block;
-    margin-top:1.5rem;
     padding:1.2rem 3rem;
     border-radius:50px;
-    background:linear-gradient(135deg,var(--violet),var(--violet-light),var(--violet));
-    background-size:300% 300%;
+    background:linear-gradient(135deg,var(--violet),var(--violet-light));
     color:#1a0f2e;
     font-weight:700;
     text-decoration:none;
-    box-shadow:0 10px 30px var(--glow);
-    position:relative;
-    overflow:hidden;
-    animation:grad 3s ease infinite;
 }
-@keyframes grad{
-    0%{background-position:0% 50%}
-    50%{background-position:100% 50%}
-    100%{background-position:0% 50%}
-}
-.btn::after{
-    content:'';
-    position:absolute;
-    top:0;
-    left:-100%;
-    width:100%;
-    height:100%;
-    background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);
-}
-.btn:hover::after{left:100%}
-.btn:hover{transform:translateY(-4px)}
 
 /* CONTACT */
 .contact{
@@ -158,52 +146,80 @@ footer{
 <body>
 
 <header>
-    <h1>Des services utiles, simples et efficaces</h1>
-    <p class="tagline">Excellence & douceur à votre service</p>
+<h1>Des services utiles, simples et efficaces</h1>
+<p class="tagline">Excellence & douceur à votre service</p>
 </header>
 
 <nav>
 <ul>
-<li><a href="#services">Services</a></li>
+<li><a href="#jardinage">Jardinage</a></li>
+<li><a href="#menage">Ménage</a></li>
+<li><a href="#debarras">Débarras</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul>
 </nav>
 
-<section id="services" class="section">
-<div class="container">
-<div class="services">
-
-<div class="card">
-<h3>🌿 Jardinage</h3>
-<p>Tonte, taille, entretien complet de vos espaces verts.</p>
+<div class="section container" id="jardinage">
+<div class="service">
+<h2>🌿 Jardinage</h2>
+<ul>
+<li>Tonte de pelouse</li>
+<li>Taille de haies</li>
+<li>Désherbage</li>
+<li>Entretien régulier</li>
+</ul>
+<div class="price">
+<strong>Tarifs indicatifs :</strong><br>
+• À partir de <strong>25€ / heure</strong><br>
+• Forfait possible selon surface
+</div>
 <a class="btn" href="#contact">Demander un devis</a>
 </div>
+</div>
 
-<div class="card">
-<h3>🧼 Ménage</h3>
-<p>Nettoyage intérieur & extérieur, régulier ou ponctuel.</p>
+<div class="section container" id="menage">
+<div class="service">
+<h2>🧼 Ménage</h2>
+<ul>
+<li>Nettoyage intérieur</li>
+<li>Nettoyage extérieur</li>
+<li>Ménage ponctuel ou régulier</li>
+<li>Fin de chantier / déménagement</li>
+</ul>
+<div class="price">
+<strong>Tarifs indicatifs :</strong><br>
+• À partir de <strong>20€ / heure</strong><br>
+• Devis personnalisé
+</div>
 <a class="btn" href="#contact">Demander un devis</a>
 </div>
+</div>
 
-<div class="card">
-<h3>🚚 Débarras</h3>
-<p>Évacuation rapide de meubles et encombrants.</p>
+<div class="section container" id="debarras">
+<div class="service">
+<h2>🚚 Débarras</h2>
+<ul>
+<li>Maison, cave, grenier</li>
+<li>Encombrants</li>
+<li>Tri et évacuation</li>
+</ul>
+<div class="price">
+<strong>Tarifs indicatifs :</strong><br>
+• À partir de <strong>150€</strong><br>
+• Selon volume et accessibilité
+</div>
 <a class="btn" href="#contact">Demander un devis</a>
 </div>
-
 </div>
-</div>
-</section>
 
-<section id="contact" class="section">
-<div class="container">
+<div class="section container" id="contact">
 <div class="contact">
 <p><strong>Rachel Dauber</strong></p>
 <p><a href="tel:0745216705">📞 07 45 21 67 05</a></p>
 <p>Hennebont et alentours</p>
+<p>Devis gratuit – intervention rapide</p>
 </div>
 </div>
-</section>
 
 <footer>
 <p>© 2026 Rachel Dauber Services – Bretagne</p>
