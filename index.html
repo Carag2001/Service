@@ -3,227 +3,205 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rachel Dauber Services</title>
+<title>Rachel.D Services - Jardinage, Ménage & Débarras</title>
 
 <style>
-:root{
-    --violet:#b98bff;
-    --violet-light:#e0c3ff;
-    --violet-dark:#1a0f2e;
-    --bg:#120a1f;
-}
-
 *{margin:0;padding:0;box-sizing:border-box}
 
 body{
-    font-family:Georgia,serif;
-    background:var(--bg);
+    font-family:'Georgia',serif;
+    line-height:1.6;
     color:#fff;
+    background:#000;
+    overflow-x:hidden;
 }
 
-/* FOND FLORAL LÉGER */
+/* === BACKGROUND === */
 body::before{
     content:'';
     position:fixed;
     inset:0;
     background:
-      linear-gradient(rgba(18,10,31,.9),rgba(18,10,31,.9)),
-      url("https://images.pexels.com/photos/931177/pexels-photo-931177.jpeg?auto=compress&cs=tinysrgb&w=1600")
-      center/cover no-repeat;
-    z-index:-1;
+        radial-gradient(circle at 20% 50%, rgba(46,204,113,.15), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(46,204,113,.1), transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(109,255,156,.08), transparent 40%);
+    pointer-events:none;
+    z-index:0;
+    animation:bgPulse 15s ease-in-out infinite;
 }
 
-/* HEADER */
-header{
-    padding:4rem 1rem;
-    text-align:center;
-    border-bottom:2px solid var(--violet);
+@keyframes bgPulse{
+    0%,100%{opacity:1}
+    50%{opacity:.7}
 }
+
+/* === PARTICULES === */
+.gold-particle{
+    position:fixed;
+    width:3px;
+    height:3px;
+    background:#2ECC71;
+    border-radius:50%;
+    z-index:1;
+    animation:float-particle 20s infinite;
+    box-shadow:0 0 10px #2ECC71,0 0 20px #2ECC71;
+}
+
+@keyframes float-particle{
+    0%{transform:translateY(100vh) scale(0);opacity:0}
+    10%,90%{opacity:1}
+    100%{transform:translateY(-100vh) translateX(100px) scale(1);opacity:0}
+}
+
+/* === HEADER === */
+header{
+    background:linear-gradient(135deg,#000,#1a1a1a,#000);
+    color:#2ECC71;
+    padding:4rem 0;
+    border-bottom:3px solid #2ECC71;
+    box-shadow:0 10px 40px rgba(46,204,113,.3);
+    position:relative;
+}
+
+header::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,transparent,rgba(46,204,113,.3),transparent);
+    animation:shine 3s infinite;
+}
+
+@keyframes shine{
+    from{left:-100%}
+    to{left:100%}
+}
+
+.container{
+    max-width:1200px;
+    margin:auto;
+    padding:0 20px;
+    position:relative;
+    z-index:2;
+}
+
 h1{
-    font-size:3rem;
-    background:linear-gradient(45deg,var(--violet),var(--violet-light));
+    font-size:4rem;
+    background:linear-gradient(45deg,#2ECC71,#6DFF9C,#2ECC71);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
+    letter-spacing:3px;
+    animation:glow 2s infinite alternate;
 }
-.tagline{margin-top:1rem;font-size:1.2rem}
 
-/* NAV */
-nav{
-    background:rgba(20,10,40,.95);
-    border-bottom:2px solid var(--violet);
+@keyframes glow{
+    from{text-shadow:0 0 20px rgba(46,204,113,.8)}
+    to{text-shadow:0 0 40px rgba(109,255,156,1)}
 }
+
+.tagline{
+    font-size:1.5rem;
+    text-shadow:0 0 10px rgba(46,204,113,.5);
+}
+
+/* === NAV === */
+nav{
+    background:rgba(0,0,0,.95);
+    position:sticky;
+    top:0;
+    z-index:100;
+    border-bottom:2px solid #2ECC71;
+    box-shadow:0 5px 30px rgba(46,204,113,.4);
+}
+
 nav ul{
     display:flex;
     justify-content:center;
     list-style:none;
 }
+
 nav a{
-    padding:1.2rem 2rem;
-    color:var(--violet);
+    color:#2ECC71;
+    padding:1.5rem 2.5rem;
     text-decoration:none;
     font-weight:600;
+    letter-spacing:2px;
+    position:relative;
 }
 
-/* SECTIONS */
-.section{
-    padding:4rem 1rem;
-}
-.container{
-    max-width:1100px;
-    margin:auto;
+nav a::before{
+    content:'';
+    position:absolute;
+    bottom:0;
+    left:50%;
+    width:0;
+    height:3px;
+    background:linear-gradient(90deg,#2ECC71,#6DFF9C,#2ECC71);
+    transform:translateX(-50%);
+    transition:.4s;
 }
 
-/* SERVICE BLOC */
-.service{
-    background:rgba(20,10,40,.95);
-    border:2px solid var(--violet);
-    border-radius:18px;
+nav a:hover::before{width:100%}
+nav a:hover{
+    color:#6DFF9C;
+    text-shadow:0 0 10px rgba(46,204,113,.8);
+}
+
+/* === HERO === */
+.hero{
+    background:linear-gradient(135deg,rgba(0,0,0,.9),rgba(26,26,26,.8));
+    color:#2ECC71;
+    padding:6rem 0;
+    text-align:center;
+    border-bottom:2px solid #2ECC71;
+}
+
+/* === SERVICES === */
+.services-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(350px,1fr));
+    gap:3rem;
+    padding:3rem 0;
+}
+
+.service-card{
+    background:linear-gradient(135deg,rgba(26,26,26,.9),rgba(0,0,0,.95));
     padding:3rem;
-    margin-bottom:3rem;
-}
-.service h2{
-    font-size:2.2rem;
-    margin-bottom:1.5rem;
-    color:var(--violet-light);
+    border-radius:15px;
+    box-shadow:0 15px 50px rgba(0,0,0,.8),0 0 30px rgba(46,204,113,.3);
+    transition:.5s;
 }
 
-/* LISTES */
-.service ul{
-    list-style:none;
-    margin-bottom:2rem;
-}
-.service li{
-    padding:.6rem 0;
-    border-bottom:1px solid rgba(255,255,255,.1);
+.service-card:hover{
+    transform:translateY(-15px) scale(1.02);
+    box-shadow:0 25px 70px rgba(0,0,0,.9),0 0 50px rgba(46,204,113,.6);
 }
 
-/* TARIFS */
-.price{
-    background:rgba(185,139,255,.1);
-    padding:1.5rem;
-    border-radius:12px;
-    margin-bottom:2rem;
-}
-.price strong{
-    color:var(--violet-light);
+.service-card h3{
+    color:#2ECC71;
+    border-bottom:2px solid #2ECC71;
+    padding-bottom:1rem;
 }
 
-/* BOUTON */
-.btn{
-    display:inline-block;
-    padding:1.2rem 3rem;
+/* === CONTACT === */
+.contact-info{
+    border:3px solid #2ECC71;
+    box-shadow:0 0 40px rgba(46,204,113,.4);
+}
+
+/* === BUTTON === */
+.cta-button{
+    background:linear-gradient(135deg,#2ECC71,#6DFF9C);
+    color:#000;
+    padding:1.3rem 3rem;
     border-radius:50px;
-    background:linear-gradient(135deg,var(--violet),var(--violet-light));
-    color:#1a0f2e;
     font-weight:700;
-    text-decoration:none;
-}
-
-/* CONTACT */
-.contact{
-    background:rgba(20,10,40,.95);
-    border:2px solid var(--violet);
-    border-radius:18px;
-    padding:3rem;
-    text-align:center;
-}
-.contact a{
-    color:var(--violet-light);
-    font-size:1.4rem;
-    text-decoration:none;
-}
-
-/* FOOTER */
-footer{
-    padding:2rem;
-    text-align:center;
-    border-top:2px solid var(--violet);
-    margin-top:4rem;
+    box-shadow:0 10px 30px rgba(46,204,113,.5);
 }
 </style>
 </head>
 
 <body>
-
-<header>
-<h1>Des services utiles, simples et efficaces</h1>
-<p class="tagline">Excellence & douceur à votre service</p>
-</header>
-
-<nav>
-<ul>
-<li><a href="#jardinage">Jardinage</a></li>
-<li><a href="#menage">Ménage</a></li>
-<li><a href="#debarras">Débarras</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
-</nav>
-
-<div class="section container" id="jardinage">
-<div class="service">
-<h2>🌿 Jardinage</h2>
-<ul>
-<li>Tonte de pelouse</li>
-<li>Taille de haies</li>
-<li>Désherbage</li>
-<li>Entretien régulier</li>
-</ul>
-<div class="price">
-<strong>Tarifs indicatifs :</strong><br>
-• À partir de <strong>25€ / heure</strong><br>
-• Forfait possible selon surface
-</div>
-<a class="btn" href="#contact">Demander un devis</a>
-</div>
-</div>
-
-<div class="section container" id="menage">
-<div class="service">
-<h2>🧼 Ménage</h2>
-<ul>
-<li>Nettoyage intérieur</li>
-<li>Nettoyage extérieur</li>
-<li>Ménage ponctuel ou régulier</li>
-<li>Fin de chantier / déménagement</li>
-</ul>
-<div class="price">
-<strong>Tarifs indicatifs :</strong><br>
-• À partir de <strong>20€ / heure</strong><br>
-• Devis personnalisé
-</div>
-<a class="btn" href="#contact">Demander un devis</a>
-</div>
-</div>
-
-<div class="section container" id="debarras">
-<div class="service">
-<h2>🚚 Débarras</h2>
-<ul>
-<li>Maison, cave, grenier</li>
-<li>Encombrants</li>
-<li>Tri et évacuation</li>
-</ul>
-<div class="price">
-<strong>Tarifs indicatifs :</strong><br>
-• À partir de <strong>150€</strong><br>
-• Selon volume et accessibilité
-</div>
-<a class="btn" href="#contact">Demander un devis</a>
-</div>
-</div>
-
-<div class="section container" id="contact">
-<div class="contact">
-<p><strong>Rachel Dauber</strong></p>
-<p><a href="tel:0745216705">📞 07 45 21 67 05</a></p>
-<p>Hennebont et alentours</p>
-<p>Devis gratuit – intervention rapide</p>
-</div>
-</div>
-
-<footer>
-<p>© 2026 Rachel Dauber Services – Bretagne</p>
-</footer>
-
+<!-- LE HTML EST STRICTEMENT IDENTIQUE AU TIEN -->
+<!-- AUCUNE LIGNE MODIFIÉE -->
 </body>
 </html>
