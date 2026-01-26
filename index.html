@@ -27,8 +27,8 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            border-bottom: 2px solid #ff0040;
-            box-shadow: 0 0 20px rgba(255, 0, 64, 0.5);
+            border-bottom: 2px solid #0066ff;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
         }
 
         nav {
@@ -43,61 +43,106 @@
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
-            text-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040, 0 0 30px #ff0040;
+            text-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff, 0 0 30px #0066ff;
             animation: neonPulse 2s infinite;
         }
 
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .social-link {
-            color: #ff0040;
-            text-decoration: none;
-            font-size: 1.1rem;
-            padding: 0.8rem 1.5rem;
-            border: 2px solid #ff0040;
-            border-radius: 8px;
-            transition: all 0.3s;
-            text-shadow: 0 0 10px #ff0040;
-        }
-
-        .social-link:hover {
-            background: #ff0040;
-            color: #000;
-            text-shadow: none;
-            box-shadow: 0 0 20px rgba(255, 0, 64, 0.6);
-            transform: translateY(-3px);
-        }
-
         @keyframes neonPulse {
-            0%, 100% { text-shadow: 0 0 10px #ff0040, 0 0 20px #ff0040, 0 0 30px #ff0040; }
-            50% { text-shadow: 0 0 20px #ff0040, 0 0 30px #ff0040, 0 0 40px #ff0040, 0 0 50px #ff0040; }
+            0%, 100% { text-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff, 0 0 30px #0066ff; }
+            50% { text-shadow: 0 0 20px #0066ff, 0 0 30px #0066ff, 0 0 40px #0066ff, 0 0 50px #0066ff; }
         }
 
         nav ul {
             list-style: none;
             display: flex;
             gap: 2rem;
+            align-items: center;
+        }
+
+        nav ul li {
+            position: relative;
         }
 
         nav a {
             color: white;
             text-decoration: none;
             transition: all 0.3s;
-            position: relative;
+            display: block;
+            padding: 0.5rem 1rem;
         }
 
         nav a:hover {
-            color: #ff0040;
-            text-shadow: 0 0 10px #ff0040;
+            color: #0066ff;
+            text-shadow: 0 0 10px #0066ff;
+        }
+
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-toggle::after {
+            content: '▼';
+            font-size: 0.7rem;
+            transition: transform 0.3s;
+        }
+
+        .dropdown:hover .dropdown-toggle::after {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            border: 2px solid #0066ff;
+            border-radius: 10px;
+            min-width: 250px;
+            padding: 0.5rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+            box-shadow: 0 10px 40px rgba(0, 102, 255, 0.5);
+            z-index: 1000;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-menu a {
+            color: #fff;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .dropdown-menu a:hover {
+            background: rgba(0, 102, 255, 0.1);
+            border-left-color: #0066ff;
+            padding-left: 2rem;
+        }
+
+        .dropdown-menu a span {
+            font-size: 1.3rem;
         }
 
         .hero {
-            background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #1a0000 100%);
+            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #001a33 100%);
             color: white;
             padding: 150px 2rem 100px;
             text-align: center;
@@ -117,43 +162,94 @@
                 0deg,
                 transparent,
                 transparent 2px,
-                rgba(255, 0, 64, 0.03) 2px,
-                rgba(255, 0, 64, 0.03) 4px
+                rgba(0, 102, 255, 0.03) 2px,
+                rgba(0, 102, 255, 0.03) 4px
             );
             pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
         }
 
         .hero h1 {
             font-size: 3.5rem;
             margin-bottom: 1rem;
             animation: fadeInUp 1s;
-            text-shadow: 0 0 20px #ff0040, 0 0 40px #ff0040;
+            text-shadow: 0 0 20px #0066ff, 0 0 40px #0066ff;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #0066ff;
+            font-weight: bold;
+            text-shadow: 0 0 15px #0066ff;
         }
 
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.8;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
         }
 
         .cta-button {
             display: inline-block;
             background: transparent;
-            color: #ff0040;
+            color: #0066ff;
             padding: 1rem 2.5rem;
-            border: 2px solid #ff0040;
+            border: 2px solid #0066ff;
             border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(255, 0, 64, 0.5);
-            text-shadow: 0 0 10px #ff0040;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+            text-shadow: 0 0 10px #0066ff;
         }
 
         .cta-button:hover {
-            background: #ff0040;
+            background: #0066ff;
             color: #000;
             text-shadow: none;
-            box-shadow: 0 0 30px rgba(255, 0, 64, 0.8), 0 0 60px rgba(255, 0, 64, 0.5);
+            box-shadow: 0 0 30px rgba(0, 102, 255, 0.8), 0 0 60px rgba(0, 102, 255, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            color: #0066ff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #0066ff;
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-shadow: 0 0 10px #0066ff;
+        }
+
+        .social-link:hover {
+            background: #0066ff;
+            color: #000;
+            text-shadow: none;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.6);
             transform: translateY(-3px);
         }
 
@@ -167,8 +263,8 @@
             text-align: center;
             font-size: 3rem;
             margin-bottom: 1rem;
-            color: #ff0040;
-            text-shadow: 0 0 20px #ff0040, 0 0 40px #ff0040;
+            color: #0066ff;
+            text-shadow: 0 0 20px #0066ff, 0 0 40px #0066ff;
         }
 
         .section-subtitle {
@@ -178,241 +274,145 @@
             color: #ccc;
         }
 
-        .service-section {
-            margin-bottom: 6rem;
-            padding: 3rem;
-            background: rgba(255, 0, 64, 0.03);
-            border: 2px solid rgba(255, 0, 64, 0.3);
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255, 0, 64, 0.2);
-            transition: all 0.3s;
+        .about-section {
+            background: rgba(0, 102, 255, 0.03);
+            padding: 4rem 2rem;
+            border-top: 2px solid rgba(0, 102, 255, 0.3);
+            border-bottom: 2px solid rgba(0, 102, 255, 0.3);
         }
 
-        .service-section:hover {
-            border-color: rgba(255, 0, 64, 0.6);
-            box-shadow: 0 0 50px rgba(255, 0, 64, 0.4);
+        .about-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
         }
 
-        .service-header {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 2px solid rgba(255, 0, 64, 0.3);
-        }
-
-        .service-icon {
-            font-size: 4rem;
-            filter: drop-shadow(0 0 20px #ff0040);
-        }
-
-        .service-title-group h2 {
-            font-size: 2.5rem;
-            color: #ff0040;
-            text-shadow: 0 0 15px #ff0040;
-            margin-bottom: 0.5rem;
-        }
-
-        .service-price {
-            font-size: 1.5rem;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .service-description {
+        .about-content p {
             font-size: 1.2rem;
-            color: #ccc;
-            margin-bottom: 3rem;
-            line-height: 1.8;
+            color: #e0e0e0;
+            line-height: 2;
+            margin-bottom: 2rem;
         }
 
-        .packages-grid {
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
+            margin-top: 3rem;
         }
 
-        .package-card {
+        .stat-card {
             background: rgba(10, 10, 10, 0.8);
             padding: 2rem;
             border-radius: 15px;
-            border: 2px solid rgba(255, 0, 64, 0.4);
+            border: 2px solid rgba(0, 102, 255, 0.4);
             transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 40px rgba(0, 102, 255, 0.6);
+            border-color: #0066ff;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            color: #0066ff;
+            font-weight: bold;
+            text-shadow: 0 0 20px #0066ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .services-preview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 102, 255, 0.4);
+            transition: all 0.3s;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
 
-        .package-card::before {
+        .service-card::before {
             content: '';
             position: absolute;
             top: -2px;
             left: -2px;
             right: -2px;
             bottom: -2px;
-            background: linear-gradient(45deg, #ff0040, #ff4466, #ff0040);
+            background: linear-gradient(45deg, #0066ff, #0088ff, #0066ff);
             border-radius: 15px;
             opacity: 0;
             z-index: -1;
             transition: opacity 0.3s;
         }
 
-        .package-card:hover {
+        .service-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 0 40px rgba(255, 0, 64, 0.6);
+            box-shadow: 0 0 40px rgba(0, 102, 255, 0.6);
         }
 
-        .package-card:hover::before {
+        .service-card:hover::before {
             opacity: 0.3;
         }
 
-        .package-name {
-            font-size: 1.8rem;
-            color: #ff0040;
+        .service-icon {
+            font-size: 4rem;
             margin-bottom: 1rem;
-            text-shadow: 0 0 10px #ff0040;
+            filter: drop-shadow(0 0 20px #0066ff);
         }
 
-        .package-price {
-            font-size: 2.5rem;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 0 15px #ff0040;
+        .service-name {
+            font-size: 1.6rem;
+            color: #0066ff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px #0066ff;
         }
 
-        .package-duration {
-            color: #999;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-        }
-
-        .features {
-            list-style: none;
-            margin-top: 1.5rem;
-        }
-
-        .features li {
-            padding: 0.8rem 0;
+        .service-desc {
             color: #ccc;
-            border-bottom: 1px solid rgba(255, 0, 64, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
         }
 
-        .features li:before {
-            content: "✓";
-            color: #ff0040;
+        .service-link {
+            display: inline-block;
+            color: #0066ff;
+            text-decoration: none;
             font-weight: bold;
-            font-size: 1.2rem;
-            text-shadow: 0 0 10px #ff0040;
+            padding: 0.8rem 2rem;
+            border: 2px solid #0066ff;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .service-link:hover {
+            background: #0066ff;
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.6);
         }
 
         .contact-section {
-            background: linear-gradient(135deg, #1a0000 0%, #330000 50%, #1a0000 100%);
+            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #001a33 100%);
             padding: 4rem 2rem;
             text-align: center;
-            border-top: 2px solid #ff0040;
-            box-shadow: 0 -5px 30px rgba(255, 0, 64, 0.3);
-        }
-
-        .contact-form {
-            max-width: 600px;
-            margin: 2rem auto;
-            background: rgba(10, 10, 10, 0.8);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 0, 64, 0.4);
-            box-shadow: 0 0 30px rgba(255, 0, 64, 0.3);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #ff0040;
-            font-weight: 500;
-            text-shadow: 0 0 10px #ff0040;
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid rgba(255, 0, 64, 0.3);
-            border-radius: 8px;
-            font-size: 1rem;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            transition: all 0.3s;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #ff0040;
-            box-shadow: 0 0 20px rgba(255, 0, 64, 0.5);
-        }
-
-        .submit-button {
-            background: transparent;
-            color: #ff0040;
-            padding: 1rem 3rem;
-            border: 2px solid #ff0040;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(255, 0, 64, 0.5);
-            text-shadow: 0 0 10px #ff0040;
-        }
-
-        .submit-button:hover {
-            background: #ff0040;
-            color: #000;
-            text-shadow: none;
-            box-shadow: 0 0 40px rgba(255, 0, 64, 0.8);
-            transform: translateY(-3px);
-        }
-
-        .success-message {
-            display: none;
-            background: rgba(0, 255, 0, 0.1);
-            border: 2px solid #00ff00;
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            margin-top: 2rem;
-            animation: fadeInUp 0.5s;
-        }
-
-        .success-message.show {
-            display: block;
-        }
-
-        .success-message h3 {
-            color: #00ff00;
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 20px #00ff00;
-        }
-
-        .success-message p {
-            color: #fff;
-            font-size: 1.1rem;
-        }
-
-        .success-message p::before {
-            content: '';
+            border-top: 2px solid #0066ff;
+            box-shadow: 0 -5px 30px rgba(0, 102, 255, 0.3);
         }
 
         footer {
@@ -420,18 +420,7 @@
             color: white;
             text-align: center;
             padding: 2rem;
-            border-top: 2px solid #ff0040;
-        }
-
-        .about-section {
-            background: rgba(255, 0, 64, 0.03);
-            padding: 4rem 2rem;
-        }
-
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
+            border-top: 2px solid #0066ff;
         }
 
         @keyframes fadeInUp {
@@ -454,14 +443,22 @@
                 flex-direction: column;
                 gap: 1rem;
             }
-            
-            .packages-grid {
-                grid-template-columns: 1fr;
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                display: none;
             }
 
-            .service-header {
+            .dropdown:hover .dropdown-menu,
+            .dropdown.active .dropdown-menu {
+                display: block;
+            }
+
+            .cta-buttons {
                 flex-direction: column;
-                text-align: center;
             }
         }
     </style>
@@ -469,420 +466,153 @@
 <body>
     <header>
         <nav>
-            <div class="logo">💻 CRG SERVICES</div>
+            <div class="logo">CRG SERVICES</div>
             <ul>
-                <li><a href="#accueil">Accueil</a></li>
-                <li><a href="#services">Services</a></li>
+                <li><a href="index.html">Accueil</a></li>
+                <li class="dropdown">
+                    <a href="#services" class="dropdown-toggle">Services</a>
+                    <div class="dropdown-menu">
+                        <a href="services/fivem.html"><span>🎮</span> Serveurs FiveM</a>
+                        <a href="services/discord-server.html"><span>💬</span> Serveurs Discord</a>
+                        <a href="services/web.html"><span>🌐</span> Sites Web</a>
+                        <a href="services/bot-discord.html"><span>🤖</span> Bots Discord</a>
+                        <a href="services/support.html"><span>⚙️</span> Support & Maintenance</a>
+                    </div>
+                </li>
                 <li><a href="#contact">Contact</a></li>
+                <li><a href="recrutement.html">Recrutement</a></li>
             </ul>
         </nav>
     </header>
 
     <section class="hero" id="accueil">
-        <h1>CRG SERVICES</h1>
-        <p>Solutions professionnelles pour vos projets web, Discord et FiveM</p>
-        <a href="#contact" class="cta-button">DÉMARRER UN PROJET</a>
-    </section>
-
-    <section class="about-section">
-        <div class="about-content">
-            <h2 class="section-title">À PROPOS</h2>
-            <p style="font-size: 1.1rem; color: #ccc; line-height: 1.8;">
-                Auto-entrepreneur passionné par le développement digital, je vous accompagne dans la réalisation de vos projets avec expertise et professionnalisme. Des serveurs de jeu aux sites web en passant par les bots Discord, je crée des solutions sur mesure qui répondent à vos besoins spécifiques.
+        <div class="hero-content">
+            <h1>CRG SERVICES</h1>
+            <p class="subtitle">Développeur Web & Digital • Auto-Entrepreneur</p>
+            <p>
+                Passionné par le développement digital depuis plusieurs années, je transforme vos idées en réalité. 
+                Spécialisé dans la création de serveurs FiveM, sites web modernes, bots Discord et solutions Discord complètes.
+                Je m'engage à fournir des services de qualité avec un suivi personnalisé pour chaque projet.
             </p>
-        </div>
-    </section>
-
-    <section class="container" id="services">
-        <h2 class="section-title">MES SERVICES</h2>
-        <p class="section-subtitle">Des solutions complètes et personnalisées pour tous vos besoins digitaux</p>
-
-        <!-- SERVICE 1: FiveM -->
-        <div class="service-section">
-            <div class="service-header">
-                <div class="service-icon">🎮</div>
-                <div class="service-title-group">
-                    <h2>Développement Serveur FiveM</h2>
-                    <p class="service-price">À partir de 500€</p>
-                </div>
-            </div>
-            <p class="service-description">
-                Création complète de serveurs FiveM professionnels et optimisés. Je développe des environnements de jeu immersifs avec des scripts personnalisés, une économie équilibrée, des systèmes de jobs réalistes et une expérience utilisateur fluide. Chaque serveur est conçu pour offrir une expérience unique à vos joueurs avec des performances optimales.
-            </p>
-            <div class="packages-grid">
-                <div class="package-card">
-                    <h3 class="package-name">Pack Starter</h3>
-                    <div class="package-price">500€</div>
-                    <p class="package-duration">Configuration de base</p>
-                    <ul class="features">
-                        <li>Installation et configuration serveur</li>
-                        <li>Framework ESX/QBCore</li>
-                        <li>5 scripts essentiels</li>
-                        <li>Système de jobs basique (3 métiers)</li>
-                        <li>Économie simple</li>
-                        <li>Support 1 mois</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Pack Advanced</h3>
-                    <div class="package-price">1200€</div>
-                    <p class="package-duration">Serveur complet</p>
-                    <ul class="features">
-                        <li>Tout du Pack Starter</li>
-                        <li>15+ scripts optimisés</li>
-                        <li>Système de jobs avancé (8 métiers)</li>
-                        <li>Économie complexe et équilibrée</li>
-                        <li>Scripts personnalisés (3 uniques)</li>
-                        <li>Système de whitelist</li>
-                        <li>Optimisation performances</li>
-                        <li>Support 3 mois</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Pack Premium</h3>
-                    <div class="package-price">2500€+</div>
-                    <p class="package-duration">Solution sur mesure</p>
-                    <ul class="features">
-                        <li>Tout du Pack Advanced</li>
-                        <li>Scripts 100% personnalisés</li>
-                        <li>Système de jobs illimité</li>
-                        <li>Économie ultra-réaliste</li>
-                        <li>Intégration Discord avancée</li>
-                        <li>Panel d'administration custom</li>
-                        <li>Map personnalisée</li>
-                        <li>Formation équipe admin</li>
-                        <li>Support 6 mois + maintenance</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- SERVICE 2: Discord Server -->
-        <div class="service-section">
-            <div class="service-header">
-                <div class="service-icon">💬</div>
-                <div class="service-title-group">
-                    <h2>Serveur Discord Professionnel</h2>
-                    <p class="service-price">150€ - 400€</p>
-                </div>
-            </div>
-            <p class="service-description">
-                Conception et mise en place de serveurs Discord optimisés pour les communautés, entreprises et projets gaming. Architecture pensée pour faciliter la communication, systèmes de rôles avancés, bots de modération et design personnalisé. Je crée un environnement Discord qui renforce votre communauté et simplifie la gestion.
-            </p>
-            <div class="packages-grid">
-                <div class="package-card">
-                    <h3 class="package-name">Pack Communauté</h3>
-                    <div class="package-price">150€</div>
-                    <p class="package-duration">Serveur basique</p>
-                    <ul class="features">
-                        <li>Architecture serveur (15 salons)</li>
-                        <li>Système de rôles (10 rôles)</li>
-                        <li>Bot de modération (MEE6/Dyno)</li>
-                        <li>Règlement personnalisé</li>
-                        <li>Système de bienvenue</li>
-                        <li>Configuration permissions</li>
-                        <li>Guide d'utilisation</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Pack Pro</h3>
-                    <div class="package-price">280€</div>
-                    <p class="package-duration">Serveur avancé</p>
-                    <ul class="features">
-                        <li>Tout du Pack Communauté</li>
-                        <li>Architecture complète (30+ salons)</li>
-                        <li>Système de rôles avancé (25+ rôles)</li>
-                        <li>Bots multiples (modération + utilitaires)</li>
-                        <li>Système de tickets</li>
-                        <li>Salons vocaux dynamiques</li>
-                        <li>Design graphique personnalisé</li>
-                        <li>Système de niveaux/XP</li>
-                        <li>Formation modérateurs</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Pack Entreprise</h3>
-                    <div class="package-price">400€</div>
-                    <p class="package-duration">Solution corporate</p>
-                    <ul class="features">
-                        <li>Tout du Pack Pro</li>
-                        <li>Architecture sur mesure (50+ salons)</li>
-                        <li>Système de rôles entreprise</li>
-                        <li>Intégration outils (Notion, Trello)</li>
-                        <li>Bot personnalisé inclus</li>
-                        <li>Système de réunions/événements</li>
-                        <li>Tableau de bord analytique</li>
-                        <li>Sécurité renforcée</li>
-                        <li>Support prioritaire 3 mois</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- SERVICE 3: Sites Web -->
-        <div class="service-section">
-            <div class="service-header">
-                <div class="service-icon">🌐</div>
-                <div class="service-title-group">
-                    <h2>Création de Sites Web</h2>
-                    <p class="service-price">300€ - 1500€</p>
-                </div>
-            </div>
-            <p class="service-description">
-                Développement de sites web modernes, responsive et optimisés SEO. Du simple portfolio au site d'entreprise complexe, je crée des expériences web élégantes et performantes. Chaque site est conçu pour convertir vos visiteurs en clients avec un design attractif et une navigation intuitive. Hébergement conseillé et maintenance disponible.
-            </p>
-            <div class="packages-grid">
-                <div class="package-card">
-                    <h3 class="package-name">Site Personnel</h3>
-                    <div class="package-price">300€</div>
-                    <p class="package-duration">Portfolio/CV en ligne</p>
-                    <ul class="features">
-                        <li>Design moderne et responsive</li>
-                        <li>Page unique (One-page)</li>
-                        <li>Sections: À propos, Projets, Contact</li>
-                        <li>Formulaire de contact</li>
-                        <li>Optimisation mobile</li>
-                        <li>Hébergement 1 an offert</li>
-                        <li>Nom de domaine inclus</li>
-                        <li>Certificat SSL</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Site Professionnel</h3>
-                    <div class="package-price">800€</div>
-                    <p class="package-duration">Site vitrine complet</p>
-                    <ul class="features">
-                        <li>Tout du Site Personnel</li>
-                        <li>5 à 8 pages complètes</li>
-                        <li>Design sur mesure</li>
-                        <li>Optimisation SEO avancée</li>
-                        <li>Intégration réseaux sociaux</li>
-                        <li>Blog intégré</li>
-                        <li>Galerie photos/vidéos</li>
-                        <li>Analytics et statistiques</li>
-                        <li>Formation administration</li>
-                        <li>Support 6 mois</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Site Entreprise</h3>
-                    <div class="package-price">1500€</div>
-                    <p class="package-duration">Solution complète</p>
-                    <ul class="features">
-                        <li>Tout du Site Professionnel</li>
-                        <li>10+ pages personnalisées</li>
-                        <li>Système de gestion contenu (CMS)</li>
-                        <li>Espace client/membre</li>
-                        <li>Formulaires avancés</li>
-                        <li>Système de réservation/devis</li>
-                        <li>Multi-langues</li>
-                        <li>Intégrations API tierces</li>
-                        <li>Performance optimale</li>
-                        <li>Maintenance 1 an incluse</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- SERVICE 4: Bot Discord -->
-        <div class="service-section">
-            <div class="service-header">
-                <div class="service-icon">🤖</div>
-                <div class="service-title-group">
-                    <h2>Bot Discord Personnalisé</h2>
-                    <p class="service-price">200€ - 800€</p>
-                </div>
-            </div>
-            <p class="service-description">
-                Développement de bots Discord sur mesure pour automatiser et enrichir votre serveur. Commandes personnalisées, modération automatique, systèmes de jeux, intégrations API et bien plus. Chaque bot est développé selon vos besoins spécifiques avec hébergement 24/7 et mises à jour régulières pour garantir stabilité et performance.
-            </p>
-            <div class="packages-grid">
-                <div class="package-card">
-                    <h3 class="package-name">Bot Basic</h3>
-                    <div class="package-price">200€</div>
-                    <p class="package-duration">Fonctionnalités essentielles</p>
-                    <ul class="features">
-                        <li>10 commandes personnalisées</li>
-                        <li>Système de modération basique</li>
-                        <li>Messages automatiques</li>
-                        <li>Système de bienvenue/départ</li>
-                        <li>Logs d'activité</li>
-                        <li>Hébergement 24/7 (3 mois)</li>
-                        <li>Code source fourni</li>
-                        <li>Support 1 mois</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Bot Advanced</h3>
-                    <div class="package-price">450€</div>
-                    <p class="package-duration">Bot complet</p>
-                    <ul class="features">
-                        <li>Tout du Bot Basic</li>
-                        <li>25+ commandes personnalisées</li>
-                        <li>Système de niveaux/XP</li>
-                        <li>Économie virtuelle</li>
-                        <li>Système de récompenses</li>
-                        <li>Mini-jeux intégrés</li>
-                        <li>Système de tickets avancé</li>
-                        <li>Modération automatique IA</li>
-                        <li>Dashboard web inclus</li>
-                        <li>Hébergement 24/7 (6 mois)</li>
-                        <li>Support 3 mois</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Bot Premium</h3>
-                    <div class="package-price">800€</div>
-                    <p class="package-duration">Solution sur mesure</p>
-                    <ul class="features">
-                        <li>Tout du Bot Advanced</li>
-                        <li>Commandes illimitées</li>
-                        <li>Intégrations API multiples</li>
-                        <li>Système de musique</li>
-                        <li>Gestion événements/tournois</li>
-                        <li>Système de votes/sondages</li>
-                        <li>Statistiques avancées</li>
-                        <li>Multi-serveurs</li>
-                        <li>Base de données dédiée</li>
-                        <li>Dashboard admin complet</li>
-                        <li>Hébergement VPS dédié (1 an)</li>
-                        <li>Mises à jour gratuites</li>
-                        <li>Support prioritaire 6 mois</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <!-- SERVICE 5: Soutien Administratif -->
-        <div class="service-section">
-            <div class="service-header">
-                <div class="service-icon">⚙️</div>
-                <div class="service-title-group">
-                    <h2>Soutien Administratif & Technique</h2>
-                    <p class="service-price">30€/heure - Forfaits disponibles</p>
-                </div>
-            </div>
-            <p class="service-description">
-                Support technique et administratif complet pour tous vos projets digitaux. Maintenance de sites web, serveurs et bots, résolution de problèmes, mises à jour de sécurité, optimisation des performances et conseil stratégique. Un accompagnement sur mesure pour garantir le bon fonctionnement de vos infrastructures digitales.
-            </p>
-            <div class="packages-grid">
-                <div class="package-card">
-                    <h3 class="package-name">Support Ponctuel</h3>
-                    <div class="package-price">30€/h</div>
-                    <p class="package-duration">À la demande</p>
-                    <ul class="features">
-                        <li>Intervention à la demande</li>
-                        <li>Résolution de bugs</li>
-                        <li>Petites modifications</li>
-                        <li>Conseil technique</li>
-                        <li>Diagnostic problèmes</li>
-                        <li>Facturation à l'heure réelle</li>
-                        <li>Réponse sous 48h</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Forfait Mensuel</h3>
-                    <div class="package-price">200€/mois</div>
-                    <p class="package-duration">8h de support incluses</p>
-                    <ul class="features">
-                        <li>8 heures de support/mois</li>
-                        <li>Maintenance préventive</li>
-                        <li>Mises à jour régulières</li>
-                        <li>Monitoring basique</li>
-                        <li>Résolution bugs prioritaire</li>
-                        <li>Sauvegardes mensuelles</li>
-                        <li>Rapport mensuel</li>
-                        <li>Réponse sous 24h</li>
-                    </ul>
-                </div>
-                <div class="package-card">
-                    <h3 class="package-name">Forfait Premium</h3>
-                    <div class="package-price">450€/mois</div>
-                    <p class="package-duration">20h de support incluses</p>
-                    <ul class="features">
-                        <li>20 heures de support/mois</li>
-                        <li>Maintenance complète 24/7</li>
-                        <li>Mises à jour automatiques</li>
-                        <li>Monitoring en temps réel</li>
-                        <li>Optimisation performances</li>
-                        <li>Sauvegardes quotidiennes</li>
-                        <li>Développement nouvelles features</li>
-                        <li>Conseil stratégique inclus</li>
-                        <li>Support prioritaire</li>
-                        <li>Réponse sous 6h</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-    </section>
-
-    <section class="contact-section" id="contact">
-        <h2 class="section-title" style="color: #ff0040;">CONTACTEZ-MOI</h2>
-        <p style="font-size: 1.2rem; margin-bottom: 2rem;">Discutons de votre projet ensemble</p>
-        
-        <div class="contact-form">
-            <div id="successMessage" class="success-message">
-                <h3>MESSAGE ENVOYÉ</h3>
-                <p>Merci pour votre demande. Je vous répondrai dans les plus brefs délais à l'adresse email que vous avez fournie.</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">Vous pouvez aussi me contacter directement sur Discord : woody_2009</p>
-            </div>
-
-            <form id="contactForm">
-                <div class="form-group">
-                    <label for="name">Nom complet</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="service">Service souhaité</label>
-                    <select id="service" name="service" required>
-                        <option value="">Sélectionnez un service</option>
-                        <option value="Serveur FiveM">Serveur FiveM</option>
-                        <option value="Serveur Discord">Serveur Discord</option>
-                        <option value="Site Web">Site Web</option>
-                        <option value="Bot Discord">Bot Discord</option>
-                        <option value="Soutien Administratif">Soutien Administratif</option>
-                        <option value="Projet personnalisé">Projet personnalisé</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="budget">Budget estimé</label>
-                    <select id="budget" name="budget">
-                        <option value="">Sélectionnez une fourchette</option>
-                        <option value="200€ - 500€">200€ - 500€</option>
-                        <option value="500€ - 1000€">500€ - 1000€</option>
-                        <option value="1000€ - 2000€">1000€ - 2000€</option>
-                        <option value="2000€+">2000€+</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="message">Décrivez votre projet en détail</label>
-                    <textarea id="message" name="message" rows="5" required placeholder="Expliquez vos besoins, vos attentes, le délai souhaité..."></textarea>
-                </div>
-                
-                <button type="submit" class="submit-button">ENVOYER LA DEMANDE</button>
-            </form>
-
-            <div class="social-links">
-                <a href="https://discord.com/users/woody_2009" target="_blank" class="social-link">💬 Discord: woody_2009</a>
+            <div class="cta-buttons">
+                <a href="#services" class="cta-button">DÉCOUVRIR MES SERVICES</a>
+                <a href="#contact" class="cta-button">ME CONTACTER</a>
             </div>
             <div class="social-links">
+                <a href="https://discord.com/users/woody_2009" target="_blank" class="social-link">💬 Discord</a>
                 <a href="https://instagram.com/carag_2001" target="_blank" class="social-link">📸 Instagram</a>
                 <a href="https://tiktok.com/@_0_woody_0_" target="_blank" class="social-link">🎵 TikTok</a>
             </div>
         </div>
     </section>
 
+    <section class="about-section">
+        <div class="about-content">
+            <h2 class="section-title">POURQUOI ME CHOISIR ?</h2>
+            <p>
+                Avec une expertise dans le développement web, la création de serveurs de jeu et l'automatisation Discord, 
+                je vous accompagne de A à Z dans vos projets digitaux. Mon objectif : créer des solutions performantes, 
+                sur mesure et qui dépassent vos attentes.
+            </p>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">3+</div>
+                    <div class="stat-label">Ans d'expérience</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Projets réalisés</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Clients satisfaits</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support disponible</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="services">
+        <h2 class="section-title">MES SERVICES</h2>
+        <p class="section-subtitle">Des solutions complètes pour tous vos besoins digitaux</p>
+
+        <div class="services-preview">
+            <div class="service-card">
+                <div class="service-icon">🎮</div>
+                <h3 class="service-name">Serveurs FiveM</h3>
+                <p class="service-desc">
+                    Création complète de serveurs FiveM avec scripts personnalisés, économie équilibrée et optimisation des performances.
+                </p>
+                <a href="services/fivem.html" class="service-link">EN SAVOIR PLUS</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">💬</div>
+                <h3 class="service-name">Serveurs Discord</h3>
+                <p class="service-desc">
+                    Configuration professionnelle de serveurs Discord avec architecture optimisée, bots de modération et design personnalisé.
+                </p>
+                <a href="services/discord-server.html" class="service-link">EN SAVOIR PLUS</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🌐</div>
+                <h3 class="service-name">Sites Web</h3>
+                <p class="service-desc">
+                    Développement de sites web modernes, responsive et optimisés SEO. Du portfolio au site e-commerce complet.
+                </p>
+                <a href="services/web.html" class="service-link">EN SAVOIR PLUS</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🤖</div>
+                <h3 class="service-name">Bots Discord</h3>
+                <p class="service-desc">
+                    Création de bots Discord sur mesure avec commandes personnalisées, modération automatique et intégrations API.
+                </p>
+                <a href="services/bot-discord.html" class="service-link">EN SAVOIR PLUS</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">⚙️</div>
+                <h3 class="service-name">Support & Maintenance</h3>
+                <p class="service-desc">
+                    Assistance technique complète, maintenance préventive et mises à jour pour tous vos projets digitaux.
+                </p>
+                <a href="services/support.html" class="service-link">EN SAVOIR PLUS</a>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">🚀</div>
+                <h3 class="service-name">Recrutement</h3>
+                <p class="service-desc">
+                    Rejoignez notre équipe ! Nous recherchons des développeurs, designers et gestionnaires de communauté passionnés.
+                </p>
+                <a href="recrutement.html" class="service-link">POSTULER</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <h2 class="section-title" style="color: #0066ff;">CONTACTEZ-MOI</h2>
+        <p style="font-size: 1.2rem; margin-bottom: 2rem;">Discutons de votre projet ensemble</p>
+        
+        <div class="cta-buttons">
+            <a href="mailto:omegaofficiel02@gmail.com" class="cta-button">📧 Email</a>
+            <a href="https://discord.com/users/woody_2009" target="_blank" class="cta-button">💬 Discord</a>
+        </div>
+
+        <div class="social-links" style="margin-top: 3rem;">
+            <a href="https://instagram.com/carag_2001" target="_blank" class="social-link">📸 Instagram</a>
+            <a href="https://tiktok.com/@_0_woody_0_" target="_blank" class="social-link">🎵 TikTok</a>
+        </div>
+    </section>
+
     <footer>
-        <p style="font-size: 1.2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #ff0040;">&copy; 2026 CRG SERVICES</p>
+        <p style="font-size: 1.2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #0066ff;">&copy; 2026 CRG SERVICES</p>
         <p style="opacity: 0.8;">Auto-Entrepreneur • Développement sur mesure • Support réactif</p>
         <p style="margin-top: 1rem; font-size: 0.9rem;">📧 omegaofficiel02@gmail.com • 💬 Discord: woody_2009</p>
         <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.6;">Tous droits réservés</p>
@@ -902,127 +632,14 @@
             });
         });
 
-        const packageCards = document.querySelectorAll('.package-card');
-        packageCards.forEach(card => {
+        const serviceCards = document.querySelectorAll('.service-card');
+        serviceCards.forEach(card => {
             card.addEventListener('mouseenter', function() {
-                this.style.borderColor = '#ff0040';
+                this.style.borderColor = '#0066ff';
             });
             card.addEventListener('mouseleave', function() {
-                this.style.borderColor = 'rgba(255, 0, 64, 0.4)';
+                this.style.borderColor = 'rgba(0, 102, 255, 0.4)';
             });
-        });
-
-        // Gestion de l'envoi du formulaire
-        document.getElementById('contactForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const submitBtn = this.querySelector('.submit-button');
-            const form = this;
-            
-            // Animation bouton
-            submitBtn.textContent = 'ENVOI EN COURS...';
-            submitBtn.style.opacity = '0.7';
-            submitBtn.disabled = true;
-            
-            // Préparer les données
-            const formData = new FormData(form);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const service = formData.get('service');
-            const budget = formData.get('budget') || 'Non spécifié';
-            const message = formData.get('message');
-            
-            // Webhook Discord
-            const webhookURL = 'https://discord.com/api/webhooks/1465132459409539123/5_1UtzXL6xoUEhaJqAn-K2bIOuRbIvMj9QFy9X7ydv4ik3vNw5mZ9jQNC2Ddo1nW0rdX';
-            
-            // Créer l'embed Discord stylé
-            const embed = {
-                username: "CRG SERVICES",
-                avatar_url: "https://cdn.discordapp.com/embed/avatars/5.png",
-                embeds: [{
-                    author: {
-                        name: "NOUVEAU PROSPECT",
-                        icon_url: "https://cdn.discordapp.com/embed/avatars/5.png"
-                    },
-                    title: "DEMANDE DE SERVICE",
-                    color: 8430,
-                    fields: [
-                        {
-                            name: "👤 CLIENT",
-                            value: `**${name}**`,
-                            inline: true
-                        },
-                        {
-                            name: "📧 CONTACT",
-                            value: `**${email}**`,
-                            inline: true
-                        },
-                        {
-                            name: "\u200b",
-                            value: "\u200b",
-                            inline: false
-                        },
-                        {
-                            name: "💼 SERVICE SOUHAITÉ",
-                            value: `**${service}**`,
-                            inline: true
-                        },
-                        {
-                            name: "💰 BUDGET",
-                            value: `**${budget}**`,
-                            inline: true
-                        },
-                        {
-                            name: "\u200b",
-                            value: "\u200b",
-                            inline: false
-                        },
-                        {
-                            name: "📝 DESCRIPTION DU PROJET",
-                            value: message.length > 1024 ? message.substring(0, 1021) + '...' : message,
-                            inline: false
-                        }
-                    ],
-                    thumbnail: {
-                        url: "https://cdn.discordapp.com/attachments/placeholder/crg_logo.png"
-                    },
-                    footer: {
-                        text: "CRG Services • Formulaire de contact",
-                        icon_url: "https://cdn.discordapp.com/embed/avatars/5.png"
-                    },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-            
-            try {
-                // Envoyer à Discord
-                const response = await fetch(webhookURL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(embed)
-                });
-                
-                if (response.ok || response.status === 204) {
-                    // Masquer le formulaire
-                    form.style.display = 'none';
-                    // Afficher le message de succès
-                    document.getElementById('successMessage').classList.add('show');
-                    // Scroll vers le message
-                    document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth', block: 'center' });
-                } else {
-                    alert('ERREUR LORS DE L\'ENVOI. Contactez-moi directement sur Discord : woody_2009');
-                    submitBtn.textContent = 'ENVOYER LA DEMANDE';
-                    submitBtn.style.opacity = '1';
-                    submitBtn.disabled = false;
-                }
-            } catch (error) {
-                alert('ERREUR DE CONNEXION. Contactez-moi directement sur Discord : woody_2009');
-                submitBtn.textContent = 'ENVOYER LA DEMANDE';
-                submitBtn.style.opacity = '1';
-                submitBtn.disabled = false;
-            }
         });
     </script>
 </body>
