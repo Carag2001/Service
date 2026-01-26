@@ -520,15 +520,17 @@
 
                 // Créer le payload pour Discord
                 const payload = {
-                    content: '🚀 **NOUVELLE CANDIDATURE STAFF REÇUE !**',
                     embeds: [
                         {
-                            title: '📋 CANDIDATURE - ' + poste,
+                            author: {
+                                name: '🚀 NOUVELLE CANDIDATURE STAFF',
+                            },
+                            title: poste,
                             color: 0x0066ff,
                             fields: [
                                 {
                                     name: '👤 Identité',
-                                    value: prenom + ' ' + nom + ' (' + age + ' ans)',
+                                    value: `**${prenom} ${nom}** (${age} ans)`,
                                     inline: false
                                 },
                                 {
@@ -542,9 +544,14 @@
                                     inline: true
                                 },
                                 {
+                                    name: '\u200B',
+                                    value: '\u200B',
+                                    inline: false
+                                },
+                                {
                                     name: '💼 Poste',
                                     value: poste,
-                                    inline: false
+                                    inline: true
                                 },
                                 {
                                     name: '⏱️ Expérience',
@@ -563,7 +570,7 @@
                                 },
                                 {
                                     name: '💻 Compétences',
-                                    value: competencesLimited,
+                                    value: '```' + competencesLimited + '```',
                                     inline: false
                                 },
                                 {
@@ -572,6 +579,13 @@
                                     inline: false
                                 }
                             ],
+                            footer: {
+                                text: 'CRG Services - Système de Recrutement'
+                            },
+                            timestamp: new Date().toISOString()
+                        }
+                    ]
+                };
                             footer: {
                                 text: 'CRG Services - Système de Recrutement'
                             },
