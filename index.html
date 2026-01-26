@@ -938,51 +938,57 @@
             // Créer l'embed Discord stylé
             const embed = {
                 username: "CRG SERVICES",
-                avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png",
+                avatar_url: "https://cdn.discordapp.com/embed/avatars/5.png",
                 embeds: [{
-                    title: "NOUVELLE DEMANDE CLIENT",
-                    description: "Un nouveau prospect souhaite travailler avec CRG Services",
-                    color: 2201331,
+                    author: {
+                        name: "NOUVEAU PROSPECT",
+                        icon_url: "https://cdn.discordapp.com/embed/avatars/5.png"
+                    },
+                    title: "DEMANDE DE SERVICE",
+                    color: 8430,
                     fields: [
                         {
-                            name: "CLIENT",
-                            value: name,
+                            name: "👤 CLIENT",
+                            value: `**${name}**`,
                             inline: true
                         },
                         {
-                            name: "EMAIL",
-                            value: email,
+                            name: "📧 CONTACT",
+                            value: `**${email}**`,
                             inline: true
                         },
                         {
-                            name: "SERVICE",
-                            value: service,
+                            name: "\u200b",
+                            value: "\u200b",
                             inline: false
                         },
                         {
-                            name: "BUDGET",
-                            value: budget,
+                            name: "💼 SERVICE SOUHAITÉ",
+                            value: `**${service}**`,
                             inline: true
                         },
                         {
-                            name: "DATE",
-                            value: new Date().toLocaleString('fr-FR', { 
-                                day: '2-digit',
-                                month: 'long',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            }),
+                            name: "💰 BUDGET",
+                            value: `**${budget}**`,
                             inline: true
                         },
                         {
-                            name: "MESSAGE",
+                            name: "\u200b",
+                            value: "\u200b",
+                            inline: false
+                        },
+                        {
+                            name: "📝 DESCRIPTION DU PROJET",
                             value: message.length > 1024 ? message.substring(0, 1021) + '...' : message,
                             inline: false
                         }
                     ],
+                    thumbnail: {
+                        url: "https://cdn.discordapp.com/attachments/placeholder/crg_logo.png"
+                    },
                     footer: {
-                        text: "CRG SERVICES - Système de contact"
+                        text: "CRG Services • Formulaire de contact",
+                        icon_url: "https://cdn.discordapp.com/embed/avatars/5.png"
                     },
                     timestamp: new Date().toISOString()
                 }]
