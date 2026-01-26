@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support & Maintenance | CRG Services</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            background: #0a0a0a;
+        }
+
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid #0066ff;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff;
+            animation: neonPulse 2s infinite;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { text-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff; }
+            50% { text-shadow: 0 0 20px #0066ff, 0 0 30px #0066ff, 0 0 40px #0066ff; }
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+        }
+
+        nav a:hover {
+            color: #0066ff;
+            text-shadow: 0 0 10px #0066ff;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #001a33 100%);
+            padding: 120px 2rem 80px;
+            text-align: center;
+            margin-top: 60px;
+            border-bottom: 2px solid #0066ff;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #0066ff;
+            text-shadow: 0 0 20px #0066ff, 0 0 40px #0066ff;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .service-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .service-icon {
+            font-size: 5rem;
+            filter: drop-shadow(0 0 20px #0066ff);
+        }
+
+        .service-title-group h2 {
+            font-size: 2.5rem;
+            color: #0066ff;
+            text-shadow: 0 0 15px #0066ff;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-price {
+            font-size: 1.5rem;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .service-description {
+            font-size: 1.2rem;
+            color: #e0e0e0;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .package-card {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(0, 102, 255, 0.4);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #0066ff, #0088ff, #0066ff);
+            border-radius: 15px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s;
+        }
+
+        .package-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 40px rgba(0, 102, 255, 0.6);
+        }
+
+        .package-card:hover::before {
+            opacity: 0.3;
+        }
+
+        .package-name {
+            font-size: 1.8rem;
+            color: #0066ff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px #0066ff;
+        }
+
+        .package-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px #0066ff;
+        }
+
+        .package-duration {
+            color: #999;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .features {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .features li {
+            padding: 0.8rem 0;
+            color: #ccc;
+            border-bottom: 1px solid rgba(0, 102, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .features li:before {
+            content: "✓";
+            color: #0066ff;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px #0066ff;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #001a33 100%);
+            padding: 4rem 2rem;
+            text-align: center;
+            margin-top: 4rem;
+            border-top: 2px solid #0066ff;
+            border-radius: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: transparent;
+            color: #0066ff;
+            padding: 1rem 2.5rem;
+            border: 2px solid #0066ff;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
+            text-shadow: 0 0 10px #0066ff;
+            margin: 0.5rem;
+        }
+
+        .cta-button:hover {
+            background: #0066ff;
+            color: #000;
+            text-shadow: none;
+            box-shadow: 0 0 30px rgba(0, 102, 255, 0.8);
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            border-top: 2px solid #0066ff;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            nav ul { flex-direction: column; gap: 1rem; }
+            .packages-grid { grid-template-columns: 1fr; }
+            .service-header { flex-direction: column; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">CRG SERVICES</div>
+            <ul>
+                <li><a href="../index.html">Accueil</a></li>
+                <li><a href="../index.html#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>⚙️ SUPPORT & MAINTENANCE</h1>
+        <p>Assistance technique complète pour garantir le bon fonctionnement de vos infrastructures digitales</p>
+    </section>
+
+    <section class="container">
+        <div class="service-header">
+            <div class="service-icon">⚙️</div>
+            <div class="service-title-group">
+                <h2>Soutien Administratif & Technique</h2>
+                <p class="service-price">30€/heure - Forfaits disponibles</p>
+            </div>
+        </div>
+
+        <p class="service-description">
+            Support technique et administratif complet pour tous vos projets digitaux. Maintenance de sites web, serveurs et bots, résolution de problèmes, mises à jour de sécurité, optimisation des performances et conseil stratégique. Un accompagnement sur mesure pour garantir le bon fonctionnement de vos infrastructures digitales.
+        </p>
+
+        <div class="packages-grid">
+            <div class="package-card">
+                <h3 class="package-name">Support Ponctuel</h3>
+                <div class="package-price">30€/h</div>
+                <p class="package-duration">À la demande</p>
+                <ul class="features">
+                    <li>Intervention à la demande</li>
+                    <li>Résolution de bugs</li>
+                    <li>Petites modifications</li>
+                    <li>Conseil technique</li>
+                    <li>Diagnostic problèmes</li>
+                    <li>Facturation à l'heure réelle</li>
+                    <li>Réponse sous 48h</li>
+                </ul>
+            </div>
+
+            <div class="package-card">
+                <h3 class="package-name">Forfait Mensuel</h3>
+                <div class="package-price">200€/mois</div>
+                <p class="package-duration">8h de support incluses</p>
+                <ul class="features">
+                    <li>8 heures de support/mois</li>
+                    <li>Maintenance préventive</li>
+                    <li>Mises à jour régulières</li>
+                    <li>Monitoring basique</li>
+                    <li>Résolution bugs prioritaire</li>
+                    <li>Sauvegardes mensuelles</li>
+                    <li>Rapport mensuel</li>
+                    <li>Réponse sous 24h</li>
+                </ul>
+            </div>
+
+            <div class="package-card">
+                <h3 class="package-name">Forfait Premium</h3>
+                <div class="package-price">450€/mois</div>
+                <p class="package-duration">20h de support incluses</p>
+                <ul class="features">
+                    <li>20 heures de support/mois</li>
+                    <li>Maintenance complète 24/7</li>
+                    <li>Mises à jour automatiques</li>
+                    <li>Monitoring en temps réel</li>
+                    <li>Optimisation performances</li>
+                    <li>Sauvegardes quotidiennes</li>
+                    <li>Développement nouvelles features</li>
+                    <li>Conseil stratégique inclus</li>
+                    <li>Support prioritaire</li>
+                    <li>Réponse sous 6h</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2 style="color: #0066ff; font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 0 0 20px #0066ff;">ASSUREZ LA PÉRENNITÉ DE VOS PROJETS</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">Un support technique fiable pour votre tranquillité d'esprit</p>
+            <a href="mailto:omegaofficiel02@gmail.com" class="cta-button">📧 DEMANDER UN DEVIS</a>
+            <a href="https://discord.com/users/woody_2009" target="_blank" class="cta-button">💬 CONTACTEZ-MOI SUR DISCORD</a>
+        </div>
+    </section>
+
+    <footer>
+        <p style="font-size: 1.2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #0066ff;">&copy; 2026 CRG SERVICES</p>
+        <p style="opacity: 0.8;">Auto-Entrepreneur • Développement sur mesure • Support réactif</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;">📧 omegaofficiel02@gmail.com • 💬 Discord: woody_2009</p>
+    </footer>
+</body>
+</html>
