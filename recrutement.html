@@ -263,12 +263,17 @@
             margin-top: 1rem;
         }
 
-        .submit-btn:hover {
+        .submit-btn:hover:not(:disabled) {
             background: #0066ff;
             color: #000;
             text-shadow: none;
             box-shadow: 0 0 30px rgba(0, 102, 255, 0.8);
             transform: translateY(-3px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .success-message {
@@ -282,6 +287,18 @@
             margin-top: 1.5rem;
             font-size: 1.1rem;
             box-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
+        }
+
+        .error-message {
+            display: none;
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
         }
 
         footer {
@@ -449,6 +466,10 @@
             <div id="successMessage" class="success-message">
                 ✅ Candidature envoyée avec succès ! Nous reviendrons vers vous très prochainement sur Discord.
             </div>
+
+            <div id="errorMessage" class="error-message">
+                ❌ Erreur lors de l'envoi. Vérifiez le webhook Discord ou réessayez plus tard.
+            </div>
         </div>
     </section>
 
@@ -462,6 +483,19 @@
         document.getElementById('recruitmentForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
+            const submitBtn = document.querySelector('.submit-btn');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Réinitialiser les messages
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            // Désactiver le bouton
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ ENVOI EN COURS...';
+
+            // Récupération des données
             const formData = {
                 nom: document.getElementById('nom').value,
                 prenom: document.getElementById('prenom').value,
@@ -476,25 +510,64 @@
                 motivation: document.getElementById('motivation').value
             };
 
-            const webhookURL = 'https://discord.com/api/webhooks/1332825854967644161/HqMV-fL7BvnuXqBKMGhgfXMV-jb69oWSX1l_cBCTRKJz-7qVm47WwTFVdm7A0o0IubMO';
+            // ⚠️ REMPLACE CE WEBHOOK PAR LE TIEN !
+            const webhookURL = 'https://discord.com/api/webhooks/VOTRE_WEBHOOK_ICI';
 
-            const embed = {
+            // Création de l'embed Discord
+            const payload = {
                 embeds: [{
-                    title: '🚀 NOUVELLE CANDIDATURE',
+                    title: '🚀 NOUVELLE CANDIDATURE STAFF',
                     color: 0x0066ff,
                     fields: [
-                        { name: '👤 Candidat', value: `${formData.prenom} ${formData.nom}`, inline: true },
-                        { name: '🎂 Âge', value: formData.age, inline: true },
-                        { name: '💬 Discord', value: formData.discord, inline: true },
-                        { name: '📧 Email', value: formData.email, inline: false },
-                        { name: '💼 Poste souhaité', value: formData.poste, inline: true },
-                        { name: '⏱️ Expérience', value: formData.experience, inline: true },
-                        { name: '📅 Disponibilité', value: formData.disponibilite, inline: true },
-                        { name: '🔗 Portfolio', value: formData.portfolio, inline: false },
-                        { name: '💻 Compétences', value: formData.competences, inline: false },
-                        { name: '✍️ Motivation', value: formData.motivation, inline: false }
+                        { 
+                            name: '👤 Identité', 
+                            value: `**${formData.prenom} ${formData.nom}** (${formData.age} ans)`, 
+                            inline: false 
+                        },
+                        { 
+                            name: '💬 Discord', 
+                            value: formData.discord, 
+                            inline: true 
+                        },
+                        { 
+                            name: '📧 Email', 
+                            value: formData.email, 
+                            inline: true 
+                        },
+                        { 
+                            name: '💼 Poste souhaité', 
+                            value: formData.poste, 
+                            inline: false 
+                        },
+                        { 
+                            name: '⏱️ Expérience', 
+                            value: formData.experience, 
+                            inline: true 
+                        },
+                        { 
+                            name: '📅 Disponibilité', 
+                            value: formData.disponibilite, 
+                            inline: true 
+                        },
+                        { 
+                            name: '🔗 Portfolio', 
+                            value: formData.portfolio, 
+                            inline: false 
+                        },
+                        { 
+                            name: '💻 Compétences', 
+                            value: formData.competences.length > 1024 ? formData.competences.substring(0, 1021) + '...' : formData.competences, 
+                            inline: false 
+                        },
+                        { 
+                            name: '✍️ Motivation', 
+                            value: formData.motivation.length > 1024 ? formData.motivation.substring(0, 1021) + '...' : formData.motivation, 
+                            inline: false 
+                        }
                     ],
-                    footer: { text: 'CRG Services - Recrutement' },
+                    footer: { 
+                        text: 'CRG Services - Recrutement Staff' 
+                    },
                     timestamp: new Date().toISOString()
                 }]
             };
@@ -502,19 +575,36 @@
             try {
                 const response = await fetch(webhookURL, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(embed)
+                    headers: { 
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
                 });
 
                 if (response.ok) {
+                    // Succès
                     document.getElementById('recruitmentForm').reset();
-                    document.getElementById('successMessage').style.display = 'block';
+                    successMessage.style.display = 'block';
+                    
+                    // Masquer le message après 5 secondes
                     setTimeout(() => {
-                        document.getElementById('successMessage').style.display = 'none';
+                        successMessage.style.display = 'none';
                     }, 5000);
+                } else {
+                    throw new Error('Erreur HTTP: ' + response.status);
                 }
             } catch (error) {
-                alert('Erreur lors de l\'envoi de la candidature. Veuillez réessayer.');
+                console.error('Erreur:', error);
+                errorMessage.style.display = 'block';
+                
+                // Masquer le message d'erreur après 5 secondes
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            } finally {
+                // Réactiver le bouton
+                submitBtn.disabled = false;
+                submitBtn.textContent = '📤 ENVOYER MA CANDIDATURE';
             }
         });
     </script>
