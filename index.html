@@ -415,6 +415,178 @@
             content: '';
         }
 
+        /* Chatbot */
+        .chatbot-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff0040 0%, #ff4466 100%);
+            border-radius: 50%;
+            border: 3px solid #ff0040;
+            box-shadow: 0 0 30px rgba(255, 0, 64, 0.6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            z-index: 9999;
+            transition: all 0.3s;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(255, 0, 64, 0.8);
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 500px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 2px solid #ff0040;
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(255, 0, 64, 0.5);
+            display: none;
+            flex-direction: column;
+            z-index: 9998;
+            backdrop-filter: blur(10px);
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        .chatbot-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #ff0040 0%, #ff4466 100%);
+            border-radius: 13px 13px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .chatbot-close {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .chatbot-body {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .chatbot-message {
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            background: rgba(255, 0, 64, 0.1);
+            border-left: 3px solid #ff0040;
+            border-radius: 8px;
+            color: #fff;
+        }
+
+        .chatbot-message strong {
+            color: #ff0040;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .chatbot-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .chatbot-option {
+            padding: 0.8rem;
+            background: rgba(255, 0, 64, 0.2);
+            border: 2px solid rgba(255, 0, 64, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .chatbot-option:hover {
+            background: rgba(255, 0, 64, 0.3);
+            border-color: #ff0040;
+        }
+
+        /* Section À propos améliorée */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .about-card {
+            background: rgba(255, 0, 64, 0.05);
+            border: 2px solid rgba(255, 0, 64, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .about-card:hover {
+            border-color: #ff0040;
+            box-shadow: 0 0 30px rgba(255, 0, 64, 0.3);
+        }
+
+        .about-card h3 {
+            color: #ff0040;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px #ff0040;
+        }
+
+        .about-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .about-card ul li {
+            padding: 0.5rem 0;
+            color: #ccc;
+            border-bottom: 1px solid rgba(255, 0, 64, 0.2);
+        }
+
+        .about-card ul li:before {
+            content: "▸ ";
+            color: #ff0040;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .about-card p {
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        /* Effet parallax */
+        .parallax-section {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
         footer {
             background: #000;
             color: white;
@@ -487,9 +659,46 @@
     <section class="about-section">
         <div class="about-content">
             <h2 class="section-title">À PROPOS</h2>
-            <p style="font-size: 1.1rem; color: #ccc; line-height: 1.8;">
+            <p style="font-size: 1.1rem; color: #ccc; line-height: 1.8; margin-bottom: 3rem;">
                 Auto-entrepreneur passionné par le développement digital, je vous accompagne dans la réalisation de vos projets avec expertise et professionnalisme. Des serveurs de jeu aux sites web en passant par les bots Discord, je crée des solutions sur mesure qui répondent à vos besoins spécifiques.
             </p>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>MON PARCOURS</h3>
+                    <p>
+                        Développeur autodidacte avec plusieurs années d'expérience dans le développement web et gaming. Spécialisé dans la création de solutions digitales innovantes, j'ai accompagné de nombreux clients dans la concrétisation de leurs projets, du concept initial à la mise en production.
+                    </p>
+                </div>
+
+                <div class="about-card">
+                    <h3>MES COMPÉTENCES</h3>
+                    <ul>
+                        <li>Développement Web (HTML, CSS, JavaScript)</li>
+                        <li>React & Frameworks modernes</li>
+                        <li>Node.js & Discord.js</li>
+                        <li>FiveM/Lua Development</li>
+                        <li>Base de données (MySQL, MongoDB)</li>
+                        <li>API REST & Webhooks</li>
+                        <li>UI/UX Design</li>
+                        <li>Optimisation & Performance</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h3>MES VALEURS</h3>
+                    <ul>
+                        <li>Qualité avant tout</li>
+                        <li>Communication transparente</li>
+                        <li>Respect des délais</li>
+                        <li>Support réactif</li>
+                        <li>Innovation constante</li>
+                        <li>Satisfaction client garantie</li>
+                        <li>Code propre et maintenable</li>
+                        <li>Formation et accompagnement</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -888,12 +1097,36 @@
         <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.6;">Tous droits réservés</p>
     </footer>
 
+    <!-- Chatbot -->
+    <div class="chatbot-button" id="chatbotBtn">💬</div>
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chatbot-header">
+            <h3>Assistant CRG Services</h3>
+            <button class="chatbot-close" id="chatbotClose">×</button>
+        </div>
+        <div class="chatbot-body" id="chatbotBody">
+            <div class="chatbot-message">
+                <strong>Bienvenue !</strong>
+                Comment puis-je vous aider aujourd'hui ?
+            </div>
+            <div class="chatbot-options">
+                <div class="chatbot-option" data-response="tarifs">Voir les tarifs</div>
+                <div class="chatbot-option" data-response="delais">Quels sont les délais ?</div>
+                <div class="chatbot-option" data-response="paiement">Moyens de paiement</div>
+                <div class="chatbot-option" data-response="maintenance">Maintenance incluse ?</div>
+                <div class="chatbot-option" data-response="contact">Prendre contact</div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        // Navigation smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
+                    chatbotWindow.classList.remove('active');
                     target.scrollIntoView({
                         behavior: 'smooth',
                         block: 'start'
