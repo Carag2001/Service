@@ -475,7 +475,6 @@
     </footer>
 
     <script>
-        // Attendre que le DOM soit chargé
         document.addEventListener('DOMContentLoaded', function() {
             
             const form = document.getElementById('recruitmentForm');
@@ -483,7 +482,7 @@
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
 
-            // ⚠️ REMPLACE CE WEBHOOK PAR TON VRAI WEBHOOK DISCORD !
+            // ⚠️ TON WEBHOOK DISCORD
             const WEBHOOK_URL = 'https://discord.com/api/webhooks/1465150291228758149/I3iSng4mtfJmT76MWBGNvlVeGRLCLNI7sYogqgUeXOoqtAjz0zHUZzN2NxmElGq1u3k6';
 
             form.addEventListener('submit', async function(e) {
@@ -523,7 +522,7 @@
                     embeds: [
                         {
                             author: {
-                                name: '🚀 NOUVELLE CANDIDATURE STAFF',
+                                name: '🚀 NOUVELLE CANDIDATURE STAFF'
                             },
                             title: poste,
                             color: 0x0066ff,
@@ -579,13 +578,6 @@
                                     inline: false
                                 }
                             ],
-                            footer: {
-                                text: 'CRG Services - Système de Recrutement'
-                            },
-                            timestamp: new Date().toISOString()
-                        }
-                    ]
-                };
                             footer: {
                                 text: 'CRG Services - Système de Recrutement'
                             },
