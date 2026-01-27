@@ -1,646 +1,294 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRG Services | Développement Web, Discord & FiveM</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRG Services | Développement Web, Discord & FiveM</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #fff;
-            background: #0a0a0a;
-        }
+<!-- ================== STYLE ================== -->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
 
-        header {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            color: white;
-            padding: 1rem 0;
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 2px solid #0066ff;
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
-        }
+body{
+    font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
+    background:#0a0a0a;
+    color:#fff;
+}
 
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
+/* ===== HEADER ===== */
+header{
+    position:fixed;
+    top:0;left:0;
+    width:100%;
+    background:rgba(10,10,10,.95);
+    backdrop-filter:blur(10px);
+    border-bottom:2px solid #0066ff;
+    z-index:1000;
+}
+nav{
+    max-width:1200px;
+    margin:auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1rem 2rem;
+}
+.logo{
+    font-size:1.6rem;
+    font-weight:bold;
+    color:#0066ff;
+    text-shadow:0 0 15px #0066ff;
+}
+nav ul{
+    list-style:none;
+    display:flex;
+    gap:1.5rem;
+}
+nav a{
+    color:#fff;
+    text-decoration:none;
+    padding:.5rem 1rem;
+}
+nav a:hover{
+    color:#0066ff;
+    text-shadow:0 0 10px #0066ff;
+}
 
-        .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff, 0 0 30px #0066ff;
-            animation: neonPulse 2s infinite;
-        }
+/* ===== HERO ===== */
+.hero{
+    margin-top:80px;
+    padding:130px 2rem;
+    text-align:center;
+    background:linear-gradient(135deg,#001a33,#003366,#001a33);
+}
+.hero h1{
+    font-size:3rem;
+    text-shadow:0 0 30px #0066ff;
+}
+.hero p{
+    max-width:800px;
+    margin:1rem auto;
+    opacity:.9;
+}
+.cta{
+    display:inline-block;
+    margin:1rem;
+    padding:1rem 2.5rem;
+    border:2px solid #0066ff;
+    border-radius:50px;
+    color:#0066ff;
+    text-decoration:none;
+}
+.cta:hover{
+    background:#0066ff;
+    color:#000;
+}
 
-        @keyframes neonPulse {
-            0%, 100% { text-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff, 0 0 30px #0066ff; }
-            50% { text-shadow: 0 0 20px #0066ff, 0 0 30px #0066ff, 0 0 40px #0066ff, 0 0 50px #0066ff; }
-        }
+/* ===== SERVICES ===== */
+.container{
+    max-width:1300px;
+    margin:auto;
+    padding:4rem 2rem;
+}
+.services{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:2rem;
+}
+.service{
+    background:#111;
+    border:2px solid rgba(0,102,255,.4);
+    border-radius:15px;
+    padding:2rem;
+    text-align:center;
+}
+.service h3{
+    color:#0066ff;
+    margin-bottom:.5rem;
+}
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
+/* ===== FOOTER ===== */
+footer{
+    background:#000;
+    text-align:center;
+    padding:2rem;
+    border-top:2px solid #0066ff;
+}
 
-        nav ul li {
-            position: relative;
-        }
+/* ================= DASHBOARD ================= */
+#admin-dashboard{
+    display:none;
+    min-height:100vh;
+    background:#0a0a0a;
+}
 
-        nav a {
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-            display: block;
-            padding: 0.5rem 1rem;
-        }
+/* ===== DASHBOARD LAYOUT ===== */
+.dashboard{
+    display:flex;
+}
+.sidebar{
+    width:260px;
+    background:#000;
+    border-right:2px solid #0066ff;
+    min-height:100vh;
+    padding:1.5rem;
+}
+.sidebar h2{
+    color:#0066ff;
+    margin-bottom:1rem;
+}
+.sidebar a{
+    display:block;
+    color:#fff;
+    text-decoration:none;
+    padding:.8rem;
+    margin-bottom:.5rem;
+    border-radius:8px;
+}
+.sidebar a:hover{
+    background:#0066ff;
+    color:#000;
+}
 
-        nav a:hover {
-            color: #0066ff;
-            text-shadow: 0 0 10px #0066ff;
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-toggle {
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .dropdown-toggle::after {
-            content: '▼';
-            font-size: 0.7rem;
-            transition: transform 0.3s;
-        }
-
-        .dropdown:hover .dropdown-toggle::after {
-            transform: rotate(180deg);
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(10px);
-            border: 2px solid #0066ff;
-            border-radius: 10px;
-            min-width: 250px;
-            padding: 0.5rem 0;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s;
-            box-shadow: 0 10px 40px rgba(0, 102, 255, 0.5);
-            z-index: 1000;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-menu a {
-            color: #fff;
-            padding: 1rem 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
-        }
-
-        .dropdown-menu a:hover {
-            background: rgba(0, 102, 255, 0.1);
-            border-left-color: #0066ff;
-            padding-left: 2rem;
-        }
-
-        .dropdown-menu a span {
-            font-size: 1.3rem;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #001a33 100%);
-            color: white;
-            padding: 150px 2rem 100px;
-            text-align: center;
-            margin-top: 60px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 102, 255, 0.03) 2px,
-                rgba(0, 102, 255, 0.03) 4px
-            );
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s;
-            text-shadow: 0 0 20px #0066ff, 0 0 40px #0066ff;
-        }
-
-        .hero .subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #0066ff;
-            font-weight: bold;
-            text-shadow: 0 0 15px #0066ff;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.8;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2rem;
-        }
-
-        .cta-button {
-            display: inline-block;
-            background: transparent;
-            color: #0066ff;
-            padding: 1rem 2.5rem;
-            border: 2px solid #0066ff;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
-            text-shadow: 0 0 10px #0066ff;
-        }
-
-        .cta-button:hover {
-            background: #0066ff;
-            color: #000;
-            text-shadow: none;
-            box-shadow: 0 0 30px rgba(0, 102, 255, 0.8), 0 0 60px rgba(0, 102, 255, 0.5);
-            transform: translateY(-3px);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        .social-link {
-            color: #0066ff;
-            text-decoration: none;
-            font-size: 1.1rem;
-            padding: 0.8rem 1.5rem;
-            border: 2px solid #0066ff;
-            border-radius: 8px;
-            transition: all 0.3s;
-            text-shadow: 0 0 10px #0066ff;
-        }
-
-        .social-link:hover {
-            background: #0066ff;
-            color: #000;
-            text-shadow: none;
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.6);
-            transform: translateY(-3px);
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: #0066ff;
-            text-shadow: 0 0 20px #0066ff, 0 0 40px #0066ff;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            margin-bottom: 4rem;
-            color: #ccc;
-        }
-
-        .about-section {
-            background: rgba(0, 102, 255, 0.03);
-            padding: 4rem 2rem;
-            border-top: 2px solid rgba(0, 102, 255, 0.3);
-            border-bottom: 2px solid rgba(0, 102, 255, 0.3);
-        }
-
-        .about-content {
-            max-width: 900px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .about-content p {
-            font-size: 1.2rem;
-            color: #e0e0e0;
-            line-height: 2;
-            margin-bottom: 2rem;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .stat-card {
-            background: rgba(10, 10, 10, 0.8);
-            padding: 2rem;
-            border-radius: 15px;
-            border: 2px solid rgba(0, 102, 255, 0.4);
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 40px rgba(0, 102, 255, 0.6);
-            border-color: #0066ff;
-        }
-
-        .stat-number {
-            font-size: 3rem;
-            color: #0066ff;
-            font-weight: bold;
-            text-shadow: 0 0 20px #0066ff;
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 1.1rem;
-            color: #ccc;
-        }
-
-        .services-preview {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .service-card {
-            background: rgba(10, 10, 10, 0.8);
-            padding: 2.5rem;
-            border-radius: 15px;
-            border: 2px solid rgba(0, 102, 255, 0.4);
-            transition: all 0.3s;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #0066ff, #0088ff, #0066ff);
-            border-radius: 15px;
-            opacity: 0;
-            z-index: -1;
-            transition: opacity 0.3s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 0 40px rgba(0, 102, 255, 0.6);
-        }
-
-        .service-card:hover::before {
-            opacity: 0.3;
-        }
-
-        .service-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            filter: drop-shadow(0 0 20px #0066ff);
-        }
-
-        .service-name {
-            font-size: 1.6rem;
-            color: #0066ff;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 10px #0066ff;
-        }
-
-        .service-desc {
-            color: #ccc;
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-link {
-            display: inline-block;
-            color: #0066ff;
-            text-decoration: none;
-            font-weight: bold;
-            padding: 0.8rem 2rem;
-            border: 2px solid #0066ff;
-            border-radius: 50px;
-            transition: all 0.3s;
-        }
-
-        .service-link:hover {
-            background: #0066ff;
-            color: #000;
-            transform: translateY(-3px);
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.6);
-        }
-
-        .contact-section {
-            background: linear-gradient(135deg, #001a33 0%, #003366 50%, #001a33 100%);
-            padding: 4rem 2rem;
-            text-align: center;
-            border-top: 2px solid #0066ff;
-            box-shadow: 0 -5px 30px rgba(0, 102, 255, 0.3);
-        }
-
-        footer {
-            background: #000;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            border-top: 2px solid #0066ff;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            nav ul {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .dropdown-menu {
-                position: static;
-                opacity: 1;
-                visibility: visible;
-                transform: none;
-                display: none;
-            }
-
-            .dropdown:hover .dropdown-menu,
-            .dropdown.active .dropdown-menu {
-                display: block;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-        }
-    </style>
+.main{
+    flex:1;
+    padding:2rem;
+}
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:2rem;
+}
+.stat{
+    background:#111;
+    padding:2rem;
+    border-radius:15px;
+    border:2px solid rgba(0,102,255,.4);
+}
+.stat h3{
+    color:#0066ff;
+    font-size:2rem;
+}
+</style>
 </head>
+
 <body>
-    <header>
-        <nav>
-            <div class="logo">CRG SERVICES</div>
-            <ul>
-                <li><a href="index.html">Accueil</a></li>
-                <li class="dropdown">
-                    <a href="#services" class="dropdown-toggle">Services</a>
-                    <div class="dropdown-menu">
-                        <a href="services/fivem.html"><span>🎮</span> Serveurs FiveM</a>
-                        <a href="services/discord-server.html"><span>💬</span> Serveurs Discord</a>
-                        <a href="services/web.html"><span>🌐</span> Sites Web</a>
-                        <a href="services/bot-discord.html"><span>🤖</span> Bots Discord</a>
-                        <a href="services/support.html"><span>⚙️</span> Support & Maintenance</a>
-                    </div>
-                </li>
-                <li><a href="#contact">Contact</a></li>
-                <li><a href="recrutement.html">Recrutement</a></li>
-            </ul>
-        </nav>
-    </header>
 
-    <section class="hero" id="accueil">
-        <div class="hero-content">
-            <h1>CRG SERVICES</h1>
-            <p class="subtitle">Développeur Web & Digital • Auto-Entrepreneur</p>
-            <p>
-                Passionné par le développement digital depuis plusieurs années, je transforme vos idées en réalité. 
-                Spécialisé dans la création de serveurs FiveM, sites web modernes, bots Discord et solutions Discord complètes.
-                Je m'engage à fournir des services de qualité avec un suivi personnalisé pour chaque projet.
-            </p>
-            <div class="cta-buttons">
-                <a href="#services" class="cta-button">DÉCOUVRIR MES SERVICES</a>
-                <a href="#contact" class="cta-button">ME CONTACTER</a>
-            </div>
-            <div class="social-links">
-                <a href="https://discord.com/users/woody_2009" target="_blank" class="social-link">💬 Discord</a>
-                <a href="https://instagram.com/carag_2001" target="_blank" class="social-link">📸 Instagram</a>
-                <a href="https://tiktok.com/@_0_woody_0_" target="_blank" class="social-link">🎵 TikTok</a>
-            </div>
-        </div>
-    </section>
+<!-- ================= SITE PUBLIC ================= -->
+<section id="public-site">
 
-    <section class="about-section">
-        <div class="about-content">
-            <h2 class="section-title">POURQUOI ME CHOISIR ?</h2>
-            <p>
-                Avec une expertise dans le développement web, la création de serveurs de jeu et l'automatisation Discord, 
-                je vous accompagne de A à Z dans vos projets digitaux. Mon objectif : créer des solutions performantes, 
-                sur mesure et qui dépassent vos attentes.
-            </p>
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number">3+</div>
-                    <div class="stat-label">Ans d'expérience</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Projets réalisés</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">98%</div>
-                    <div class="stat-label">Clients satisfaits</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number">7j/7</div>
-                    <div class="stat-label">Support disponible</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<header>
+<nav>
+<div class="logo">CRG SERVICES</div>
+<ul>
+<li><a href="#home">Accueil</a></li>
+<li><a href="#services">Services</a></li>
+<li><a href="#contact">Contact</a></li>
+<li><a href="#" id="adminBtn" style="display:none;">Dashboard</a></li>
+</ul>
+</nav>
+</header>
 
-    <section class="container" id="services">
-        <h2 class="section-title">MES SERVICES</h2>
-        <p class="section-subtitle">Des solutions complètes pour tous vos besoins digitaux</p>
+<section class="hero" id="home">
+<h1>CRG SERVICES</h1>
+<p>Développement Web • Discord • FiveM</p>
+<a class="cta" href="#services">Découvrir</a>
+<a class="cta" href="#contact">Contact</a>
+</section>
 
-        <div class="services-preview">
-            <div class="service-card">
-                <div class="service-icon">🎮</div>
-                <h3 class="service-name">Serveurs FiveM</h3>
-                <p class="service-desc">
-                    Création complète de serveurs FiveM avec scripts personnalisés, économie équilibrée et optimisation des performances.
-                </p>
-                <a href="services/fivem.html" class="service-link">EN SAVOIR PLUS</a>
-            </div>
+<section class="container" id="services">
+<h2 style="text-align:center;color:#0066ff;margin-bottom:2rem;">Nos Services</h2>
+<div class="services">
+<div class="service">
+<h3>🎮 Serveurs FiveM</h3>
+<p>Création & optimisation complète</p>
+</div>
+<div class="service">
+<h3>💬 Discord</h3>
+<p>Serveurs, bots & automatisation</p>
+</div>
+<div class="service">
+<h3>🌐 Sites Web</h3>
+<p>Sites modernes & sécurisés</p>
+</div>
+</div>
+</section>
 
-            <div class="service-card">
-                <div class="service-icon">💬</div>
-                <h3 class="service-name">Serveurs Discord</h3>
-                <p class="service-desc">
-                    Configuration professionnelle de serveurs Discord avec architecture optimisée, bots de modération et design personnalisé.
-                </p>
-                <a href="services/discord-server.html" class="service-link">EN SAVOIR PLUS</a>
-            </div>
+<footer id="contact">
+<p>&copy; 2026 CRG SERVICES</p>
+<p>📧 omegaofficiel02@gmail.com</p>
+<p>💬 Discord : woody_2009</p>
+</footer>
 
-            <div class="service-card">
-                <div class="service-icon">🌐</div>
-                <h3 class="service-name">Sites Web</h3>
-                <p class="service-desc">
-                    Développement de sites web modernes, responsive et optimisés SEO. Du portfolio au site e-commerce complet.
-                </p>
-                <a href="services/web.html" class="service-link">EN SAVOIR PLUS</a>
-            </div>
+</section>
 
-            <div class="service-card">
-                <div class="service-icon">🤖</div>
-                <h3 class="service-name">Bots Discord</h3>
-                <p class="service-desc">
-                    Création de bots Discord sur mesure avec commandes personnalisées, modération automatique et intégrations API.
-                </p>
-                <a href="services/bot-discord.html" class="service-link">EN SAVOIR PLUS</a>
-            </div>
+<!-- ================= DASHBOARD ADMIN ================= -->
+<section id="admin-dashboard">
+<div class="dashboard">
 
-            <div class="service-card">
-                <div class="service-icon">⚙️</div>
-                <h3 class="service-name">Support & Maintenance</h3>
-                <p class="service-desc">
-                    Assistance technique complète, maintenance préventive et mises à jour pour tous vos projets digitaux.
-                </p>
-                <a href="services/support.html" class="service-link">EN SAVOIR PLUS</a>
-            </div>
+<aside class="sidebar">
+<h2>🎮 CRG ADMIN</h2>
+<a href="#">📊 Vue d'ensemble</a>
+<a href="#">⚙️ Services</a>
+<a href="#">👥 Utilisateurs</a>
+<a href="#">📈 Statistiques</a>
+<a href="#" onclick="backToSite()">← Retour au site</a>
+<a href="#" onclick="logout()">🚪 Déconnexion</a>
+</aside>
 
-            <div class="service-card">
-                <div class="service-icon">🚀</div>
-                <h3 class="service-name">Recrutement</h3>
-                <p class="service-desc">
-                    Rejoignez notre équipe ! Nous recherchons des développeurs, designers et gestionnaires de communauté passionnés.
-                </p>
-                <a href="recrutement.html" class="service-link">POSTULER</a>
-            </div>
-        </div>
-    </section>
+<main class="main">
+<h1>Dashboard Admin</h1>
+<p>Bienvenue <strong id="adminName">Admin</strong></p>
 
-    <section class="contact-section" id="contact">
-        <h2 class="section-title" style="color: #0066ff;">CONTACTEZ-MOI</h2>
-        <p style="font-size: 1.2rem; margin-bottom: 2rem;">Discutons de votre projet ensemble</p>
-        
-        <div class="cta-buttons">
-            <a href="mailto:omegaofficiel02@gmail.com" class="cta-button">📧 Email</a>
-            <a href="https://discord.com/users/woody_2009" target="_blank" class="cta-button">💬 Discord</a>
-        </div>
+<div class="stats">
+<div class="stat">
+<h3 id="totalUsers">0</h3>
+<p>Utilisateurs</p>
+</div>
+<div class="stat">
+<h3 id="totalVisits">0</h3>
+<p>Visites</p>
+</div>
+<div class="stat">
+<h3 id="totalAppointments">0</h3>
+<p>Rendez-vous</p>
+</div>
+</div>
+</main>
 
-        <div class="social-links" style="margin-top: 3rem;">
-            <a href="https://instagram.com/carag_2001" target="_blank" class="social-link">📸 Instagram</a>
-            <a href="https://tiktok.com/@_0_woody_0_" target="_blank" class="social-link">🎵 TikTok</a>
-        </div>
-    </section>
+</div>
+</section>
 
-    <footer>
-        <p style="font-size: 1.2rem; margin-bottom: 1rem; text-shadow: 0 0 10px #0066ff;">&copy; 2026 CRG SERVICES</p>
-        <p style="opacity: 0.8;">Auto-Entrepreneur • Développement sur mesure • Support réactif</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem;">📧 omegaofficiel02@gmail.com • 💬 Discord: woody_2009</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.6;">Tous droits réservés</p>
-    </footer>
+<!-- ================= FIREBASE ================= -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="config/firebase-config.js"></script>
 
-    <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+<script>
+firebaseAuth.onAuthStateChanged(async user=>{
+    if(user){
+        const admin = await isAdmin(user);
+        if(admin){
+            document.getElementById("adminBtn").style.display="block";
+            document.getElementById("adminBtn").onclick=()=>{
+                document.getElementById("public-site").style.display="none";
+                document.getElementById("admin-dashboard").style.display="block";
+                document.getElementById("adminName").textContent=user.email;
+            }
+        }
+    }
+});
 
-        const serviceCards = document.querySelectorAll('.service-card');
-        serviceCards.forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.borderColor = '#0066ff';
-            });
-            card.addEventListener('mouseleave', function() {
-                this.style.borderColor = 'rgba(0, 102, 255, 0.4)';
-            });
-        });
-    </script>
+function backToSite(){
+    document.getElementById("admin-dashboard").style.display="none";
+    document.getElementById("public-site").style.display="block";
+}
+
+function logout(){
+    firebaseAuth.signOut().then(()=>location.reload());
+}
+</script>
+
 </body>
 </html>
