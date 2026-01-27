@@ -17,10 +17,11 @@ const firebaseConfig = {
 // ⚠️ METS TON VRAI WEBHOOK DISCORD ICI
 // (Sinon les logs Discord seront ignorés sans casser le site)
 
-const DISCORD_WEBHOOK_URL = ""; // ex: https://discord.com/api/webhooks/XXXX/XXXX
+const DISCORD_WEBHOOK_URL = ""; 
+// ex: https://discord.com/api/webhooks/XXXX/XXXX
 
 // ============================================
-// LISTE DES ADMINS (EMAILS OU UID FIREBASE)
+// LISTE DES ADMINS (EMAILS FIREBASE)
 // ============================================
 
 const ADMIN_EMAILS = [
@@ -31,12 +32,21 @@ const ADMIN_EMAILS = [
 // INITIALISATION FIREBASE
 // ============================================
 
-let app, auth, db;
+let app = null;
+let auth = null;
+let db = null;
 
 try {
-    app = firebase.initializeApp(firebaseConfig);
+    // Évite une double initialisation
+    if (!firebase.apps.length) {
+        app = firebase.initializeApp(firebaseConfig);
+    } else {
+        app = firebase.app();
+    }
+
     auth = firebase.auth();
     db = firebase.firestore();
+
     console.log("✅ Firebase initialisé avec succès");
 } catch (error) {
     console.error("❌ Erreur initialisation Firebase :", error);
@@ -47,7 +57,7 @@ try {
 // ============================================
 
 async function sendDiscordLog(type, user, details = {}) {
-    if (!DISCORD_WEBHOOK_URL) return; // évite toute erreur si vide
+    if (!DISCORD_WEBHOOK_URL) return;
 
     const colors = {
         register: 3066993, // Vert
@@ -57,7 +67,7 @@ async function sendDiscordLog(type, user, details = {}) {
     };
 
     const embed = {
-        title: `🔔 ${type.toUpperCase()}`,
+        title: `🔔 ${String(type).toUpperCase()}`,
         color: colors[type] || 0,
         fields: [
             {
@@ -110,8 +120,7 @@ async function sendDiscordLog(type, user, details = {}) {
 
 function isAdmin(user) {
     if (!user) return false;
-    if (ADMIN_EMAILS.includes(user.email)) return true;
-    return false;
+    return ADMIN_EMAILS.includes(user.email);
 }
 
 // ============================================
