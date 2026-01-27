@@ -1,161 +1,242 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription | CRG Services</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{
-            font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
-            background:#0a0a0a;
-            color:#fff;
-            min-height:100vh;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            position:relative;
-            overflow-x:hidden
-        }
-        body::before{
-            content:'';
-            position:fixed;
-            inset:0;
-            background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,102,255,.03) 2px,rgba(0,102,255,.03) 4px);
-            pointer-events:none
-        }
-        .register-container{
-            background:rgba(10,10,10,.95);
-            backdrop-filter:blur(10px);
-            border:2px solid #0066ff;
-            border-radius:20px;
-            padding:3rem;
-            width:90%;
-            max-width:500px;
-            box-shadow:0 0 50px rgba(0,102,255,.5);
-            z-index:1
-        }
-        .logo{text-align:center;margin-bottom:2rem}
-        .logo h1{
-            font-size:2.5rem;
-            color:#0066ff;
-            text-shadow:0 0 20px #0066ff,0 0 40px #0066ff;
-            animation:neonPulse 2s infinite
-        }
-        @keyframes neonPulse{
-            0%,100%{text-shadow:0 0 10px #0066ff,0 0 20px #0066ff}
-            50%{text-shadow:0 0 20px #0066ff,0 0 40px #0066ff,0 0 60px #0066ff}
-        }
-        .logo p{color:#999;margin-top:.5rem}
-        .input-group{margin-bottom:1.5rem}
-        .input-group label{display:block;margin-bottom:.5rem;color:#0066ff;font-weight:bold}
-        .input-group input{
-            width:100%;
-            padding:1rem;
-            background:rgba(0,102,255,.1);
-            border:2px solid rgba(0,102,255,.3);
-            border-radius:10px;
-            color:#fff;
-            font-size:1rem
-        }
-        .submit-btn{
-            width:100%;
-            padding:1rem;
-            background:#0066ff;
-            border:none;
-            border-radius:10px;
-            font-weight:bold;
-            cursor:pointer
-        }
-        .divider{text-align:center;margin:2rem 0;color:#666}
-        .social-login{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-        .social-btn{
-            padding:1rem;
-            border:2px solid rgba(0,102,255,.3);
-            background:rgba(0,102,255,.1);
-            border-radius:10px;
-            color:#0066ff;
-            cursor:pointer;
-            font-weight:bold
-        }
-        .footer-links{text-align:center;margin-top:2rem;color:#666}
-        .footer-links a{color:#0066ff;text-decoration:none}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscription | CRG Services</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    background:#0a0a0a;
+    color:#fff;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow-x:hidden
+}
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,102,255,.03) 2px,
+        rgba(0,102,255,.03) 4px
+    );
+    pointer-events:none
+}
+.register-container{
+    background:rgba(10,10,10,.95);
+    backdrop-filter:blur(10px);
+    border:2px solid #0066ff;
+    border-radius:20px;
+    padding:3rem;
+    width:90%;
+    max-width:500px;
+    box-shadow:0 0 50px rgba(0,102,255,.5);
+    z-index:1
+}
+.logo{text-align:center;margin-bottom:2rem}
+.logo h1{
+    font-size:2.5rem;
+    color:#0066ff;
+    text-shadow:0 0 20px #0066ff,0 0 40px #0066ff;
+    animation:neonPulse 2s infinite
+}
+@keyframes neonPulse{
+    0%,100%{text-shadow:0 0 10px #0066ff}
+    50%{text-shadow:0 0 30px #0066ff}
+}
+.logo p{color:#999;margin-top:.5rem}
+.input-group{margin-bottom:1.5rem}
+.input-group label{
+    display:block;
+    margin-bottom:.5rem;
+    color:#0066ff;
+    font-weight:bold
+}
+.input-group input{
+    width:100%;
+    padding:1rem;
+    background:rgba(0,102,255,.1);
+    border:2px solid rgba(0,102,255,.3);
+    border-radius:10px;
+    color:#fff
+}
+.submit-btn{
+    width:100%;
+    padding:1rem;
+    background:#0066ff;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer
+}
+.divider{text-align:center;margin:2rem 0;color:#666}
+.social-login{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.social-btn{
+    padding:1rem;
+    border:2px solid rgba(0,102,255,.3);
+    background:rgba(0,102,255,.1);
+    border-radius:10px;
+    color:#0066ff;
+    cursor:pointer;
+    font-weight:bold
+}
+.error-message,.success-message{
+    display:none;
+    padding:1rem;
+    border-radius:10px;
+    margin-bottom:1rem
+}
+.error-message{color:#ff6b6b;border:2px solid rgba(255,0,0,.5)}
+.success-message{color:#51cf66;border:2px solid rgba(0,255,0,.5)}
+.show{display:block}
+.footer-links{text-align:center;margin-top:2rem;color:#666}
+.footer-links a{color:#0066ff;text-decoration:none}
+</style>
 </head>
 
 <body>
 
 <div class="register-container">
-    <div class="logo">
-        <h1>CRG SERVICES</h1>
-        <p>Créez votre compte</p>
-    </div>
 
-    <form onsubmit="registerUser(event)">
-        <div class="input-group">
-            <label>Nom complet</label>
-            <input id="fullName" required>
-        </div>
-
-        <div class="input-group">
-            <label>Email</label>
-            <input type="email" id="emailInput" required>
-        </div>
-
-        <div class="input-group">
-            <label>Mot de passe</label>
-            <input type="password" id="passwordInput" required minlength="8">
-        </div>
-
-        <div class="input-group">
-            <label>Confirmer</label>
-            <input type="password" id="confirmPassword" required>
-        </div>
-
-        <button class="submit-btn">CRÉER MON COMPTE</button>
-    </form>
-
-    <div class="divider">OU</div>
-
-    <div class="social-login">
-        <button class="social-btn" onclick="registerWithGoogle()">Google</button>
-        <button class="social-btn" onclick="registerWithDiscord()">Discord</button>
-    </div>
-
-    <div class="footer-links">
-        <p>Déjà un compte ? <a href="login.html">Connexion</a></p>
-    </div>
+<div class="logo">
+<h1>CRG SERVICES</h1>
+<p>Créez votre compte</p>
 </div>
 
-<!-- Firebase -->
+<div class="error-message" id="errorMessage"></div>
+<div class="success-message" id="successMessage"></div>
+
+<form onsubmit="registerUser(event)">
+<div class="input-group">
+<label>Nom complet</label>
+<input id="fullName" required>
+</div>
+
+<div class="input-group">
+<label>Email</label>
+<input type="email" id="emailInput" required>
+</div>
+
+<div class="input-group">
+<label>Mot de passe</label>
+<input type="password" id="passwordInput" minlength="8" required>
+</div>
+
+<div class="input-group">
+<label>Confirmer le mot de passe</label>
+<input type="password" id="confirmPassword" required>
+</div>
+
+<button class="submit-btn">CRÉER MON COMPTE</button>
+</form>
+
+<div class="divider">OU</div>
+
+<div class="social-login">
+<button class="social-btn" onclick="registerWithGoogle()">Google</button>
+<button class="social-btn" onclick="registerWithDiscord()">Discord</button>
+</div>
+
+<div class="footer-links">
+<p>Déjà un compte ? <a href="login.html">Connexion</a></p>
+</div>
+
+</div>
+
+<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-<!-- ✅ CHEMIN CORRECT -->
-<script src="/Service/firebase.config.js"></script>
+<!-- CONFIG FIREBASE (RACINE) -->
+<script src="firebase.config.js"></script>
 
 <script>
+/* 🔐 Sécurité */
+if (typeof firebaseAuth === "undefined") {
+    alert("❌ Firebase non chargé. Vérifie firebase.config.js");
+}
+
+/* UI */
+function showError(msg){
+    errorMessage.textContent = msg;
+    errorMessage.classList.add("show");
+    setTimeout(()=>errorMessage.classList.remove("show"),4000);
+}
+
+function showSuccess(msg){
+    successMessage.textContent = msg;
+    successMessage.classList.add("show");
+}
+
+/* REGISTER EMAIL */
 async function registerUser(e){
     e.preventDefault();
-    const email=emailInput.value;
-    const pass=passwordInput.value;
-    const confirm=confirmPassword.value;
-    if(pass!==confirm) return alert("Mots de passe différents");
 
-    const cred=await firebaseAuth.createUserWithEmailAndPassword(email,pass);
-    await cred.user.updateProfile({displayName:fullName.value});
-    location.href="index.html";
+    if (passwordInput.value !== confirmPassword.value) {
+        return showError("Les mots de passe ne correspondent pas");
+    }
+
+    try {
+        const cred = await firebaseAuth.createUserWithEmailAndPassword(
+            emailInput.value,
+            passwordInput.value
+        );
+
+        await cred.user.updateProfile({
+            displayName: fullName.value
+        });
+
+        if (window.sendDiscordLog) {
+            await sendDiscordLog('register', cred.user, {provider:'Email'});
+        }
+
+        showSuccess("Compte créé avec succès");
+        setTimeout(()=>location.href="index.html",1200);
+
+    } catch (err) {
+        if (err.code === "auth/email-already-in-use") {
+            showError("Email déjà utilisé");
+        } else {
+            showError("Erreur lors de l'inscription");
+        }
+        console.error(err);
+    }
 }
 
-function registerWithGoogle(){
-    const provider=new firebase.auth.GoogleAuthProvider();
-    firebaseAuth.signInWithPopup(provider).then(()=>location.href="index.html");
+/* GOOGLE */
+async function registerWithGoogle(){
+    try{
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const r = await firebaseAuth.signInWithPopup(provider);
+        if (window.sendDiscordLog) {
+            await sendDiscordLog('register', r.user, {provider:'Google'});
+        }
+        location.href="index.html";
+    }catch{
+        showError("Erreur Google");
+    }
 }
 
+/* DISCORD */
 function registerWithDiscord(){
-    alert("Discord en développement");
+    showError("Discord nécessite un backend (OAuth)");
 }
+
+/* AUTO REDIRECT */
+firebaseAuth.onAuthStateChanged(user=>{
+    if(user){
+        location.href="index.html";
+    }
+});
 </script>
 
 </body>
