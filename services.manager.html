@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Services | CRG Dashboard</title>
+    <link rel="stylesheet" href="../assets/dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>🎮 CRG SERVICES</h2>
+                <p>Dashboard Admin</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="index.html" class="nav-item">
+                    <span>📊</span> Vue d'ensemble
+                </a>
+                <a href="services-manager.html" class="nav-item active">
+                    <span>⚙️</span> Gestion Services
+                </a>
+                <a href="agenda-manager.html" class="nav-item">
+                    <span>📅</span> Gestion Agenda
+                </a>
+                <a href="users-manager.html" class="nav-item">
+                    <span>👥</span> Gestion Utilisateurs
+                </a>
+                <a href="stats.html" class="nav-item">
+                    <span>📈</span> Statistiques
+                </a>
+                <a href="settings.html" class="nav-item">
+                    <span>🔧</span> Paramètres
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button onclick="backToSite()" class="btn-secondary">
+                    ← Retour au site
+                </button>
+                <button onclick="logout()" class="btn-danger">
+                    🚪 Déconnexion
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="content-header">
+                <div>
+                    <h1>⚙️ Gestion des Services</h1>
+                    <p>Créer, modifier et gérer vos services</p>
+                </div>
+                <div class="user-info">
+                    <span id="adminName">Admin</span>
+                    <div class="user-avatar">👤</div>
+                </div>
+            </header>
+
+            <!-- Add Service Button -->
+            <div class="section">
+                <button onclick="showAddServiceModal()" class="btn-primary" style="margin-bottom: 2rem;">
+                    ➕ Ajouter un Nouveau Service
+                </button>
+
+                <!-- Services List -->
+                <h2>📋 Liste des Services</h2>
+                <div id="servicesList" class="services-grid">
+                    <div class="loading-placeholder">
+                        <div class="loading-shimmer"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Add/Edit Service -->
+    <div id="serviceModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">➕ Ajouter un Service</h2>
+                <button onclick="closeModal()" class="close-btn">✕</button>
+            </div>
+            
+            <form onsubmit="saveService(event)" id="serviceForm">
+                <div class="form-group">
+                    <label>🎨 Icône (Emoji)</label>
+                    <input type="text" id="serviceIcon" placeholder="🎮" required maxlength="2">
+                </div>
+
+                <div class="form-group">
+                    <label>📝 Nom du Service</label>
+                    <input type="text" id="serviceName" placeholder="Serveurs FiveM" required>
+                </div>
+
+                <div class="form-group">
+                    <label>📄 Description</label>
+                    <textarea id="serviceDesc" placeholder="Description complète du service..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>💰 Prix de Base (€)</label>
+                    <input type="number" id="servicePrice" placeholder="99" min="0" step="0.01">
+                </div>
+
+                <div class="form-group">
+                    <label>🔗 URL de la Page</label>
+                    <input type="text" id="serviceUrl" placeholder="/services/fivem.html" required>
+                </div>
+
+                <div class="form-group">
+                    <label>✅ Statut</label>
+                    <select id="serviceStatus" required>
+                        <option value="active">Actif</option>
+                        <option value="coming_soon">Bientôt disponible</option>
+                        <option value="inactive">Inactif</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>🎯 Catégorie</label>
+                    <select id="serviceCategory" required>
+                        <option value="gaming">Gaming</option>
+                        <option value="web">Web Development</option>
+                        <option value="discord">Discord</option>
+                        <option value="support">Support</option>
+                        <option value="other">Autre</option>
+                    </select>
+                </div>
+
+                <input type="hidden" id="serviceId">
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn-success" style="flex: 1;">
+                        💾 Enregistrer
+                    </button>
+                    <button type="button" onclick="closeModal()" class="btn-secondary" style="flex: 1;">
+                        Annuler
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="../config/firebase-config.js"></script>
+
+    <style>
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .service-item {
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid rgba(0, 102, 255, 0.4);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .service-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 30px rgba(0, 102, 255, 0.5);
+            border-color: #0066ff;
+        }
+
+        .service-item-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-item-name {
+            color: #0066ff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .service-item-desc {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .service-item-price {
+            color: #51cf66;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .service-item-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .service-item-actions button {
+            flex: 1;
+            padding: 0.6rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: rgba(0, 102, 255, 0.2);
+            color: #0066ff;
+            border: 2px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .edit-btn:hover {
+            background: rgba(0, 102, 255, 0.3);
+        }
+
+        .delete-btn {
+            background: rgba(255, 107, 107, 0.2);
+            color: #ff6b6b;
+            border: 2px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+        }
+
+        .service-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-active {
+            background: rgba(81, 207, 102, 0.2);
+            color: #51cf66;
+            border: 1px solid rgba(81, 207, 102, 0.5);
+        }
+
+        .badge-coming {
+            background: rgba(255, 211, 61, 0.2);
+            color: #ffd93d;
+            border: 1px solid rgba(255, 211, 61, 0.5);
+        }
+
+        .badge-inactive {
+            background: rgba(153, 153, 153, 0.2);
+            color: #999;
+            border: 1px solid rgba(153, 153, 153, 0.5);
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal-content {
+            background: rgba(10, 10, 10, 0.98);
+            border: 2px solid #0066ff;
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(0, 102, 255, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 102, 255, 0.3);
+        }
+
+        .modal-header h2 {
+            color: #0066ff;
+        }
+
+        .close-btn {
+            background: rgba(255, 107, 107, 0.2);
+            border: 2px solid rgba(255, 107, 107, 0.3);
+            color: #ff6b6b;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 107, 107, 0.3);
+            transform: rotate(90deg);
+        }
+    </style>
+
+    <script>
+        let currentEditingId = null;
+
+        // Vérifier permissions admin
+        firebaseAuth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = '../auth/login.html';
+                return;
+            }
+
+            if (!isAdmin(user)) {
+                alert('Accès refusé - Admin uniquement');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            document.getElementById('adminName').textContent = user.displayName || user.email;
+            loadServices();
+        });
+
+        // Charger les services
+        async function loadServices() {
+            const servicesList = document.getElementById('servicesList');
+            servicesList.innerHTML = '';
+
+            try {
+                const servicesSnapshot = await firebaseDb.collection('services').orderBy('createdAt', 'desc').get();
+
+                if (servicesSnapshot.empty) {
+                    servicesList.innerHTML = '<p style="text-align: center; color: #666; grid-column: 1/-1;">Aucun service pour le moment</p>';
+                    return;
+                }
+
+                servicesSnapshot.forEach(doc => {
+                    const service = doc.data();
+                    const serviceEl = createServiceElement(doc.id, service);
+                    servicesList.appendChild(serviceEl);
+                });
+
+            } catch (error) {
+                console.error('Erreur chargement services:', error);
+                servicesList.innerHTML = '<p style="text-align: center; color: #ff6b6b; grid-column: 1/-1;">Erreur de chargement</p>';
+            }
+        }
+
+        // Créer l'élément service
+        function createServiceElement(id, service) {
+            const div = document.createElement('div');
+            div.className = 'service-item';
+            
+            const statusBadges = {
+                active: 'badge-active',
+                coming_soon: 'badge-coming',
+                inactive: 'badge-inactive'
+            };
+            
+            const statusTexts = {
+                active: '✅ Actif',
+                coming_soon: '⏳ Bientôt',
+                inactive: '❌ Inactif'
+            };
+
+            div.innerHTML = `
+                <span class="service-badge ${statusBadges[service.status] || 'badge-inactive'}">
+                    ${statusTexts[service.status] || 'Inconnu'}
+                </span>
+                <div class="service-item-icon">${service.icon}</div>
+                <div class="service-item-name">${service.name}</div>
+                <div class="service-item-desc">${service.description}</div>
+                <div class="service-item-price">${service.price ? service.price + '€' : 'Prix sur demande'}</div>
+                <div class="service-item-actions">
+                    <button class="edit-btn" onclick="editService('${id}')">
+                        ✏️ Modifier
+                    </button>
+                    <button class="delete-btn" onclick="deleteService('${id}', '${service.name}')">
+                        🗑️ Supprimer
+                    </button>
+                </div>
+            `;
+
+            return div;
+        }
+
+        // Afficher modal ajout
+        function showAddServiceModal() {
+            currentEditingId = null;
+            document.getElementById('modalTitle').textContent = '➕ Ajouter un Service';
+            document.getElementById('serviceForm').reset();
+            document.getElementById('serviceModal').style.display = 'flex';
+        }
+
+        // Éditer service
+        async function editService(id) {
+            currentEditingId = id;
+            document.getElementById('modalTitle').textContent = '✏️ Modifier le Service';
+
+            try {
+                const doc = await firebaseDb.collection('services').doc(id).get();
+                const service = doc.data();
+
+                document.getElementById('serviceIcon').value = service.icon;
+                document.getElementById('serviceName').value = service.name;
+                document.getElementById('serviceDesc').value = service.description;
+                document.getElementById('servicePrice').value = service.price || '';
+                document.getElementById('serviceUrl').value = service.url;
+                document.getElementById('serviceStatus').value = service.status;
+                document.getElementById('serviceCategory').value = service.category || 'other';
+
+                document.getElementById('serviceModal').style.display = 'flex';
+            } catch (error) {
+                console.error('Erreur chargement service:', error);
+                alert('Erreur lors du chargement du service');
+            }
+        }
+
+        // Sauvegarder service
+        async function saveService(e) {
+            e.preventDefault();
+
+            const serviceData = {
+                icon: document.getElementById('serviceIcon').value,
+                name: document.getElementById('serviceName').value,
+                description: document.getElementById('serviceDesc').value,
+                price: parseFloat(document.getElementById('servicePrice').value) || 0,
+                url: document.getElementById('serviceUrl').value,
+                status: document.getElementById('serviceStatus').value,
+                category: document.getElementById('serviceCategory').value,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            try {
+                if (currentEditingId) {
+                    // Modifier
+                    await firebaseDb.collection('services').doc(currentEditingId).update(serviceData);
+                    alert('✅ Service modifié avec succès !');
+                } else {
+                    // Créer
+                    serviceData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                    await firebaseDb.collection('services').add(serviceData);
+                    alert('✅ Service créé avec succès !');
+                }
+
+                closeModal();
+                loadServices();
+
+            } catch (error) {
+                console.error('Erreur sauvegarde:', error);
+                alert('❌ Erreur lors de la sauvegarde');
+            }
+        }
+
+        // Supprimer service
+        async function deleteService(id, name) {
+            if (!confirm(`Êtes-vous sûr de vouloir supprimer "${name}" ?`)) {
+                return;
+            }
+
+            try {
+                await firebaseDb.collection('services').doc(id).delete();
+                alert('✅ Service supprimé !');
+                loadServices();
+            } catch (error) {
+                console.error('Erreur suppression:', error);
+                alert('❌ Erreur lors de la suppression');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('serviceModal').style.display = 'none';
+            document.getElementById('serviceForm').reset();
+            currentEditingId = null;
+        }
+
+        function backToSite() {
+            window.location.href = '../index.html';
+        }
+
+        async function logout() {
+            await firebaseAuth.signOut();
+            window.location.href = '../auth/login.html';
+        }
+    </script>
+</body>
+</html>
