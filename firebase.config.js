@@ -5,12 +5,12 @@
 // Tutoriel: https://firebase.google.com/docs/web/setup
 
 const firebaseConfig = {
-    apiKey: "VOTRE_API_KEY",
-    authDomain: "VOTRE_PROJECT_ID.firebaseapp.com",
-    projectId: "VOTRE_PROJECT_ID",
-    storageBucket: "VOTRE_PROJECT_ID.appspot.com",
-    messagingSenderId: "VOTRE_SENDER_ID",
-    appId: "VOTRE_APP_ID"
+    apiKey: "AIzaSyDubDGWvUQPDuo2pDfyXlrYK5TqqsdhFCw",
+    authDomain: "crg-console.firebaseapp.com",
+    projectId: "crg-console",
+    storageBucket: "crg-console.appspot.com",
+    messagingSenderId: "254478831839",
+    appId: "1:254478831839:web:2cc70922b4ecb8fd48d96a"
 };
 
 // ============================================
