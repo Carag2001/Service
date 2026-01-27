@@ -21,7 +21,13 @@ body::before{
     content:'';
     position:fixed;
     inset:0;
-    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,102,255,.03) 2px,rgba(0,102,255,.03) 4px);
+    background:repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,102,255,.03) 2px,
+        rgba(0,102,255,.03) 4px
+    );
     pointer-events:none
 }
 .login-container{
@@ -165,21 +171,24 @@ body::before{
 
 <div class="footer-links">
 <p>Pas encore de compte ? <a href="register.html">S'inscrire</a></p>
-<p><a href="../index.html">← Accueil</a></p>
+<p><a href="/index.html">← Accueil</a></p>
 </div>
 
 </div>
 
-<!-- FIREBASE -->
+<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-<!-- CHEMIN CORRECT -->
+<!-- CONFIG FIREBASE (BON CHEMIN) -->
 <script src="firebase.config.js"></script>
 
-
 <script>
+if (typeof firebaseAuth === "undefined") {
+    alert("❌ Firebase non chargé. Vérifie firebase.config.js");
+}
+
 let confirmationResult = null;
 
 function switchTab(tab, btn){
@@ -203,32 +212,44 @@ function showSuccess(msg){
 async function loginWithEmail(e){
     e.preventDefault();
     try{
-        const cred=await firebaseAuth.signInWithEmailAndPassword(emailInput.value,passwordInput.value);
-        await sendDiscordLog('login',cred.user,{provider:'Email'});
+        const cred = await firebaseAuth.signInWithEmailAndPassword(
+            emailInput.value,
+            passwordInput.value
+        );
+        if (window.sendDiscordLog) {
+            await sendDiscordLog('login', cred.user, {provider:'Email'});
+        }
         showSuccess("Connexion réussie");
-        setTimeout(()=>location.href="../index.html",1200);
-    }catch(e){showError("Identifiants invalides")}
+        setTimeout(()=>location.href="/index.html",1200);
+    }catch{
+        showError("Identifiants invalides");
+    }
 }
 
 async function loginWithGoogle(){
     try{
-        const p=new firebase.auth.GoogleAuthProvider();
-        const r=await firebaseAuth.signInWithPopup(p);
-        await sendDiscordLog('login',r.user,{provider:'Google'});
-        location.href="../index.html";
-    }catch(e){showError("Erreur Google")}
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const r = await firebaseAuth.signInWithPopup(provider);
+        if (window.sendDiscordLog) {
+            await sendDiscordLog('login', r.user, {provider:'Google'});
+        }
+        location.href="/index.html";
+    }catch{
+        showError("Erreur Google");
+    }
 }
 
 function loginWithDiscord(){
-    showError("Discord nécessite un backend (OAuth custom)");
+    showError("Connexion Discord non disponible sans backend");
 }
 
 function loginWithPhone(e){
     e.preventDefault();
-    window.recaptchaVerifier=new firebase.auth.RecaptchaVerifier('recaptcha-container',{size:'normal'});
-    firebaseAuth.signInWithPhoneNumber(phoneInput.value,recaptchaVerifier)
+    window.recaptchaVerifier =
+        new firebase.auth.RecaptchaVerifier('recaptcha-container',{size:'normal'});
+    firebaseAuth.signInWithPhoneNumber(phoneInput.value, recaptchaVerifier)
     .then(r=>{
-        confirmationResult=r;
+        confirmationResult = r;
         codeSection.style.display="block";
     })
     .catch(()=>showError("Erreur SMS"));
@@ -236,14 +257,18 @@ function loginWithPhone(e){
 
 async function verifyCode(){
     try{
-        const r=await confirmationResult.confirm(codeInput.value);
-        await sendDiscordLog('login',r.user,{provider:'Phone'});
-        location.href="../index.html";
-    }catch(e){showError("Code invalide")}
+        const r = await confirmationResult.confirm(codeInput.value);
+        if (window.sendDiscordLog) {
+            await sendDiscordLog('login', r.user, {provider:'Phone'});
+        }
+        location.href="/index.html";
+    }catch{
+        showError("Code invalide");
+    }
 }
 
 firebaseAuth.onAuthStateChanged(u=>{
-    if(u) location.href="../index.html";
+    if(u) location.href="/index.html";
 });
 </script>
 
