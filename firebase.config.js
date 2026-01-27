@@ -1,8 +1,6 @@
 // ============================================
-// CONFIGURATION FIREBASE
+// CONFIGURATION FIREBASE (COMPAT HTML)
 // ============================================
-// 🔥 Remplacez ces valeurs par celles de VOTRE projet Firebase
-// Tutoriel: https://firebase.google.com/docs/web/setup
 
 const firebaseConfig = {
     apiKey: "AIzaSyDubDGWvUQPDuo2pDfyXlrYK5TqqsdhFCw",
@@ -16,26 +14,23 @@ const firebaseConfig = {
 // ============================================
 // CONFIGURATION DISCORD WEBHOOK
 // ============================================
-// 🔔 Créez un webhook dans votre serveur Discord
-// Serveur > Paramètres > Intégrations > Webhooks > Nouveau Webhook
+// ⚠️ METS TON VRAI WEBHOOK DISCORD ICI
+// (Sinon les logs Discord seront ignorés sans casser le site)
 
-const DISCORD_WEBHOOK_URL = "VOTRE_WEBHOOK_URL_DISCORD";
+const DISCORD_WEBHOOK_URL = ""; // ex: https://discord.com/api/webhooks/XXXX/XXXX
 
 // ============================================
-// LISTE DES ADMINS (IDs Discord)
+// LISTE DES ADMINS (EMAILS OU UID FIREBASE)
 // ============================================
-// 👑 Seuls ces utilisateurs auront accès au dashboard admin
 
-const ADMIN_DISCORD_IDS = [
-    "woody_2009",  // Votre ID Discord
-    // Ajoutez d'autres IDs si besoin
+const ADMIN_EMAILS = [
+    "omegaofficiel02@gmail.com"
 ];
 
 // ============================================
-// NE PAS MODIFIER EN DESSOUS
+// INITIALISATION FIREBASE
 // ============================================
 
-// Initialiser Firebase
 let app, auth, db;
 
 try {
@@ -44,16 +39,21 @@ try {
     db = firebase.firestore();
     console.log("✅ Firebase initialisé avec succès");
 } catch (error) {
-    console.error("❌ Erreur initialisation Firebase:", error);
+    console.error("❌ Erreur initialisation Firebase :", error);
 }
 
-// Fonction pour envoyer des logs à Discord
+// ============================================
+// ENVOI DES LOGS DISCORD (OPTIONNEL)
+// ============================================
+
 async function sendDiscordLog(type, user, details = {}) {
+    if (!DISCORD_WEBHOOK_URL) return; // évite toute erreur si vide
+
     const colors = {
-        register: 3066993,  // Vert
-        login: 3447003,     // Bleu
-        logout: 15158332,   // Rouge
-        visit: 10181046     // Violet
+        register: 3066993, // Vert
+        login: 3447003,    // Bleu
+        logout: 15158332,  // Rouge
+        visit: 10181046    // Violet
     };
 
     const embed = {
@@ -62,12 +62,12 @@ async function sendDiscordLog(type, user, details = {}) {
         fields: [
             {
                 name: "👤 Utilisateur",
-                value: user.email || user.phoneNumber || user.displayName || "Anonyme",
+                value: user?.email || user?.displayName || "Anonyme",
                 inline: true
             },
             {
                 name: "🕐 Heure",
-                value: new Date().toLocaleString('fr-FR'),
+                value: new Date().toLocaleString("fr-FR"),
                 inline: true
             }
         ],
@@ -77,7 +77,6 @@ async function sendDiscordLog(type, user, details = {}) {
         timestamp: new Date().toISOString()
     };
 
-    // Ajouter détails supplémentaires
     if (details.provider) {
         embed.fields.push({
             name: "🔑 Méthode",
@@ -86,15 +85,7 @@ async function sendDiscordLog(type, user, details = {}) {
         });
     }
 
-    if (details.ip) {
-        embed.fields.push({
-            name: "🌐 IP",
-            value: details.ip,
-            inline: true
-        });
-    }
-
-    if (user.uid) {
+    if (user?.uid) {
         embed.fields.push({
             name: "🆔 UID",
             value: user.uid,
@@ -104,41 +95,29 @@ async function sendDiscordLog(type, user, details = {}) {
 
     try {
         await fetch(DISCORD_WEBHOOK_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                embeds: [embed]
-            })
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ embeds: [embed] })
         });
-    } catch (error) {
-        console.error("Erreur envoi Discord:", error);
+    } catch (e) {
+        console.error("❌ Erreur webhook Discord :", e);
     }
 }
 
-// Fonction pour vérifier si l'utilisateur est admin
+// ============================================
+// VÉRIFICATION ADMIN
+// ============================================
+
 function isAdmin(user) {
     if (!user) return false;
-    
-    // Vérifier par ID Discord (si connecté via Discord)
-    if (user.providerData) {
-        const discordProvider = user.providerData.find(p => p.providerId === 'discord');
-        if (discordProvider && ADMIN_DISCORD_IDS.includes(discordProvider.uid)) {
-            return true;
-        }
-    }
-    
-    // Vérifier par email admin (optionnel)
-    const adminEmails = ['omegaofficiel02@gmail.com'];
-    if (adminEmails.includes(user.email)) {
-        return true;
-    }
-    
+    if (ADMIN_EMAILS.includes(user.email)) return true;
     return false;
 }
 
-// Exporter les fonctions
+// ============================================
+// EXPORT GLOBAL (OBLIGATOIRE POUR register.html)
+// ============================================
+
 window.firebaseApp = app;
 window.firebaseAuth = auth;
 window.firebaseDb = db;
