@@ -2,13 +2,13 @@
 // CONFIGURATION FIREBASE (HTML COMPAT – OBLIGATOIRE)
 // ============================================
 
-// ⚠️ CE FICHIER DOIT ÊTRE CHARGÉ APRÈS
+// ⚠️ Ce fichier DOIT être chargé APRÈS :
 // firebase-app-compat.js
 // firebase-auth-compat.js
 // firebase-firestore-compat.js
 
 if (typeof firebase === "undefined") {
-    console.error("❌ Firebase SDK non chargé. Vérifie les <script src=...>");
+    console.error("❌ Firebase SDK NON chargé. Vérifie l’ordre des <script>");
 }
 
 // ============================================
@@ -40,12 +40,12 @@ const ADMIN_EMAILS = [
 ];
 
 // ============================================
-// INITIALISATION FIREBASE (SÉCURISÉE)
+// INITIALISATION FIREBASE (ANTI-ERREUR)
 // ============================================
 
-let firebaseApp;
-let firebaseAuth;
-let firebaseDb;
+let firebaseApp = null;
+let firebaseAuth = null;
+let firebaseDb = null;
 
 try {
     if (!firebase.apps.length) {
@@ -57,7 +57,7 @@ try {
     firebaseAuth = firebase.auth();
     firebaseDb = firebase.firestore();
 
-    console.log("✅ Firebase initialisé avec succès");
+    console.log("✅ Firebase initialisé");
 } catch (e) {
     console.error("❌ Erreur Firebase :", e);
 }
@@ -132,7 +132,7 @@ function isAdmin(user) {
 }
 
 // ============================================
-// EXPORT GLOBAL (TRÈS IMPORTANT)
+// EXPORT GLOBAL (OBLIGATOIRE)
 // ============================================
 
 window.firebaseApp = firebaseApp;
