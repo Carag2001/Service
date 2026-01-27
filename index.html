@@ -1,292 +1,238 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRG Services | Développement Web, Discord & FiveM</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin | CRG Services</title>
 
-<!-- ================== STYLE ================== -->
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-
-body{
-    font-family:'Segoe UI',Tahoma,Verdana,sans-serif;
-    background:#0a0a0a;
-    color:#fff;
-}
-
-/* ===== HEADER ===== */
-header{
-    position:fixed;
-    top:0;left:0;
-    width:100%;
-    background:rgba(10,10,10,.95);
-    backdrop-filter:blur(10px);
-    border-bottom:2px solid #0066ff;
-    z-index:1000;
-}
-nav{
-    max-width:1200px;
-    margin:auto;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:1rem 2rem;
-}
-.logo{
-    font-size:1.6rem;
-    font-weight:bold;
-    color:#0066ff;
-    text-shadow:0 0 15px #0066ff;
-}
-nav ul{
-    list-style:none;
-    display:flex;
-    gap:1.5rem;
-}
-nav a{
-    color:#fff;
-    text-decoration:none;
-    padding:.5rem 1rem;
-}
-nav a:hover{
-    color:#0066ff;
-    text-shadow:0 0 10px #0066ff;
-}
-
-/* ===== HERO ===== */
-.hero{
-    margin-top:80px;
-    padding:130px 2rem;
-    text-align:center;
-    background:linear-gradient(135deg,#001a33,#003366,#001a33);
-}
-.hero h1{
-    font-size:3rem;
-    text-shadow:0 0 30px #0066ff;
-}
-.hero p{
-    max-width:800px;
-    margin:1rem auto;
-    opacity:.9;
-}
-.cta{
-    display:inline-block;
-    margin:1rem;
-    padding:1rem 2.5rem;
-    border:2px solid #0066ff;
-    border-radius:50px;
-    color:#0066ff;
-    text-decoration:none;
-}
-.cta:hover{
-    background:#0066ff;
-    color:#000;
-}
-
-/* ===== SERVICES ===== */
-.container{
-    max-width:1300px;
-    margin:auto;
-    padding:4rem 2rem;
-}
-.services{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:2rem;
-}
-.service{
-    background:#111;
-    border:2px solid rgba(0,102,255,.4);
-    border-radius:15px;
-    padding:2rem;
-    text-align:center;
-}
-.service h3{
-    color:#0066ff;
-    margin-bottom:.5rem;
-}
-
-/* ===== FOOTER ===== */
-footer{
-    background:#000;
-    text-align:center;
-    padding:2rem;
-    border-top:2px solid #0066ff;
-}
-
-/* ================= DASHBOARD ================= */
-#admin-dashboard{
-    display:none;
-    min-height:100vh;
-    background:#0a0a0a;
-}
-
-/* ===== DASHBOARD LAYOUT ===== */
-.dashboard{
-    display:flex;
-}
-.sidebar{
-    width:260px;
-    background:#000;
-    border-right:2px solid #0066ff;
-    min-height:100vh;
-    padding:1.5rem;
-}
-.sidebar h2{
-    color:#0066ff;
-    margin-bottom:1rem;
-}
-.sidebar a{
-    display:block;
-    color:#fff;
-    text-decoration:none;
-    padding:.8rem;
-    margin-bottom:.5rem;
-    border-radius:8px;
-}
-.sidebar a:hover{
-    background:#0066ff;
-    color:#000;
-}
-
-.main{
-    flex:1;
-    padding:2rem;
-}
-.stats{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:2rem;
-}
-.stat{
-    background:#111;
-    padding:2rem;
-    border-radius:15px;
-    border:2px solid rgba(0,102,255,.4);
-}
-.stat h3{
-    color:#0066ff;
-    font-size:2rem;
-}
-</style>
+    <!-- ===== CSS DASHBOARD ===== -->
+    <link rel="stylesheet" href="dashboard.css">
 </head>
-
 <body>
 
-<!-- ================= SITE PUBLIC ================= -->
-<section id="public-site">
+<div class="dashboard-container">
 
-<header>
-<nav>
-<div class="logo">CRG SERVICES</div>
-<ul>
-<li><a href="#home">Accueil</a></li>
-<li><a href="#services">Services</a></li>
-<li><a href="#contact">Contact</a></li>
-<li><a href="#" id="adminBtn" style="display:none;">Dashboard</a></li>
-</ul>
-</nav>
-</header>
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>🎮 CRG SERVICES</h2>
+            <p>Dashboard Admin</p>
+        </div>
 
-<section class="hero" id="home">
-<h1>CRG SERVICES</h1>
-<p>Développement Web • Discord • FiveM</p>
-<a class="cta" href="#services">Découvrir</a>
-<a class="cta" href="#contact">Contact</a>
-</section>
+        <nav class="sidebar-nav">
+            <a href="services.manager.html" class="nav-item active">
+                <span>📊</span> Vue d'ensemble
+            </a>
+            <a href="recrutement.html" class="nav-item">
+                <span>⚙️</span> Services
+            </a>
+            <a href="#" class="nav-item">
+                <span>📅</span> Agenda
+            </a>
+            <a href="#" class="nav-item">
+                <span>👥</span> Utilisateurs
+            </a>
+            <a href="#" class="nav-item">
+                <span>📈</span> Statistiques
+            </a>
+            <a href="#" class="nav-item">
+                <span>🔧</span> Paramètres
+            </a>
+        </nav>
 
-<section class="container" id="services">
-<h2 style="text-align:center;color:#0066ff;margin-bottom:2rem;">Nos Services</h2>
-<div class="services">
-<div class="service">
-<h3>🎮 Serveurs FiveM</h3>
-<p>Création & optimisation complète</p>
+        <div class="sidebar-footer">
+            <button onclick="backToSite()" class="btn-secondary">
+                ← Retour au site
+            </button>
+            <button onclick="logout()" class="btn-danger">
+                🚪 Déconnexion
+            </button>
+        </div>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="main-content">
+
+        <!-- ===== HEADER ===== -->
+        <header class="content-header">
+            <div>
+                <h1>📊 Vue d'ensemble</h1>
+                <p>Bienvenue sur le dashboard admin</p>
+            </div>
+
+            <div class="user-info">
+                <span id="adminName">Admin</span>
+                <div class="user-avatar">👤</div>
+            </div>
+        </header>
+
+        <!-- ===== ACCÈS REFUSÉ ===== -->
+        <div id="accessDenied" class="access-denied" style="display:none;">
+            <h2>🚫 Accès refusé</h2>
+            <p>Vous n'avez pas les permissions nécessaires.</p>
+            <button onclick="backToSite()" class="btn-primary">
+                Retour au site
+            </button>
+        </div>
+
+        <!-- ===== CONTENU DASHBOARD ===== -->
+        <div id="dashboardContent" style="display:none;">
+
+            <!-- ===== STATS ===== -->
+            <div class="stats-grid">
+
+                <div class="stat-card">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">0</h3>
+                        <p>Utilisateurs</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">👀</div>
+                    <div class="stat-info">
+                        <h3 id="totalVisits">0</h3>
+                        <p>Visites aujourd'hui</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">⚙️</div>
+                    <div class="stat-info">
+                        <h3 id="totalServices">0</h3>
+                        <p>Services actifs</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-info">
+                        <h3 id="totalAppointments">0</h3>
+                        <p>Rendez-vous</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ===== ACTIVITÉS ===== -->
+            <div class="section">
+                <h2>📋 Activités récentes</h2>
+                <div class="activity-list" id="activityList">
+                    <p style="opacity:.6">Chargement...</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
 </div>
-<div class="service">
-<h3>💬 Discord</h3>
-<p>Serveurs, bots & automatisation</p>
-</div>
-<div class="service">
-<h3>🌐 Sites Web</h3>
-<p>Sites modernes & sécurisés</p>
-</div>
-</div>
-</section>
-
-<footer id="contact">
-<p>&copy; 2026 CRG SERVICES</p>
-<p>📧 omegaofficiel02@gmail.com</p>
-<p>💬 Discord : woody_2009</p>
-</footer>
-
-</section>
-
-<!-- ================= DASHBOARD ADMIN ================= -->
-<section id="admin-dashboard">
-<div class="dashboard">
-
-<aside class="sidebar">
-<h2>🎮 CRG ADMIN</h2>
-<a href="#">📊 Vue d'ensemble</a>
-<a href="#">⚙️ Services</a>
-<a href="#">👥 Utilisateurs</a>
-<a href="#">📈 Statistiques</a>
-<a href="#" onclick="backToSite()">← Retour au site</a>
-<a href="#" onclick="logout()">🚪 Déconnexion</a>
-</aside>
-
-<main class="main">
-<h1>Dashboard Admin</h1>
-<p>Bienvenue <strong id="adminName">Admin</strong></p>
-
-<div class="stats">
-<div class="stat">
-<h3 id="totalUsers">0</h3>
-<p>Utilisateurs</p>
-</div>
-<div class="stat">
-<h3 id="totalVisits">0</h3>
-<p>Visites</p>
-</div>
-<div class="stat">
-<h3 id="totalAppointments">0</h3>
-<p>Rendez-vous</p>
-</div>
-</div>
-</main>
-
-</div>
-</section>
 
 <!-- ================= FIREBASE ================= -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="config/firebase-config.js"></script>
+
+<script src="firebase.config.js"></script>
+<script src="dashboard.js"></script>
+<script src="protect.site.js"></script>
 
 <script>
-firebaseAuth.onAuthStateChanged(async user=>{
-    if(user){
-        const admin = await isAdmin(user);
-        if(admin){
-            document.getElementById("adminBtn").style.display="block";
-            document.getElementById("adminBtn").onclick=()=>{
-                document.getElementById("public-site").style.display="none";
-                document.getElementById("admin-dashboard").style.display="block";
-                document.getElementById("adminName").textContent=user.email;
-            }
-        }
+/* ================= AUTH & PERMISSIONS ================= */
+
+firebaseAuth.onAuthStateChanged(async (user) => {
+
+    if (!user) {
+        window.location.href = "login.html";
+        return;
     }
+
+    document.getElementById("adminName").textContent =
+        user.displayName || user.email || "Admin";
+
+    const admin = await isAdmin(user);
+
+    if (!admin) {
+        document.getElementById("accessDenied").style.display = "flex";
+        document.getElementById("dashboardContent").style.display = "none";
+        return;
+    }
+
+    document.getElementById("accessDenied").style.display = "none";
+    document.getElementById("dashboardContent").style.display = "block";
+
+    loadDashboardStats();
+    loadRecentActivity();
 });
 
-function backToSite(){
-    document.getElementById("admin-dashboard").style.display="none";
-    document.getElementById("public-site").style.display="block";
+/* ================= STATS ================= */
+
+async function loadDashboardStats() {
+    try {
+        const users = await firebaseDb.collection("users").get();
+        document.getElementById("totalUsers").textContent = users.size;
+
+        const visits = await firebaseDb.collection("visits").get();
+        document.getElementById("totalVisits").textContent = visits.size;
+
+        const services = await firebaseDb.collection("services").get();
+        document.getElementById("totalServices").textContent = services.size;
+
+        const appointments = await firebaseDb.collection("appointments").get();
+        document.getElementById("totalAppointments").textContent = appointments.size;
+
+    } catch (e) {
+        console.error("Erreur stats :", e);
+    }
 }
 
-function logout(){
-    firebaseAuth.signOut().then(()=>location.reload());
+/* ================= ACTIVITÉS ================= */
+
+async function loadRecentActivity() {
+    const list = document.getElementById("activityList");
+    list.innerHTML = "";
+
+    try {
+        const logs = await firebaseDb
+            .collection("logs")
+            .orderBy("timestamp", "desc")
+            .limit(10)
+            .get();
+
+        if (logs.empty) {
+            list.innerHTML = "<p>Aucune activité récente</p>";
+            return;
+        }
+
+        logs.forEach(doc => {
+            const log = doc.data();
+            const div = document.createElement("div");
+            div.className = "activity-item";
+
+            const date = log.timestamp?.toDate().toLocaleString("fr-FR");
+
+            div.innerHTML = `
+                <strong>${log.action || "Action"}</strong>
+                <br>
+                <small>${log.userEmail || "Utilisateur"} • ${date}</small>
+            `;
+            list.appendChild(div);
+        });
+
+    } catch (e) {
+        list.innerHTML = "<p>Erreur de chargement</p>";
+        console.error(e);
+    }
+}
+
+/* ================= NAV ================= */
+
+function backToSite() {
+    window.location.href = "index.html";
+}
+
+async function logout() {
+    await firebaseAuth.signOut();
+    window.location.href = "login.html";
 }
 </script>
 
