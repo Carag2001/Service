@@ -38,19 +38,13 @@ body::before{
     padding:3rem;
     width:90%;
     max-width:500px;
-    box-shadow:0 0 50px rgba(0,102,255,.5);
-    z-index:1
+    box-shadow:0 0 50px rgba(0,102,255,.5)
 }
 .logo{text-align:center;margin-bottom:2rem}
 .logo h1{
     font-size:2.5rem;
     color:#0066ff;
     text-shadow:0 0 20px #0066ff,0 0 40px #0066ff;
-    animation:neonPulse 2s infinite
-}
-@keyframes neonPulse{
-    0%,100%{text-shadow:0 0 10px #0066ff}
-    50%{text-shadow:0 0 30px #0066ff}
 }
 .logo p{color:#999;margin-top:.5rem}
 .input-group{margin-bottom:1.5rem}
@@ -114,7 +108,7 @@ body::before{
 <div class="error-message" id="errorMessage"></div>
 <div class="success-message" id="successMessage"></div>
 
-<form onsubmit="registerUser(event)">
+<form id="registerForm">
 <div class="input-group">
 <label>Nom complet</label>
 <input id="fullName" required>
@@ -141,7 +135,7 @@ body::before{
 <div class="divider">OU</div>
 
 <div class="social-login">
-<button class="social-btn" onclick="registerWithGoogle()">Google</button>
+<button class="social-btn" id="googleRegister">Google</button>
 <button class="social-btn" onclick="registerWithDiscord()">Discord</button>
 </div>
 
@@ -151,17 +145,17 @@ body::before{
 
 </div>
 
-<!-- FIREBASE SDK -->
+<!-- FIREBASE SDK (ORDRE CRITIQUE) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 <!-- CONFIG FIREBASE (RACINE) -->
-<script src="/firebase.config.js"></script>
+<script src="firebase.config.js"></script>
 
 <script>
-/* 🔐 Sécurité */
-if (typeof firebaseAuth === "undefined") {
+/* Sécurité */
+if (!window.firebaseAuth) {
     alert("❌ Firebase non chargé. Vérifie firebase.config.js");
 }
 
@@ -178,14 +172,14 @@ function showSuccess(msg){
 }
 
 /* REGISTER EMAIL */
-async function registerUser(e){
+document.getElementById("registerForm").addEventListener("submit", async e=>{
     e.preventDefault();
 
     if (passwordInput.value !== confirmPassword.value) {
         return showError("Les mots de passe ne correspondent pas");
     }
 
-    try {
+    try{
         const cred = await firebaseAuth.createUserWithEmailAndPassword(
             emailInput.value,
             passwordInput.value
@@ -196,13 +190,13 @@ async function registerUser(e){
         });
 
         if (window.sendDiscordLog) {
-            await sendDiscordLog('register', cred.user, {provider:'Email'});
+            await sendDiscordLog("register", cred.user, {provider:"Email"});
         }
 
         showSuccess("Compte créé avec succès");
         setTimeout(()=>location.href="index.html",1200);
 
-    } catch (err) {
+    }catch(err){
         if (err.code === "auth/email-already-in-use") {
             showError("Email déjà utilisé");
         } else {
@@ -210,25 +204,27 @@ async function registerUser(e){
         }
         console.error(err);
     }
-}
+});
 
 /* GOOGLE */
-async function registerWithGoogle(){
+document.getElementById("googleRegister").addEventListener("click", async ()=>{
     try{
         const provider = new firebase.auth.GoogleAuthProvider();
         const r = await firebaseAuth.signInWithPopup(provider);
+
         if (window.sendDiscordLog) {
-            await sendDiscordLog('register', r.user, {provider:'Google'});
+            await sendDiscordLog("register", r.user, {provider:"Google"});
         }
+
         location.href="index.html";
     }catch{
         showError("Erreur Google");
     }
-}
+});
 
 /* DISCORD */
 function registerWithDiscord(){
-    showError("Discord nécessite un backend (OAuth)");
+    showError("Connexion Discord nécessite un backend");
 }
 
 /* AUTO REDIRECT */
