@@ -1,5 +1,18 @@
 // ============================================
-// CONFIGURATION FIREBASE (COMPAT HTML)
+// CONFIGURATION FIREBASE (HTML COMPAT – OBLIGATOIRE)
+// ============================================
+
+// ⚠️ CE FICHIER DOIT ÊTRE CHARGÉ APRÈS
+// firebase-app-compat.js
+// firebase-auth-compat.js
+// firebase-firestore-compat.js
+
+if (typeof firebase === "undefined") {
+    console.error("❌ Firebase SDK non chargé. Vérifie les <script src=...>");
+}
+
+// ============================================
+// CONFIG FIREBASE
 // ============================================
 
 const firebaseConfig = {
@@ -12,16 +25,14 @@ const firebaseConfig = {
 };
 
 // ============================================
-// CONFIGURATION DISCORD WEBHOOK
+// DISCORD WEBHOOK (OPTIONNEL)
 // ============================================
-// ⚠️ METS TON VRAI WEBHOOK DISCORD ICI
-// (Sinon les logs Discord seront ignorés sans casser le site)
 
 const DISCORD_WEBHOOK_URL = ""; 
-// ex: https://discord.com/api/webhooks/XXXX/XXXX
+// https://discord.com/api/webhooks/XXXX/XXXX
 
 // ============================================
-// LISTE DES ADMINS (EMAILS FIREBASE)
+// ADMINS
 // ============================================
 
 const ADMIN_EMAILS = [
@@ -29,41 +40,40 @@ const ADMIN_EMAILS = [
 ];
 
 // ============================================
-// INITIALISATION FIREBASE
+// INITIALISATION FIREBASE (SÉCURISÉE)
 // ============================================
 
-let app = null;
-let auth = null;
-let db = null;
+let firebaseApp;
+let firebaseAuth;
+let firebaseDb;
 
 try {
-    // Évite une double initialisation
     if (!firebase.apps.length) {
-        app = firebase.initializeApp(firebaseConfig);
+        firebaseApp = firebase.initializeApp(firebaseConfig);
     } else {
-        app = firebase.app();
+        firebaseApp = firebase.app();
     }
 
-    auth = firebase.auth();
-    db = firebase.firestore();
+    firebaseAuth = firebase.auth();
+    firebaseDb = firebase.firestore();
 
     console.log("✅ Firebase initialisé avec succès");
-} catch (error) {
-    console.error("❌ Erreur initialisation Firebase :", error);
+} catch (e) {
+    console.error("❌ Erreur Firebase :", e);
 }
 
 // ============================================
-// ENVOI DES LOGS DISCORD (OPTIONNEL)
+// LOGS DISCORD
 // ============================================
 
 async function sendDiscordLog(type, user, details = {}) {
     if (!DISCORD_WEBHOOK_URL) return;
 
     const colors = {
-        register: 3066993, // Vert
-        login: 3447003,    // Bleu
-        logout: 15158332,  // Rouge
-        visit: 10181046    // Violet
+        register: 3066993,
+        login: 3447003,
+        logout: 15158332,
+        visit: 10181046
     };
 
     const embed = {
@@ -81,9 +91,7 @@ async function sendDiscordLog(type, user, details = {}) {
                 inline: true
             }
         ],
-        footer: {
-            text: "CRG Services - System Logs"
-        },
+        footer: { text: "CRG Services - System Logs" },
         timestamp: new Date().toISOString()
     };
 
@@ -109,13 +117,13 @@ async function sendDiscordLog(type, user, details = {}) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ embeds: [embed] })
         });
-    } catch (e) {
-        console.error("❌ Erreur webhook Discord :", e);
+    } catch (err) {
+        console.error("❌ Erreur Discord webhook :", err);
     }
 }
 
 // ============================================
-// VÉRIFICATION ADMIN
+// ADMIN CHECK
 // ============================================
 
 function isAdmin(user) {
@@ -124,11 +132,11 @@ function isAdmin(user) {
 }
 
 // ============================================
-// EXPORT GLOBAL (OBLIGATOIRE POUR register.html)
+// EXPORT GLOBAL (TRÈS IMPORTANT)
 // ============================================
 
-window.firebaseApp = app;
-window.firebaseAuth = auth;
-window.firebaseDb = db;
+window.firebaseApp = firebaseApp;
+window.firebaseAuth = firebaseAuth;
+window.firebaseDb = firebaseDb;
 window.sendDiscordLog = sendDiscordLog;
 window.isAdmin = isAdmin;
