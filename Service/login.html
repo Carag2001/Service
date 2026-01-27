@@ -171,26 +171,28 @@ body::before{
 
 <div class="footer-links">
 <p>Pas encore de compte ? <a href="register.html">S'inscrire</a></p>
-<p><a href="/index.html">← Accueil</a></p>
+<p><a href="index.html">← Accueil</a></p>
 </div>
 
 </div>
 
-<!-- FIREBASE SDK -->
+<!-- FIREBASE SDK (ORDRE CRITIQUE) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
-<!-- CONFIG FIREBASE (BON CHEMIN) -->
+<!-- CONFIG FIREBASE -->
 <script src="firebase.config.js"></script>
 
 <script>
-if (typeof firebaseAuth === "undefined") {
-    alert("❌ Firebase non chargé. Vérifie firebase.config.js");
-}
-
 let confirmationResult = null;
 
+/* 🔐 SÉCURITÉ : Firebase doit exister */
+if (typeof firebaseAuth === "undefined") {
+    alert("❌ Firebase non initialisé. Vérifie firebase.config.js");
+}
+
+/* UI */
 function switchTab(tab, btn){
     document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
     document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));
@@ -199,16 +201,17 @@ function switchTab(tab, btn){
 }
 
 function showError(msg){
-    errorMessage.textContent=msg;
+    errorMessage.textContent = msg;
     errorMessage.classList.add('show');
     setTimeout(()=>errorMessage.classList.remove('show'),4000);
 }
 
 function showSuccess(msg){
-    successMessage.textContent=msg;
+    successMessage.textContent = msg;
     successMessage.classList.add('show');
 }
 
+/* EMAIL */
 async function loginWithEmail(e){
     e.preventDefault();
     try{
@@ -220,12 +223,13 @@ async function loginWithEmail(e){
             await sendDiscordLog('login', cred.user, {provider:'Email'});
         }
         showSuccess("Connexion réussie");
-        setTimeout(()=>location.href="/index.html",1200);
+        setTimeout(()=>location.href="index.html",1200);
     }catch{
         showError("Identifiants invalides");
     }
 }
 
+/* GOOGLE */
 async function loginWithGoogle(){
     try{
         const provider = new firebase.auth.GoogleAuthProvider();
@@ -233,16 +237,18 @@ async function loginWithGoogle(){
         if (window.sendDiscordLog) {
             await sendDiscordLog('login', r.user, {provider:'Google'});
         }
-        location.href="/index.html";
+        location.href="index.html";
     }catch{
         showError("Erreur Google");
     }
 }
 
+/* DISCORD */
 function loginWithDiscord(){
-    showError("Connexion Discord non disponible sans backend");
+    showError("Discord nécessite un backend (OAuth)");
 }
 
+/* PHONE */
 function loginWithPhone(e){
     e.preventDefault();
     window.recaptchaVerifier =
@@ -261,14 +267,17 @@ async function verifyCode(){
         if (window.sendDiscordLog) {
             await sendDiscordLog('login', r.user, {provider:'Phone'});
         }
-        location.href="/index.html";
+        location.href="index.html";
     }catch{
         showError("Code invalide");
     }
 }
 
-firebaseAuth.onAuthStateChanged(u=>{
-    if(u) location.href="/index.html";
+/* AUTO REDIRECT */
+firebaseAuth.onAuthStateChanged(user=>{
+    if(user){
+        location.href="index.html";
+    }
 });
 </script>
 
