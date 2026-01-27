@@ -5,323 +5,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription | CRG Services</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{
+            font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+            background:#0a0a0a;
+            color:#fff;
+            min-height:100vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            position:relative;
+            overflow-x:hidden
         }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow-x: hidden;
+        body::before{
+            content:'';
+            position:fixed;
+            inset:0;
+            background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,102,255,.03) 2px,rgba(0,102,255,.03) 4px);
+            pointer-events:none
         }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                0deg,
-                transparent,
-                transparent 2px,
-                rgba(0, 102, 255, 0.03) 2px,
-                rgba(0, 102, 255, 0.03) 4px
-            );
-            pointer-events: none;
+        .register-container{
+            background:rgba(10,10,10,.95);
+            backdrop-filter:blur(10px);
+            border:2px solid #0066ff;
+            border-radius:20px;
+            padding:3rem;
+            width:90%;
+            max-width:500px;
+            box-shadow:0 0 50px rgba(0,102,255,.5);
+            z-index:1
         }
-
-        .register-container {
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            border: 2px solid #0066ff;
-            border-radius: 20px;
-            padding: 3rem;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 0 50px rgba(0, 102, 255, 0.5);
-            position: relative;
-            z-index: 1;
+        .logo{text-align:center;margin-bottom:2rem}
+        .logo h1{
+            font-size:2.5rem;
+            color:#0066ff;
+            text-shadow:0 0 20px #0066ff,0 0 40px #0066ff;
+            animation:neonPulse 2s infinite
         }
-
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
+        @keyframes neonPulse{
+            0%,100%{text-shadow:0 0 10px #0066ff,0 0 20px #0066ff}
+            50%{text-shadow:0 0 20px #0066ff,0 0 40px #0066ff,0 0 60px #0066ff}
         }
-
-        .logo h1 {
-            font-size: 2.5rem;
-            color: #0066ff;
-            text-shadow: 0 0 20px #0066ff, 0 0 40px #0066ff;
-            animation: neonPulse 2s infinite;
+        .logo p{color:#999;margin-top:.5rem}
+        .input-group{margin-bottom:1.5rem}
+        .input-group label{display:block;margin-bottom:.5rem;color:#0066ff;font-weight:bold}
+        .input-group input{
+            width:100%;
+            padding:1rem;
+            background:rgba(0,102,255,.1);
+            border:2px solid rgba(0,102,255,.3);
+            border-radius:10px;
+            color:#fff;
+            font-size:1rem
         }
-
-        @keyframes neonPulse {
-            0%, 100% { text-shadow: 0 0 10px #0066ff, 0 0 20px #0066ff; }
-            50% { text-shadow: 0 0 20px #0066ff, 0 0 40px #0066ff, 0 0 60px #0066ff; }
+        .submit-btn{
+            width:100%;
+            padding:1rem;
+            background:#0066ff;
+            border:none;
+            border-radius:10px;
+            font-weight:bold;
+            cursor:pointer
         }
-
-        .logo p {
-            color: #999;
-            margin-top: 0.5rem;
+        .divider{text-align:center;margin:2rem 0;color:#666}
+        .social-login{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+        .social-btn{
+            padding:1rem;
+            border:2px solid rgba(0,102,255,.3);
+            background:rgba(0,102,255,.1);
+            border-radius:10px;
+            color:#0066ff;
+            cursor:pointer;
+            font-weight:bold
         }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .input-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #0066ff;
-            font-weight: bold;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(0, 102, 255, 0.1);
-            border: 2px solid rgba(0, 102, 255, 0.3);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #0066ff;
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.3);
-        }
-
-        .input-group input::placeholder {
-            color: #666;
-        }
-
-        .password-strength {
-            margin-top: 0.5rem;
-            height: 5px;
-            background: rgba(0, 102, 255, 0.2);
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .password-strength-bar {
-            height: 100%;
-            width: 0%;
-            transition: all 0.3s;
-            border-radius: 5px;
-        }
-
-        .strength-weak { background: #ff6b6b; width: 33%; }
-        .strength-medium { background: #ffd93d; width: 66%; }
-        .strength-strong { background: #51cf66; width: 100%; }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin: 1.5rem 0;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .checkbox-group label {
-            color: #ccc;
-            cursor: pointer;
-        }
-
-        .checkbox-group a {
-            color: #0066ff;
-            text-decoration: none;
-        }
-
-        .checkbox-group a:hover {
-            text-shadow: 0 0 10px #0066ff;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: #0066ff;
-            border: none;
-            border-radius: 10px;
-            color: #000;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 0 30px rgba(0, 102, 255, 0.8);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 2rem 0;
-            position: relative;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            width: 100%;
-            height: 1px;
-            background: rgba(0, 102, 255, 0.3);
-        }
-
-        .divider span {
-            position: relative;
-            background: rgba(10, 10, 10, 0.95);
-            padding: 0 1rem;
-            color: #666;
-        }
-
-        .social-login {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .social-btn {
-            padding: 1rem;
-            background: rgba(0, 102, 255, 0.1);
-            border: 2px solid rgba(0, 102, 255, 0.3);
-            border-radius: 10px;
-            color: #0066ff;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .social-btn:hover {
-            background: #0066ff;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 102, 255, 0.5);
-        }
-
-        .social-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .error-message, .success-message {
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        .error-message {
-            background: rgba(255, 0, 0, 0.1);
-            border: 2px solid rgba(255, 0, 0, 0.5);
-            color: #ff6b6b;
-        }
-
-        .success-message {
-            background: rgba(0, 255, 0, 0.1);
-            border: 2px solid rgba(0, 255, 0, 0.5);
-            color: #51cf66;
-        }
-
-        .error-message.show, .success-message.show {
-            display: block;
-        }
-
-        .footer-links {
-            text-align: center;
-            margin-top: 2rem;
-            color: #666;
-        }
-
-        .footer-links a {
-            color: #0066ff;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .footer-links a:hover {
-            text-shadow: 0 0 10px #0066ff;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 1rem;
-            color: #0066ff;
-        }
-
-        .loading.show {
-            display: block;
-        }
-
-        .spinner {
-            border: 3px solid rgba(0, 102, 255, 0.3);
-            border-top: 3px solid #0066ff;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @media (max-width: 768px) {
-            .register-container {
-                padding: 2rem;
-            }
-
-            .social-login {
-                grid-template-columns: 1fr;
-            }
-        }
+        .footer-links{text-align:center;margin-top:2rem;color:#666}
+        .footer-links a{color:#0066ff;text-decoration:none}
     </style>
 </head>
+
 <body>
-    <!-- CONTENU IDENTIQUE -->
-    <!-- ... (tout ton HTML est inchangé) ... -->
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<div class="register-container">
+    <div class="logo">
+        <h1>CRG SERVICES</h1>
+        <p>Créez votre compte</p>
+    </div>
 
-    <!-- ✅ CORRIGÉ : chemin valide GitHub Pages -->
-    <script src="firebase.config.js"></script>
+    <form onsubmit="registerUser(event)">
+        <div class="input-group">
+            <label>Nom complet</label>
+            <input id="fullName" required>
+        </div>
 
-    <script>
-        /* TOUT TON JS EST STRICTEMENT IDENTIQUE */
-    </script>
+        <div class="input-group">
+            <label>Email</label>
+            <input type="email" id="emailInput" required>
+        </div>
+
+        <div class="input-group">
+            <label>Mot de passe</label>
+            <input type="password" id="passwordInput" required minlength="8">
+        </div>
+
+        <div class="input-group">
+            <label>Confirmer</label>
+            <input type="password" id="confirmPassword" required>
+        </div>
+
+        <button class="submit-btn">CRÉER MON COMPTE</button>
+    </form>
+
+    <div class="divider">OU</div>
+
+    <div class="social-login">
+        <button class="social-btn" onclick="registerWithGoogle()">Google</button>
+        <button class="social-btn" onclick="registerWithDiscord()">Discord</button>
+    </div>
+
+    <div class="footer-links">
+        <p>Déjà un compte ? <a href="login.html">Connexion</a></p>
+    </div>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+<!-- ✅ CHEMIN CORRECT -->
+<script src="firebase.config.js"></script>
+
+<script>
+async function registerUser(e){
+    e.preventDefault();
+    const email=emailInput.value;
+    const pass=passwordInput.value;
+    const confirm=confirmPassword.value;
+    if(pass!==confirm) return alert("Mots de passe différents");
+
+    const cred=await firebaseAuth.createUserWithEmailAndPassword(email,pass);
+    await cred.user.updateProfile({displayName:fullName.value});
+    location.href="index.html";
+}
+
+function registerWithGoogle(){
+    const provider=new firebase.auth.GoogleAuthProvider();
+    firebaseAuth.signInWithPopup(provider).then(()=>location.href="index.html");
+}
+
+function registerWithDiscord(){
+    alert("Discord en développement");
+}
+</script>
+
 </body>
 </html>
