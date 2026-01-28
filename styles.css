@@ -1,13 +1,13 @@
 /* ===== VARIABLES GLOBALES ===== */
 :root {
-    --neon-red: #ff0033;
+    --neon-blue: #0026ff;
     --neon-red-glow: rgba(255, 0, 51, 0.8);
-    --neon-dark-red: #cc0029;
+    --neon-dark-red: #ffffff;
     --bg-black: #0a0a0a;
     --bg-dark: #121212;
     --text-white: #ffffff;
     --text-gray: #b0b0b0;
-    --border-red: #ff003380;
+    --border-red: #ffffff;
 }
 
 /* ===== RESET & BASE ===== */
@@ -65,7 +65,7 @@ html {
     position: absolute;
     width: 3px;
     height: 3px;
-    background: var(--neon-red);
+    background: var(--neon-blue);
     border-radius: 50%;
     box-shadow: 0 0 10px var(--neon-red-glow);
     animation: float 15s infinite ease-in-out;
@@ -116,7 +116,7 @@ html {
     font-family: 'Orbitron', sans-serif;
     font-size: 2rem;
     font-weight: 900;
-    color: var(--neon-red);
+    color: var(--neon-blue);
     text-shadow: 
         0 0 10px var(--neon-red-glow),
         0 0 20px var(--neon-red-glow),
@@ -128,7 +128,7 @@ html {
 .logo-pulse {
     width: 10px;
     height: 10px;
-    background: var(--neon-red);
+    background: var(--neon-blue);
     border-radius: 50%;
     box-shadow: 0 0 20px var(--neon-red-glow);
     animation: pulse 2s infinite;
@@ -163,13 +163,13 @@ html {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--neon-red);
+    background: var(--neon-blue);
     box-shadow: 0 0 10px var(--neon-red-glow);
     transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--neon-red);
+    color: var(--neon-blue);
     text-shadow: 0 0 10px var(--neon-red-glow);
 }
 
@@ -187,7 +187,7 @@ html {
 .hamburger span {
     width: 30px;
     height: 3px;
-    background: var(--neon-red);
+    background: var(--neon-blue);
     box-shadow: 0 0 10px var(--neon-red-glow);
     transition: all 0.3s ease;
 }
@@ -215,7 +215,7 @@ html {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 1rem;
-    color: var(--neon-red);
+    color: var(--neon-blue);
     text-shadow: 
         0 0 10px var(--neon-red-glow),
         0 0 20px var(--neon-red-glow);
@@ -238,7 +238,7 @@ html {
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 3px;
     overflow: hidden;
-    border-right: 3px solid var(--neon-red);
+    border-right: 3px solid var(--neon-blue);
     white-space: nowrap;
     animation: typing 3s steps(30) 1s forwards, blink 0.7s infinite;
     width: 0;
@@ -256,7 +256,7 @@ html {
 .neon-line {
     width: 200px;
     height: 3px;
-    background: linear-gradient(90deg, var(--neon-red), transparent);
+    background: linear-gradient(90deg, var(--neon-blue), transparent);
     box-shadow: 0 0 10px var(--neon-red-glow);
     margin: 2rem 0;
     animation: expand 2s ease-out;
@@ -285,7 +285,7 @@ html {
     position: relative;
     padding: 1rem 2.5rem;
     background: transparent;
-    border: 2px solid var(--neon-red);
+    border: 2px solid var(--neon-blue);
     color: var(--text-white);
     font-family: 'Orbitron', sans-serif;
     font-weight: 700;
@@ -307,7 +307,7 @@ html {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: var(--neon-red);
+    background: var(--neon-blue);
     transition: left 0.5s ease;
     z-index: 1;
 }
@@ -324,7 +324,7 @@ html {
 }
 
 .btn-primary {
-    background: var(--neon-red);
+    background: var(--neon-blue);
     box-shadow: 0 0 20px var(--neon-red-glow);
 }
 
@@ -341,7 +341,7 @@ html {
 .neon-circle {
     position: absolute;
     border-radius: 50%;
-    border: 2px solid var(--neon-red);
+    border: 2px solid var(--neon-blue);
     box-shadow: 
         0 0 20px var(--neon-red-glow),
         inset 0 0 20px var(--neon-red-glow);
@@ -386,7 +386,7 @@ section {
     font-family: 'Orbitron', sans-serif;
     font-size: 3rem;
     font-weight: 900;
-    color: var(--neon-red);
+    color: var(--neon-blue);
     text-shadow: 0 0 20px var(--neon-red-glow);
     letter-spacing: 5px;
     margin-bottom: 1rem;
@@ -397,7 +397,7 @@ section {
 .neon-underline {
     width: 150px;
     height: 3px;
-    background: var(--neon-red);
+    background: var(--neon-blue);
     box-shadow: 0 0 10px var(--neon-red-glow);
     margin: 0 auto;
     animation: pulse-width 2s infinite;
@@ -457,7 +457,7 @@ section {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--neon-red);
+    color: var(--neon-blue);
     margin-bottom: 1rem;
     letter-spacing: 2px;
 }
@@ -481,7 +481,7 @@ section {
     font-size: 0.8rem;
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 1px;
-    color: var(--neon-red);
+    color: var(--neon-blue);
 }
 
 /* ===== PORTFOLIO ===== */
@@ -548,7 +548,7 @@ section {
 
 .btn-view:hover {
     background: white;
-    color: var(--neon-red);
+    color: var(--neon-blue);
     transform: scale(1.05);
 }
 
@@ -585,7 +585,7 @@ section {
 
 .form-input:focus {
     outline: none;
-    border-bottom-color: var(--neon-red);
+    border-bottom-color: var(--neon-blue);
     box-shadow: 0 3px 10px var(--neon-red-glow);
 }
 
@@ -601,7 +601,7 @@ section {
     left: 0;
     width: 0;
     height: 2px;
-    background: var(--neon-red);
+    background: var(--neon-blue);
     box-shadow: 0 0 10px var(--neon-red-glow);
     transition: width 0.3s ease;
 }
@@ -676,7 +676,7 @@ section {
     left: 0;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+    background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
     box-shadow: 0 0 20px var(--neon-red-glow);
     animation: slide 3s infinite;
 }
@@ -700,7 +700,7 @@ section {
 }
 
 .social-link:hover {
-    color: var(--neon-red);
+    color: var(--neon-blue);
     text-shadow: 0 0 10px var(--neon-red-glow);
 }
 
