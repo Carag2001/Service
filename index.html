@@ -3,238 +3,236 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin | CRG Services</title>
-
-    <!-- ===== CSS DASHBOARD ===== -->
-    <link rel="stylesheet" href="dashboard.css">
+    <title>Néon Digital - Site Futuriste</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Effet de grille néon en arrière-plan -->
+    <div class="neon-grid"></div>
+    
+    <!-- Particules flottantes -->
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
 
-<div class="dashboard-container">
-
-    <!-- ================= SIDEBAR ================= -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <h2>🎮 CRG SERVICES</h2>
-            <p>Dashboard Admin</p>
-        </div>
-
-        <nav class="sidebar-nav">
-            <a href="manager.html" class="nav-item active">
-                <span>📊</span> Vue d'ensemble
-            </a>
-            <a href="recrutement.html" class="nav-item">
-                <span>⚙️</span> Services
-            </a>
-            <a href="#" class="nav-item">
-                <span>📅</span> Agenda
-            </a>
-            <a href="#" class="nav-item">
-                <span>👥</span> Utilisateurs
-            </a>
-            <a href="#" class="nav-item">
-                <span>📈</span> Statistiques
-            </a>
-            <a href="#" class="nav-item">
-                <span>🔧</span> Paramètres
-            </a>
-        </nav>
-
-        <div class="sidebar-footer">
-            <button onclick="backToSite()" class="btn-secondary">
-                ← Retour au site
-            </button>
-            <button onclick="logout()" class="btn-danger">
-                🚪 Déconnexion
-            </button>
-        </div>
-    </aside>
-
-    <!-- ================= MAIN ================= -->
-    <main class="main-content">
-
-        <!-- ===== HEADER ===== -->
-        <header class="content-header">
-            <div>
-                <h1>📊 Vue d'ensemble</h1>
-                <p>Bienvenue sur le dashboard admin</p>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-text" data-text="NÉON">NÉON</span>
+                <span class="logo-pulse"></span>
             </div>
-
-            <div class="user-info">
-                <span id="adminName">Admin</span>
-                <div class="user-avatar">👤</div>
+            <ul class="nav-menu">
+                <li><a href="#accueil" class="nav-link">ACCUEIL</a></li>
+                <li><a href="#services" class="nav-link">SERVICES</a></li>
+                <li><a href="#portfolio" class="nav-link">PORTFOLIO</a></li>
+                <li><a href="#contact" class="nav-link">CONTACT</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-        </header>
-
-        <!-- ===== ACCÈS REFUSÉ ===== -->
-        <div id="accessDenied" class="access-denied" style="display:none;">
-            <h2>🚫 Accès refusé</h2>
-            <p>Vous n'avez pas les permissions nécessaires.</p>
-            <button onclick="backToSite()" class="btn-primary">
-                Retour au site
-            </button>
         </div>
+    </nav>
 
-        <!-- ===== CONTENU DASHBOARD ===== -->
-        <div id="dashboardContent" style="display:none;">
-
-            <!-- ===== STATS ===== -->
-            <div class="stats-grid">
-
-                <div class="stat-card">
-                    <div class="stat-icon">👥</div>
-                    <div class="stat-info">
-                        <h3 id="totalUsers">0</h3>
-                        <p>Utilisateurs</p>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">👀</div>
-                    <div class="stat-info">
-                        <h3 id="totalVisits">0</h3>
-                        <p>Visites aujourd'hui</p>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">⚙️</div>
-                    <div class="stat-info">
-                        <h3 id="totalServices">0</h3>
-                        <p>Services actifs</p>
-                    </div>
-                </div>
-
-                <div class="stat-card">
-                    <div class="stat-icon">📅</div>
-                    <div class="stat-info">
-                        <h3 id="totalAppointments">0</h3>
-                        <p>Rendez-vous</p>
-                    </div>
-                </div>
-
+    <!-- Section Hero -->
+    <section id="accueil" class="hero">
+        <div class="hero-content">
+            <h1 class="glitch-text" data-text="BIENVENUE DANS LE FUTUR">
+                BIENVENUE DANS LE FUTUR
+            </h1>
+            <p class="hero-subtitle typing-text">Expérience digitale immersive</p>
+            <div class="neon-line"></div>
+            <p class="hero-description">
+                Plongez dans un univers cyberpunk où technologie et créativité se rencontrent
+            </p>
+            <div class="hero-buttons">
+                <button class="btn-neon btn-primary">
+                    <span>DÉCOUVRIR</span>
+                    <div class="btn-glow"></div>
+                </button>
+                <button class="btn-neon btn-secondary">
+                    <span>EN SAVOIR PLUS</span>
+                    <div class="btn-glow"></div>
+                </button>
             </div>
+        </div>
+        <div class="hero-visual">
+            <div class="neon-circle circle-1"></div>
+            <div class="neon-circle circle-2"></div>
+            <div class="neon-circle circle-3"></div>
+            <div class="code-rain"></div>
+        </div>
+    </section>
 
-            <!-- ===== ACTIVITÉS ===== -->
-            <div class="section">
-                <h2>📋 Activités récentes</h2>
-                <div class="activity-list" id="activityList">
-                    <p style="opacity:.6">Chargement...</p>
+    <!-- Section Services -->
+    <section id="services" class="services">
+        <div class="section-header">
+            <h2 class="section-title" data-text="NOS SERVICES">NOS SERVICES</h2>
+            <div class="neon-underline"></div>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="card-glow"></div>
+                <div class="card-icon">⚡</div>
+                <h3 class="card-title">DÉVELOPPEMENT WEB</h3>
+                <p class="card-description">
+                    Sites web ultra-modernes avec des technologies de pointe
+                </p>
+                <div class="card-stats">
+                    <span class="stat">99.9% Uptime</span>
+                    <span class="stat">Lightning Fast</span>
                 </div>
             </div>
 
+            <div class="service-card">
+                <div class="card-glow"></div>
+                <div class="card-icon">🎨</div>
+                <h3 class="card-title">DESIGN CRÉATIF</h3>
+                <p class="card-description">
+                    Interfaces utilisateur futuristes et engageantes
+                </p>
+                <div class="card-stats">
+                    <span class="stat">Unique Design</span>
+                    <span class="stat">UI/UX Pro</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="card-glow"></div>
+                <div class="card-icon">🚀</div>
+                <h3 class="card-title">OPTIMISATION</h3>
+                <p class="card-description">
+                    Performance maximale pour une expérience optimale
+                </p>
+                <div class="card-stats">
+                    <span class="stat">SEO Ready</span>
+                    <span class="stat">Speed Boost</span>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="card-glow"></div>
+                <div class="card-icon">🔒</div>
+                <h3 class="card-title">SÉCURITÉ</h3>
+                <p class="card-description">
+                    Protection avancée contre toutes les menaces
+                </p>
+                <div class="card-stats">
+                    <span class="stat">Encrypted</span>
+                    <span class="stat">Secured</span>
+                </div>
+            </div>
         </div>
-    </main>
-</div>
+    </section>
 
-<!-- ================= FIREBASE ================= -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- Section Portfolio -->
+    <section id="portfolio" class="portfolio">
+        <div class="section-header">
+            <h2 class="section-title" data-text="PORTFOLIO">PORTFOLIO</h2>
+            <div class="neon-underline"></div>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3>PROJET ALPHA</h3>
+                    <p>Application web innovante</p>
+                    <button class="btn-view">VOIR PLUS</button>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3>PROJET BETA</h3>
+                    <p>Plateforme e-commerce</p>
+                    <button class="btn-view">VOIR PLUS</button>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3>PROJET GAMMA</h3>
+                    <p>Dashboard analytics</p>
+                    <button class="btn-view">VOIR PLUS</button>
+                </div>
+            </div>
+            <div class="portfolio-item">
+                <div class="portfolio-overlay">
+                    <h3>PROJET DELTA</h3>
+                    <p>App mobile hybrid</p>
+                    <button class="btn-view">VOIR PLUS</button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script src="/firebase.config.js"></script>
-<script src="dashboard.js"></script>
-<script src="protect.site.js"></script>
+    <!-- Section Contact -->
+    <section id="contact" class="contact">
+        <div class="section-header">
+            <h2 class="section-title" data-text="CONTACTEZ-NOUS">CONTACTEZ-NOUS</h2>
+            <div class="neon-underline"></div>
+        </div>
+        <div class="contact-content">
+            <form class="contact-form">
+                <div class="form-group">
+                    <input type="text" class="form-input" placeholder="NOM" required>
+                    <div class="input-line"></div>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-input" placeholder="EMAIL" required>
+                    <div class="input-line"></div>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-input" rows="5" placeholder="MESSAGE" required></textarea>
+                    <div class="input-line"></div>
+                </div>
+                <button type="submit" class="btn-neon btn-submit">
+                    <span>ENVOYER</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </form>
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="info-icon">📧</div>
+                    <h3>EMAIL</h3>
+                    <p>contact@neon-digital.com</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📱</div>
+                    <h3>TÉLÉPHONE</h3>
+                    <p>+33 1 23 45 67 89</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">📍</div>
+                    <h3>ADRESSE</h3>
+                    <p>Paris, France</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<script>
-/* ================= AUTH & PERMISSIONS ================= */
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 NÉON DIGITAL. Tous droits réservés.</p>
+            <div class="social-links">
+                <a href="#" class="social-link">TWITTER</a>
+                <a href="#" class="social-link">LINKEDIN</a>
+                <a href="#" class="social-link">GITHUB</a>
+            </div>
+        </div>
+        <div class="footer-glow"></div>
+    </footer>
 
-firebaseAuth.onAuthStateChanged(async (user) => {
-
-    if (!user) {
-        window.location.href = "login.html";
-        return;
-    }
-
-    document.getElementById("adminName").textContent =
-        user.displayName || user.email || "Admin";
-
-    const admin = await isAdmin(user);
-
-    if (!admin) {
-        document.getElementById("accessDenied").style.display = "flex";
-        document.getElementById("dashboardContent").style.display = "none";
-        return;
-    }
-
-    document.getElementById("accessDenied").style.display = "none";
-    document.getElementById("dashboardContent").style.display = "block";
-
-    loadDashboardStats();
-    loadRecentActivity();
-});
-
-/* ================= STATS ================= */
-
-async function loadDashboardStats() {
-    try {
-        const users = await firebaseDb.collection("users").get();
-        document.getElementById("totalUsers").textContent = users.size;
-
-        const visits = await firebaseDb.collection("visits").get();
-        document.getElementById("totalVisits").textContent = visits.size;
-
-        const services = await firebaseDb.collection("services").get();
-        document.getElementById("totalServices").textContent = services.size;
-
-        const appointments = await firebaseDb.collection("appointments").get();
-        document.getElementById("totalAppointments").textContent = appointments.size;
-
-    } catch (e) {
-        console.error("Erreur stats :", e);
-    }
-}
-
-/* ================= ACTIVITÉS ================= */
-
-async function loadRecentActivity() {
-    const list = document.getElementById("activityList");
-    list.innerHTML = "";
-
-    try {
-        const logs = await firebaseDb
-            .collection("logs")
-            .orderBy("timestamp", "desc")
-            .limit(10)
-            .get();
-
-        if (logs.empty) {
-            list.innerHTML = "<p>Aucune activité récente</p>";
-            return;
-        }
-
-        logs.forEach(doc => {
-            const log = doc.data();
-            const div = document.createElement("div");
-            div.className = "activity-item";
-
-            const date = log.timestamp?.toDate().toLocaleString("fr-FR");
-
-            div.innerHTML = `
-                <strong>${log.action || "Action"}</strong>
-                <br>
-                <small>${log.userEmail || "Utilisateur"} • ${date}</small>
-            `;
-            list.appendChild(div);
-        });
-
-    } catch (e) {
-        list.innerHTML = "<p>Erreur de chargement</p>";
-        console.error(e);
-    }
-}
-
-/* ================= NAV ================= */
-
-function backToSite() {
-    window.location.href = "index.html";
-}
-
-async function logout() {
-    await firebaseAuth.signOut();
-    window.location.href = "login.html";
-}
-</script>
-
+    <script src="script.js"></script>
 </body>
 </html>
