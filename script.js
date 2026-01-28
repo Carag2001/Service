@@ -360,9 +360,9 @@ rainbowStyle.textContent = `
 document.head.appendChild(rainbowStyle);
 
 // ===== CONSOLE WELCOME MESSAGE =====
-console.log('%c👾 NÉON DIGITAL 👾', 'font-size: 30px; font-weight: bold; color: #ff0033; text-shadow: 0 0 10px rgba(255, 0, 51, 0.8);');
+console.log('%c👾 CRG DIGITAL 👾', 'font-size: 30px; font-weight: bold; color: #ff0033; text-shadow: 0 0 10px rgba(255, 0, 51, 0.8);');
 console.log('%cBienvenue dans le code source ! 🚀', 'font-size: 16px; color: #ffffff;');
-console.log('%cEssayez le Konami Code pour une surprise... 🎮', 'font-size: 14px; color: #b0b0b0;');
+console.log('%cSupport CRG Activé', 'font-size: 14px; color: #b0b0b0;');
 
 // ===== PERFORMANCES: LAZY LOADING IMAGES =====
 if ('IntersectionObserver' in window) {
