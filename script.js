@@ -431,4 +431,4 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
     updateFPS();
 }
 
-console.log('%c✨ Script chargé avec succès !', 'color: #00ff00; font-weight: bold;');
+console.log('%c✨ Script chargé avec succès !', 'color: #0026ff; font-weight: bold;');
