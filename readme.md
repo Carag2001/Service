@@ -169,7 +169,7 @@ Développé avec passion pour créer une expérience web immersive et futuriste.
 ## 📞 Support
 
 Pour toute question ou suggestion :
-- 📧 Email : contact@neon-digital.com
+- 📧 Email : omegaofficiel02@gmail.com
 - 💬 Issues : [GitHub Issues](https://github.com/votre-username/nom-du-repo/issues)
 
 ---
