@@ -251,17 +251,24 @@
             <div class="neon-underline"></div>
         </div>
         <div class="contact-content">
-            <form class="contact-form">
+            <!-- Formulaire avec FormSubmit pour envoyer à maholo.contact@gmail.com -->
+            <form class="contact-form" action="https://formsubmit.co/maholo.contact@gmail.com" method="POST">
+                <!-- Configuration FormSubmit -->
+                <input type="hidden" name="_subject" value="Nouveau message depuis CRG">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_template" value="table">
+                <input type="text" name="_honey" style="display:none">
+                
                 <div class="form-group">
-                    <input type="text" class="form-input" placeholder="VOTRE NOM" required>
+                    <input type="text" name="nom" class="form-input" placeholder="VOTRE NOM" required>
                     <div class="input-line"></div>
                 </div>
                 <div class="form-group">
-                    <input type="email" class="form-input" placeholder="VOTRE EMAIL" required>
+                    <input type="email" name="email" class="form-input" placeholder="VOTRE EMAIL" required>
                     <div class="input-line"></div>
                 </div>
                 <div class="form-group">
-                    <textarea class="form-input" rows="5" placeholder="MESSAGE" required></textarea>
+                    <textarea name="message" class="form-input" rows="5" placeholder="MESSAGE" required></textarea>
                     <div class="input-line"></div>
                 </div>
                 <button type="submit" class="btn-neon btn-submit">
@@ -273,7 +280,7 @@
                 <div class="info-card">
                     <div class="info-icon">📧</div>
                     <h3>EMAIL</h3>
-                    <p>omegaofficiel02@gmail.com</p>
+                    <p>maholo.contact@gmail.com</p>
                 </div>
                 <div class="info-card">
                     <div class="info-icon">📱</div>
