@@ -1,13 +1,13 @@
 /* ===== VARIABLES GLOBALES ===== */
 :root {
-    --neon-blue: #0026ff;
-    --neon-red-glow: rgba(255, 0, 51, 0.8);
-    --neon-dark-red: #0026ff;
-    --bg-black: #0a0a0a;
-    --bg-dark: #121212;
-    --text-white: #ffffff;
-    --text-gray: #b0b0b0;
-    --border-red: #0026ff;
+    --neon-blue: #d4a574;
+    --neon-red-glow: rgba(212, 165, 116, 0.8);
+    --neon-dark-red: #d4a574;
+    --bg-black: #f5f5dc;
+    --bg-dark: #ede8db;
+    --text-white: #3d3d3d;
+    --text-gray: #6b6b6b;
+    --border-red: #c9a875;
 }
 
 /* ===== RESET & BASE ===== */
@@ -18,7 +18,7 @@
 }
 
 body {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: Arial, sans-serif;
     background-color: var(--bg-black);
     color: var(--text-white);
     overflow-x: hidden;
@@ -90,7 +90,7 @@ html {
     position: fixed;
     top: 0;
     width: 100%;
-    background: rgba(10, 10, 10, 0.95);
+    background: rgba(245, 245, 220, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 2px solid var(--border-red);
     z-index: 1000;
@@ -113,7 +113,7 @@ html {
 }
 
 .logo-text {
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 2rem;
     font-weight: 900;
     color: var(--neon-blue);
@@ -148,7 +148,7 @@ html {
 .nav-link {
     color: var(--text-white);
     text-decoration: none;
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     font-weight: 600;
     letter-spacing: 2px;
     font-size: 0.9rem;
@@ -210,7 +210,7 @@ html {
 }
 
 .glitch-text {
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 4rem;
     font-weight: 900;
     line-height: 1.1;
@@ -235,7 +235,7 @@ html {
     font-size: 1.5rem;
     color: var(--text-gray);
     margin-bottom: 2rem;
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     letter-spacing: 3px;
     overflow: hidden;
     border-right: 3px solid var(--neon-blue);
@@ -287,7 +287,7 @@ html {
     background: transparent;
     border: 2px solid var(--neon-blue);
     color: var(--text-white);
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     font-weight: 700;
     font-size: 1rem;
     letter-spacing: 2px;
@@ -383,7 +383,7 @@ section {
 }
 
 .section-title {
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 3rem;
     font-weight: 900;
     color: var(--neon-blue);
@@ -444,7 +444,7 @@ section {
     transform: translateY(-10px);
     box-shadow: 
         0 0 30px var(--neon-red-glow),
-        inset 0 0 20px rgba(255, 0, 51, 0.1);
+        inset 0 0 20px rgba(212, 165, 116, 0.1);
 }
 
 .card-icon {
@@ -454,7 +454,7 @@ section {
 }
 
 .card-title {
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--neon-blue);
@@ -476,10 +476,10 @@ section {
 
 .stat {
     padding: 0.5rem 1rem;
-    background: rgba(255, 0, 51, 0.1);
+    background: rgba(212, 165, 116, 0.1);
     border: 1px solid var(--border-red);
     font-size: 0.8rem;
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     letter-spacing: 1px;
     color: var(--neon-blue);
 }
@@ -493,7 +493,7 @@ section {
 
 .portfolio-item {
     height: 350px;
-    background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a1a 100%);
+    background: linear-gradient(135deg, var(--bg-dark) 0%, #e5dfd0 100%);
     border: 2px solid var(--border-red);
     position: relative;
     overflow: hidden;
@@ -506,7 +506,7 @@ section {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 0, 51, 0.9);
+    background: rgba(212, 165, 116, 0.9);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -522,24 +522,26 @@ section {
 }
 
 .portfolio-overlay h3 {
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 2rem;
     font-weight: 900;
     margin-bottom: 1rem;
     letter-spacing: 3px;
+    color: var(--bg-black);
 }
 
 .portfolio-overlay p {
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
+    color: var(--text-white);
 }
 
 .btn-view {
     padding: 0.8rem 2rem;
     background: transparent;
-    border: 2px solid white;
-    color: white;
-    font-family: 'Orbitron', sans-serif;
+    border: 2px solid var(--text-white);
+    color: var(--text-white);
+    font-family: Arial, sans-serif;
     font-weight: 700;
     letter-spacing: 2px;
     cursor: pointer;
@@ -547,7 +549,7 @@ section {
 }
 
 .btn-view:hover {
-    background: white;
+    background: var(--bg-black);
     color: var(--neon-blue);
     transform: scale(1.05);
 }
@@ -577,7 +579,7 @@ section {
     border: none;
     border-bottom: 2px solid var(--border-red);
     color: var(--text-white);
-    font-family: 'Rajdhani', sans-serif;
+    font-family: Arial, sans-serif;
     font-size: 1rem;
     letter-spacing: 1px;
     transition: all 0.3s ease;
@@ -591,7 +593,7 @@ section {
 
 .form-input::placeholder {
     color: var(--text-gray);
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     letter-spacing: 2px;
 }
 
@@ -640,8 +642,8 @@ section {
 }
 
 .info-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    color: var(--neon-red);
+    font-family: Arial, sans-serif;
+    color: var(--neon-blue);
     margin-bottom: 0.5rem;
     letter-spacing: 2px;
 }
@@ -694,7 +696,7 @@ section {
 .social-link {
     color: var(--text-gray);
     text-decoration: none;
-    font-family: 'Orbitron', sans-serif;
+    font-family: Arial, sans-serif;
     letter-spacing: 2px;
     transition: all 0.3s ease;
 }
@@ -711,7 +713,7 @@ section {
         left: -100%;
         top: 80px;
         flex-direction: column;
-        background: rgba(10, 10, 10, 0.98);
+        background: rgba(245, 245, 220, 0.98);
         width: 100%;
         text-align: center;
         transition: 0.3s;
