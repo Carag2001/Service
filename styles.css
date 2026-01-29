@@ -2,12 +2,12 @@
 :root {
     --neon-blue: #0026ff;
     --neon-red-glow: rgba(255, 0, 51, 0.8);
-    --neon-dark-red: #ffffff;
+    --neon-dark-red: #0026ff;
     --bg-black: #0a0a0a;
     --bg-dark: #121212;
     --text-white: #ffffff;
     --text-gray: #b0b0b0;
-    --border-red: #ffffff;
+    --border-red: #0026ff;
 }
 
 /* ===== RESET & BASE ===== */
