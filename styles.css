@@ -25,7 +25,7 @@
 
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to bottom, #FAF8F5 0%, #F5E6D3 100%);
+    background: linear-gradient(to bottom, #D4C4A8 0%, #A89968 50%, #8B7355 100%);
     color: var(--text-dark);
     overflow-x: hidden;
     line-height: 1.6;
