@@ -80,25 +80,11 @@ const contactForm = document.querySelector('.contact-form');
 
 if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
+        // Le formulaire est géré par FormSubmit
         // Animation du bouton submit
         const submitBtn = contactForm.querySelector('.btn-submit');
-        const originalText = submitBtn.querySelector('span').textContent;
-        
         submitBtn.querySelector('span').textContent = 'ENVOI EN COURS...';
         submitBtn.style.pointerEvents = 'none';
-        
-        // Simuler l'envoi (remplacer par vraie logique d'envoi)
-        setTimeout(() => {
-            submitBtn.querySelector('span').textContent = 'MESSAGE ENVOYÉ ✓';
-            
-            setTimeout(() => {
-                submitBtn.querySelector('span').textContent = originalText;
-                submitBtn.style.pointerEvents = 'auto';
-                contactForm.reset();
-            }, 2000);
-        }, 1500);
     });
 }
 
