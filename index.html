@@ -1,919 +1,1521 @@
-import { useState, useCallback } from "react";
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CRG Internal — Accès Sécurisé</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #F2F4F7;
+  color: #1A1A2E;
+  min-height: 100vh;
+}
 
+/* ── LOGIN SCREEN ── */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F2F4F7;
+}
+.login-box {
+  background: #FFFFFF;
+  border: 1px solid #D6DAE4;
+  border-top: 3px solid #1B3A6B;
+  border-radius: 4px;
+  padding: 44px 48px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+.login-logo {
+  text-align: center;
+  margin-bottom: 32px;
+}
+.login-logo-mark {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1B3A6B;
+  letter-spacing: 2px;
+}
+.login-logo-sub {
+  font-size: 11px;
+  color: #6B7280;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+.login-divider {
+  width: 40px;
+  height: 2px;
+  background: #1B3A6B;
+  margin: 14px auto;
+}
+.login-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.login-sub {
+  font-size: 12px;
+  color: #9CA3AF;
+  margin-bottom: 28px;
+}
+.login-field { margin-bottom: 16px; }
+.login-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.login-input {
+  width: 100%;
+  border: 1px solid #D1D5DB;
+  border-radius: 3px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #1A1A2E;
+  background: #FAFAFA;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.login-input:focus { border-color: #1B3A6B; background: #fff; }
+.login-btn {
+  width: 100%;
+  background: #1B3A6B;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 11px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 8px;
+  transition: background 0.15s;
+}
+.login-btn:hover { background: #142D55; }
+.login-error {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  border-radius: 3px;
+  padding: 9px 12px;
+  font-size: 12px;
+  color: #DC2626;
+  margin-top: 12px;
+  display: none;
+}
+.login-footer {
+  text-align: center;
+  margin-top: 28px;
+  font-size: 11px;
+  color: #9CA3AF;
+  border-top: 1px solid #E5E7EB;
+  padding-top: 16px;
+}
+
+/* ── APP ── */
+#app { display: none; min-height: 100vh; }
+
+/* TOPBAR */
+#topbar {
+  background: #1B3A6B;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  padding: 0 0 0 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+.tb-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 24px;
+  border-right: 1px solid rgba(255,255,255,0.12);
+  height: 100%;
+  min-width: 220px;
+}
+.tb-logo { font-size: 17px; font-weight: 700; color: #FFFFFF; letter-spacing: 2px; }
+.tb-logo-sub { font-size: 9px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 1px; }
+.tb-nav {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex: 1;
+  padding: 0 8px;
+}
+.tb-nav-btn {
+  height: 100%;
+  padding: 0 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.65);
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.tb-nav-btn:hover { color: #fff; }
+.tb-nav-btn.active { color: #fff; border-bottom-color: #5B9BD5; }
+.tb-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 0 20px;
+  margin-left: auto;
+}
+.tb-date { font-size: 11px; color: rgba(255,255,255,0.5); }
+.tb-user { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 700; }
+.tb-logout {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px;
+  color: rgba(255,255,255,0.7);
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.tb-logout:hover { background: rgba(255,255,255,0.18); color: #fff; }
+.tb-late-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: #DC2626;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  font-size: 11px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  padding: 5px 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+/* CONTENT */
+#content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 30px 32px;
+}
+
+/* PAGE HEADER */
+.ph { margin-bottom: 24px; border-bottom: 1px solid #D6DAE4; padding-bottom: 20px; }
+.ph-crumbs { font-size: 11px; color: #9CA3AF; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+.ph-row { display: flex; align-items: center; justify-content: space-between; }
+.ph-title { font-size: 20px; font-weight: 700; color: #1B3A6B; letter-spacing: -0.3px; }
+.ph-sub { font-size: 12px; color: #6B7280; margin-top: 3px; }
+
+/* STAT GRID */
+.stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
+.stat-card {
+  background: #FFFFFF;
+  border: 1px solid #D6DAE4;
+  border-left: 3px solid #1B3A6B;
+  padding: 18px 20px;
+}
+.stat-label { font-size: 10px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
+.stat-value { font-size: 22px; font-weight: 700; color: #1A1A2E; margin-bottom: 3px; }
+.stat-sub { font-size: 11px; color: #9CA3AF; }
+
+/* TABLE */
+.table-wrap {
+  background: #FFFFFF;
+  border: 1px solid #D6DAE4;
+}
+.table-title {
+  padding: 14px 18px;
+  border-bottom: 1px solid #D6DAE4;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1B3A6B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #F8F9FB;
+}
+table { width: 100%; border-collapse: collapse; }
+thead tr { background: #F8F9FB; }
+th {
+  padding: 10px 16px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #6B7280;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  text-align: left;
+  border-bottom: 1px solid #D6DAE4;
+  white-space: nowrap;
+}
+th.r { text-align: right; }
+td { padding: 12px 16px; font-size: 12px; color: #374151; border-bottom: 1px solid #EEF0F5; }
+td.r { text-align: right; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #F8F9FB; }
+.mono { font-family: "Courier New", monospace; font-size: 12px; font-weight: 700; color: #1B3A6B; }
+
+/* BADGE */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  border-radius: 2px;
+}
+.badge::before { content:''; width:4px; height:4px; border-radius:50%; background:currentColor; }
+.badge-green { color: #047857; background: #ECFDF5; border: 1px solid #A7F3D0; }
+.badge-amber { color: #B45309; background: #FFFBEB; border: 1px solid #FCD34D; }
+.badge-red   { color: #B91C1C; background: #FEF2F2; border: 1px solid #FCA5A5; }
+.badge-blue  { color: #1D4ED8; background: #EFF6FF; border: 1px solid #BFDBFE; }
+.badge-gray  { color: #4B5563; background: #F3F4F6; border: 1px solid #D1D5DB; }
+.badge-purple{ color: #6D28D9; background: #F5F3FF; border: 1px solid #DDD6FE; }
+
+/* BUTTONS */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px;
+  font-size: 11px; font-weight: 700;
+  font-family: Arial, Helvetica, sans-serif;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  cursor: pointer; border-radius: 3px; white-space: nowrap;
+  transition: all 0.12s;
+}
+.btn-primary { background: #1B3A6B; color: #fff; border: 1px solid #1B3A6B; }
+.btn-primary:hover { background: #142D55; }
+.btn-secondary { background: #fff; color: #374151; border: 1px solid #D1D5DB; }
+.btn-secondary:hover { background: #F3F4F6; }
+.btn-success { background: #ECFDF5; color: #047857; border: 1px solid #A7F3D0; }
+.btn-success:hover { background: #D1FAE5; }
+.btn-danger { background: #FEF2F2; color: #B91C1C; border: 1px solid #FCA5A5; }
+.btn-danger:hover { background: #FEE2E2; }
+.btn-lg { padding: 10px 20px; font-size: 12px; }
+.btn-block { width: 100%; justify-content: center; }
+
+/* CARD */
+.card { background: #FFFFFF; border: 1px solid #D6DAE4; }
+.card-header {
+  padding: 13px 18px;
+  border-bottom: 1px solid #D6DAE4;
+  font-size: 11px; font-weight: 700;
+  color: #1B3A6B;
+  text-transform: uppercase; letter-spacing: 0.5px;
+  background: #F8F9FB;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.card-body { padding: 20px 18px; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grid .full { grid-column: 1/-1; }
+.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 0; }
+.form-label { font-size: 10px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.5px; }
+.form-input, .form-select, .form-textarea {
+  width: 100%; border: 1px solid #D1D5DB; border-radius: 3px;
+  padding: 8px 10px; font-size: 12px; color: #1A1A2E;
+  background: #FAFAFA; font-family: Arial, Helvetica, sans-serif;
+  outline: none; transition: border-color 0.12s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color: #1B3A6B; background: #fff; }
+.form-input::placeholder, .form-textarea::placeholder { color: #9CA3AF; }
+.form-textarea { resize: vertical; }
+.form-sep { height: 1px; background: #E5E7EB; margin: 16px 0; }
+.form-footer {
+  display: flex; gap: 10px; justify-content: flex-end;
+  margin-top: 22px; padding-top: 16px; border-top: 1px solid #E5E7EB;
+}
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-box {
+  background: #FFFFFF;
+  border: 1px solid #D6DAE4;
+  border-top: 3px solid #1B3A6B;
+  width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+}
+.modal-box.wide { max-width: 860px; }
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 22px;
+  border-bottom: 1px solid #D6DAE4;
+  background: #F8F9FB;
+}
+.modal-title { font-size: 13px; font-weight: 700; color: #1B3A6B; text-transform: uppercase; letter-spacing: 0.5px; }
+.modal-sub { font-size: 11px; color: #6B7280; margin-top: 2px; }
+.modal-close {
+  background: none; border: none; cursor: pointer; color: #6B7280;
+  padding: 4px; font-size: 18px; line-height: 1;
+}
+.modal-close:hover { color: #1A1A2E; }
+.modal-body { padding: 22px; }
+
+/* ALERT */
+.alert {
+  display: flex; align-items: center; gap: 10px;
+  padding: 11px 14px; font-size: 12px; font-weight: 700;
+  margin-bottom: 20px;
+}
+.alert-red { background: #FEF2F2; border: 1px solid #FCA5A5; color: #B91C1C; }
+.alert-blue { background: #EFF6FF; border: 1px solid #BFDBFE; color: #1D4ED8; }
+.alert-amber { background: #FFFBEB; border: 1px solid #FCD34D; color: #B45309; }
+
+/* TOAST */
+.toast {
+  position: fixed; bottom: 22px; right: 22px; z-index: 9999;
+  background: #fff; border: 1px solid #D1D5DB;
+  border-radius: 3px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 12px; color: #1A1A2E;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  min-width: 260px;
+  animation: fadeup 0.25s ease;
+}
+.toast.success { border-left: 3px solid #047857; }
+.toast.error   { border-left: 3px solid #DC2626; }
+@keyframes fadeup { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* EMPTY */
+.empty { padding: 48px; text-align: center; color: #9CA3AF; }
+.empty-title { font-size: 13px; font-weight: 700; color: #6B7280; margin-bottom: 4px; }
+.empty-sub { font-size: 12px; }
+
+/* PROGRESS */
+.progress { height: 4px; background: #E5E7EB; border-radius: 2px; overflow: hidden; margin-top: 5px; }
+.progress-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+/* FREELANCE CARD */
+.fl-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.fl-card { background: #fff; border: 1px solid #D6DAE4; border-top: 3px solid #1B3A6B; padding: 20px; }
+.fl-initials {
+  width: 42px; height: 42px; background: #E8EDF5; border: 1px solid #C5CEDF;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; color: #1B3A6B; flex-shrink: 0;
+}
+.fl-name { font-size: 14px; font-weight: 700; color: #1A1A2E; }
+.fl-spec { font-size: 11px; color: #6B7280; }
+.fl-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #EEF0F5; font-size: 11px; }
+.fl-earn { margin-top: 14px; background: #F8F9FB; border: 1px solid #D6DAE4; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center; }
+
+/* PDF */
+.pdf-wrap {
+  background: #fff; color: #111;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px; line-height: 1.7;
+  padding: 44px 52px;
+  border: 1px solid #E5E7EB;
+}
+.pdf-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
+.pdf-logo { font-size: 26px; font-weight: 700; color: #1B3A6B; letter-spacing: 2px; }
+.pdf-logo-sub { font-size: 10px; color: #666; margin-top: 2px; }
+.pdf-doc-title { font-size: 18px; font-weight: 700; color: #1B3A6B; text-align: right; text-transform: uppercase; letter-spacing: 1px; }
+.pdf-doc-num { font-size: 14px; font-weight: 700; color: #374151; margin-top: 4px; text-align: right; }
+.pdf-rule { height: 2px; background: #1B3A6B; margin-bottom: 24px; }
+.pdf-parties { display: flex; gap: 48px; margin-bottom: 22px; }
+.pdf-party { flex: 1; }
+.pdf-plabel { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #999; margin-bottom: 5px; border-bottom: 1px solid #E5E7EB; padding-bottom: 4px; }
+.pdf-pname { font-weight: 700; font-size: 13px; margin-bottom: 2px; }
+.pdf-pinfo { color: #555; font-size: 11px; }
+.pdf-object { background: #F8F9FB; border: 1px solid #E5E7EB; padding: 9px 12px; margin-bottom: 18px; font-size: 12px; }
+.pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.pdf-thead tr { background: #1B3A6B; color: #fff; }
+.pdf-thead th { padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.pdf-thead th.r { text-align: right; }
+.pdf-tbody td { padding: 10px 12px; border-bottom: 1px solid #E5E7EB; font-size: 12px; }
+.pdf-tbody td.r { text-align: right; }
+.pdf-totals-wrap { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+.pdf-totals { border-collapse: collapse; min-width: 260px; }
+.pdf-totals td { padding: 4px 12px; font-size: 11px; color: #555; }
+.pdf-totals td.r { text-align: right; }
+.pdf-total-row td { padding: 9px 12px; font-weight: 700; font-size: 13px; border-top: 2px solid #1B3A6B; background: #F8F9FB; }
+.pdf-total-row td.big { font-size: 18px; font-weight: 700; color: #1B3A6B; text-align: right; }
+.pdf-section { margin-top: 20px; border-top: 1px solid #E5E7EB; padding-top: 14px; }
+.pdf-sec-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #1B3A6B; margin-bottom: 6px; }
+.pdf-sec-text { font-size: 10.5px; color: #444; line-height: 1.8; }
+.pdf-sigs { margin-top: 24px; display: flex; gap: 48px; }
+.pdf-sig { flex: 1; border-top: 1px solid #999; padding-top: 6px; font-size: 10px; color: #666; }
+.pdf-foot { margin-top: 28px; padding-top: 12px; border-top: 1px solid #E5E7EB; display: flex; justify-content: space-between; font-size: 9px; color: #bbb; }
+
+/* TWO-COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+/* RECAP */
+.recap-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #E5E7EB; font-size: 12px; }
+.recap-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+/* RESULT CARD */
+.result-card { border: 1px solid #D6DAE4; border-left: 3px solid #1B3A6B; padding: 12px 16px; margin-bottom: 10px; background: #F8F9FB; }
+
+/* ACTIVITY */
+.act-item { display: flex; gap: 12px; align-items: flex-start; padding: 9px 0; border-bottom: 1px solid #EEF0F5; }
+.act-dot { width: 8px; height: 8px; border-radius: 50%; background: #1B3A6B; flex-shrink: 0; margin-top: 4px; }
+.act-text { font-size: 12px; color: #374151; }
+.act-time { font-size: 10px; color: #9CA3AF; margin-top: 1px; }
+
+/* INV TOTALS */
+.inv-tot-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 18px; }
+.inv-tot-card { background: #fff; border: 1px solid #D6DAE4; padding: 13px 16px; border-top: 2px solid #D1D5DB; }
+.inv-tot-label { font-size: 10px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+.inv-tot-val { font-size: 18px; font-weight: 700; }
+
+/* FIN ITEM */
+.fin-item { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid #EEF0F5; }
+
+/* PAGE visibility */
+.page { display: none; }
+.page.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark">CRG</div>
+      <div class="login-divider"></div>
+      <div class="login-logo-sub">Internal System</div>
+    </div>
+    <div class="login-title">Accès Sécurisé</div>
+    <div class="login-sub">Réservé au personnel autorisé uniquement.</div>
+    <div class="login-field">
+      <label class="login-label">Adresse e-mail</label>
+      <input class="login-input" id="login-email" type="email" placeholder="votre@email.com" autocomplete="username"/>
+    </div>
+    <div class="login-field">
+      <label class="login-label">Mot de passe</label>
+      <input class="login-input" id="login-pass" type="password" placeholder="••••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Connexion</button>
+    <div class="login-error" id="login-error">Identifiants incorrects. Accès refusé.</div>
+    <div class="login-footer">CRG Internal &nbsp;·&nbsp; Accès restreint &nbsp;·&nbsp; Usage interne uniquement</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ APP -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div class="tb-brand">
+      <div>
+        <div class="tb-logo">CRG</div>
+        <div class="tb-logo-sub">Internal System</div>
+      </div>
+    </div>
+    <nav class="tb-nav">
+      <button class="tb-nav-btn active" data-page="dashboard">Tableau de bord</button>
+      <button class="tb-nav-btn" data-page="clients">Clients</button>
+      <button class="tb-nav-btn" data-page="freelances">Freelances</button>
+      <button class="tb-nav-btn" data-page="contracts">Contrats</button>
+      <button class="tb-nav-btn" data-page="quotes">Devis</button>
+      <button class="tb-nav-btn" data-page="invoices">Factures</button>
+      <button class="tb-nav-btn" data-page="automation">Automatisation</button>
+      <button class="tb-nav-btn" data-page="finance">Finances</button>
+      <button class="tb-nav-btn" data-page="logs">Journal</button>
+    </nav>
+    <div class="tb-right">
+      <button class="tb-late-btn" id="late-pill" style="display:none" onclick="navigate('invoices')">
+        ⚠ <span id="late-pill-txt"></span>
+      </button>
+      <span class="tb-date" id="tb-date"></span>
+      <span class="tb-user">Direction — maholo.contact@gmail.com</span>
+      <button class="tb-logout" onclick="doLogout()">Déconnexion</button>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- ════ DASHBOARD ════ -->
+    <div class="page active" id="page-dashboard">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Tableau de bord</div>
+        <div class="ph-row">
+          <div><div class="ph-title">Tableau de bord</div><div class="ph-sub" id="dash-sub"></div></div>
+        </div>
+      </div>
+      <div id="dash-alert" class="alert alert-red" style="display:none"></div>
+      <div class="stat-grid" id="dash-stats"></div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">Activité récente</div>
+          <div class="card-body" id="dash-activity"></div>
+        </div>
+        <div class="card">
+          <div class="card-header">Vue d'ensemble</div>
+          <div class="card-body" id="dash-overview"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ CLIENTS ════ -->
+    <div class="page" id="page-clients">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Clients</div>
+        <div class="ph-row">
+          <div><div class="ph-title">Gestion des Clients</div><div class="ph-sub" id="clients-sub"></div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-new-client')">+ Nouveau client</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-title">Répertoire clients</div>
+        <table><thead><tr>
+          <th>Client</th><th>Contact</th><th>Statut</th><th class="r">Facturé TTC</th><th class="r">Actions</th>
+        </tr></thead><tbody id="clients-tbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ════ FREELANCES ════ -->
+    <div class="page" id="page-freelances">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Freelances</div>
+        <div class="ph-row">
+          <div><div class="ph-title">Freelances & Prestataires</div><div class="ph-sub" id="freelances-sub"></div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-new-freelance')">+ Ajouter un freelance</button>
+        </div>
+      </div>
+      <div class="fl-grid" id="freelances-grid"></div>
+    </div>
+
+    <!-- ════ CONTRACTS ════ -->
+    <div class="page" id="page-contracts">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Contrats</div>
+        <div class="ph-row">
+          <div><div class="ph-title">Gestion des Contrats</div><div class="ph-sub" id="contracts-sub"></div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-new-contract')">+ Nouveau contrat</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-title">Registre des contrats</div>
+        <table><thead><tr>
+          <th>Référence</th><th>Type</th><th>Partie</th><th>Objet</th><th class="r">Montant HT</th><th>Période</th><th>Statut</th><th class="r">Actions</th>
+        </tr></thead><tbody id="contracts-tbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ════ QUOTES ════ -->
+    <div class="page" id="page-quotes">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Devis</div>
+        <div class="ph-row">
+          <div><div class="ph-title">Gestion des Devis</div><div class="ph-sub" id="quotes-sub"></div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-new-quote')">+ Créer un devis</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-title">Registre des devis</div>
+        <table><thead><tr>
+          <th>Référence</th><th>Client</th><th>Objet</th><th class="r">Montant HT</th><th>Date</th><th>Statut</th><th class="r"></th>
+        </tr></thead><tbody id="quotes-tbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ════ INVOICES ════ -->
+    <div class="page" id="page-invoices">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Factures</div>
+        <div class="ph-row">
+          <div><div class="ph-title">Gestion des Factures</div><div class="ph-sub" id="invoices-sub"></div></div>
+          <button class="btn btn-primary" onclick="openModal('modal-new-invoice')">+ Nouvelle facture</button>
+        </div>
+      </div>
+      <div class="inv-tot-grid" id="inv-totals"></div>
+      <div class="table-wrap">
+        <div class="table-title">Registre des factures</div>
+        <table><thead><tr>
+          <th>Référence</th><th>Client</th><th>Devis lié</th><th class="r">HT</th><th class="r">TTC</th><th>Échéance</th><th>Statut</th><th class="r">Actions</th>
+        </tr></thead><tbody id="invoices-tbody"></tbody></table>
+      </div>
+    </div>
+
+    <!-- ════ AUTOMATION ════ -->
+    <div class="page" id="page-automation">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Automatisation</div>
+        <div class="ph-row"><div><div class="ph-title">Génération Automatique de Documents</div><div class="ph-sub">Créez un pack complet Devis + Contrat + Facture d'acompte en un clic</div></div></div>
+      </div>
+      <div class="alert alert-blue">
+        ℹ &nbsp; Sélectionnez un client et saisissez le montant. Le système génère automatiquement un devis au montant total, un contrat en brouillon, et une facture d'acompte à 30%.
+      </div>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-header">Paramètres du projet</div>
+          <div class="card-body">
+            <div style="margin-bottom:14px"><label class="form-label">Client bénéficiaire</label><select class="form-select" id="auto-client" style="margin-top:5px"></select></div>
+            <div style="margin-bottom:14px"><label class="form-label">Type de projet</label><select class="form-select" id="auto-type" style="margin-top:5px"><option>Site vitrine</option><option>Application web</option><option>Audit technique</option><option>Refonte complète</option><option>Design & Branding</option><option>Application mobile</option><option>Conseil & Stratégie</option></select></div>
+            <div style="margin-bottom:14px"><label class="form-label">Description complémentaire (optionnel)</label><textarea class="form-textarea" id="auto-desc" rows="3" style="margin-top:5px" placeholder="Précisions sur la prestation..."></textarea></div>
+            <div style="margin-bottom:14px"><label class="form-label">Montant total HT (€)</label><input class="form-input" id="auto-amount" type="number" style="margin-top:5px" placeholder="15 000" oninput="updateAutoRecap()"/></div>
+            <div id="auto-recap" style="display:none;background:#F8F9FB;border:1px solid #D6DAE4;padding:14px;margin-bottom:16px"></div>
+            <button class="btn btn-primary btn-lg btn-block" onclick="runAuto()">⚡ Générer le pack complet</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">Résultat</div>
+          <div class="card-body" id="auto-result">
+            <div class="empty">
+              <div class="empty-title">En attente de génération</div>
+              <div class="empty-sub">Remplissez le formulaire puis cliquez sur Générer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════ FINANCE ════ -->
+    <div class="page" id="page-finance">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Finances</div>
+        <div class="ph-row"><div><div class="ph-title">Analyse Financière</div><div class="ph-sub">Consolidation des données financières</div></div></div>
+      </div>
+      <div class="two-col" id="finance-content"></div>
+    </div>
+
+    <!-- ════ LOGS ════ -->
+    <div class="page" id="page-logs">
+      <div class="ph">
+        <div class="ph-crumbs">CRG Internal › Journal</div>
+        <div class="ph-row"><div><div class="ph-title">Journal d'Activité</div><div class="ph-sub" id="logs-sub"></div></div></div>
+      </div>
+      <div class="table-wrap">
+        <div class="table-title">Traçabilité des opérations</div>
+        <table><thead><tr><th>#</th><th>Action</th><th>Utilisateur</th><th>Horodatage</th></tr></thead>
+        <tbody id="logs-tbody"></tbody></table>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<!-- ══════════════ MODALS -->
+
+<!-- New Client -->
+<div class="modal-overlay" id="modal-new-client" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div><div class="modal-title">Créer un client</div><div class="modal-sub">Renseignez les informations du nouveau client</div></div>
+      <button class="modal-close" onclick="closeModal('modal-new-client')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full"><label class="form-label">Raison sociale / Nom *</label><input class="form-input" id="c-name" placeholder="Ex : Nexora Technologies" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="c-email" type="email" placeholder="contact@client.fr" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" id="c-phone" placeholder="+33 6 00 00 00 00" style="margin-top:5px"/></div>
+        <div class="form-group full"><label class="form-label">Adresse</label><input class="form-input" id="c-address" placeholder="Adresse complète" style="margin-top:5px"/></div>
+        <div class="form-group full"><label class="form-label">Statut initial</label><select class="form-select" id="c-status" style="margin-top:5px"><option value="prospect">Prospect</option><option value="client">Client actif</option></select></div>
+      </div>
+      <div class="form-footer"><button class="btn btn-secondary" onclick="closeModal('modal-new-client')">Annuler</button><button class="btn btn-primary" onclick="saveClient()">Créer le client</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Client Detail -->
+<div class="modal-overlay" id="modal-client-detail" style="display:none">
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <div><div class="modal-title" id="detail-client-title"></div><div class="modal-sub">Dossier client complet</div></div>
+      <button class="modal-close" onclick="closeModal('modal-client-detail')">✕</button>
+    </div>
+    <div class="modal-body" id="detail-client-body"></div>
+  </div>
+</div>
+
+<!-- New Freelance -->
+<div class="modal-overlay" id="modal-new-freelance" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div><div class="modal-title">Ajouter un freelance</div><div class="modal-sub">Informations du prestataire indépendant</div></div>
+      <button class="modal-close" onclick="closeModal('modal-new-freelance')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Nom complet *</label><input class="form-input" id="fl-name" placeholder="Baptiste Moreau" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="fl-status" style="margin-top:5px"><option value="actif">Actif</option><option value="inactif">Inactif</option></select></div>
+        <div class="form-group"><label class="form-label">Email *</label><input class="form-input" id="fl-email" type="email" placeholder="contact@freelance.fr" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">N° SIRET</label><input class="form-input" id="fl-siret" placeholder="84123456700012" style="margin-top:5px"/></div>
+        <div class="form-group full"><label class="form-label">Spécialité</label><input class="form-input" id="fl-specialty" placeholder="Développement React / Node.js" style="margin-top:5px"/></div>
+        <div class="form-group full"><label class="form-label">Adresse</label><input class="form-input" id="fl-address" placeholder="Adresse complète" style="margin-top:5px"/></div>
+      </div>
+      <div class="form-footer"><button class="btn btn-secondary" onclick="closeModal('modal-new-freelance')">Annuler</button><button class="btn btn-primary" onclick="saveFreelance()">Ajouter</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- New Contract -->
+<div class="modal-overlay" id="modal-new-contract" style="display:none">
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <div><div class="modal-title">Créer un contrat</div><div class="modal-sub">Renseignez les termes du contrat — tous les champs apparaîtront dans le document PDF</div></div>
+      <button class="modal-close" onclick="closeModal('modal-new-contract')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Type de contrat</label><select class="form-select" id="ct-type" onchange="updateContractParty()" style="margin-top:5px"><option value="client">Client</option><option value="freelance">Freelance</option><option value="nda">NDA</option><option value="partenariat">Partenariat</option></select></div>
+        <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="ct-status" style="margin-top:5px"><option value="draft">Brouillon</option><option value="signed">Signé</option><option value="completed">Terminé</option></select></div>
+        <div class="form-group full" id="ct-client-wrap"><label class="form-label">Client associé</label><select class="form-select" id="ct-client" style="margin-top:5px"></select></div>
+        <div class="form-group full" id="ct-freelance-wrap" style="display:none"><label class="form-label">Freelance associé</label><select class="form-select" id="ct-freelance" style="margin-top:5px"></select></div>
+        <div class="form-group full"><label class="form-label">Objet / Description de la mission *</label><textarea class="form-textarea" id="ct-desc" rows="4" style="margin-top:5px" placeholder="Décrivez la mission, les livrables, les objectifs..."></textarea></div>
+        <div class="form-group full"><label class="form-label">Conditions particulières</label><textarea class="form-textarea" id="ct-conditions" rows="3" style="margin-top:5px" placeholder="Modalités de validation, pénalités, délais spécifiques..."></textarea></div>
+        <div class="form-group"><label class="form-label">Montant HT (€)</label><input class="form-input" id="ct-amount" type="number" placeholder="0" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Acompte à la signature (%)</label><input class="form-input" id="ct-acompte" type="number" value="30" placeholder="30" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Date de début</label><input class="form-input" id="ct-start" type="date" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Date de fin</label><input class="form-input" id="ct-end" type="date" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Lieu d'exécution</label><input class="form-input" id="ct-lieu" placeholder="Paris / Télétravail / À définir" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Clause de confidentialité</label><select class="form-select" id="ct-nda" style="margin-top:5px"><option value="standard">Standard (incluse)</option><option value="renforcee">Renforcée (NDA séparé requis)</option><option value="aucune">Aucune</option></select></div>
+      </div>
+      <div class="form-footer"><button class="btn btn-secondary" onclick="closeModal('modal-new-contract')">Annuler</button><button class="btn btn-primary" onclick="saveContract()">Créer le contrat</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- New Quote -->
+<div class="modal-overlay" id="modal-new-quote" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div><div class="modal-title">Créer un devis</div><div class="modal-sub">Nouveau devis client</div></div>
+      <button class="modal-close" onclick="closeModal('modal-new-quote')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px"><label class="form-label">Client destinataire *</label><select class="form-select" id="q-client" style="margin-top:5px"></select></div>
+      <div style="margin-bottom:14px"><label class="form-label">Description / Objet *</label><textarea class="form-textarea" id="q-desc" rows="3" style="margin-top:5px" placeholder="Détaillez la prestation..."></textarea></div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Montant HT (€) *</label><input class="form-input" id="q-amount" type="number" placeholder="12 000" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Statut</label><select class="form-select" id="q-status" style="margin-top:5px"><option value="draft">Brouillon</option><option value="sent">Envoyé</option><option value="accepted">Accepté</option><option value="refused">Refusé</option></select></div>
+      </div>
+      <div class="form-footer"><button class="btn btn-secondary" onclick="closeModal('modal-new-quote')">Annuler</button><button class="btn btn-primary" onclick="saveQuote()">Créer le devis</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- New Invoice -->
+<div class="modal-overlay" id="modal-new-invoice" style="display:none">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div><div class="modal-title">Créer une facture</div><div class="modal-sub">Émission d'une nouvelle facture</div></div>
+      <button class="modal-close" onclick="closeModal('modal-new-invoice')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="margin-bottom:14px"><label class="form-label">Client *</label><select class="form-select" id="inv-client" style="margin-top:5px"></select></div>
+      <div style="margin-bottom:14px"><label class="form-label">Devis associé (optionnel)</label><select class="form-select" id="inv-quote" style="margin-top:5px"><option value="">Aucun</option></select></div>
+      <div class="form-grid">
+        <div class="form-group"><label class="form-label">Montant HT (€) *</label><input class="form-input" id="inv-amount" type="number" placeholder="6 000" style="margin-top:5px"/></div>
+        <div class="form-group"><label class="form-label">Date d'échéance</label><input class="form-input" id="inv-due" type="date" style="margin-top:5px"/></div>
+        <div class="form-group full"><label class="form-label">Statut</label><select class="form-select" id="inv-status" style="margin-top:5px"><option value="unpaid">Non payé</option><option value="paid">Payé</option><option value="late">En retard</option></select></div>
+      </div>
+      <div class="form-footer"><button class="btn btn-secondary" onclick="closeModal('modal-new-invoice')">Annuler</button><button class="btn btn-primary" onclick="saveInvoice()">Émettre la facture</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- PDF Preview -->
+<div class="modal-overlay" id="modal-pdf" style="display:none">
+  <div class="modal-box wide">
+    <div class="modal-header">
+      <div><div class="modal-title" id="pdf-modal-title">Aperçu du document</div></div>
+      <button class="modal-close" onclick="closeModal('modal-pdf')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="pdf-content"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px">
+        <button class="btn btn-secondary" onclick="closeModal('modal-pdf')">Fermer</button>
+        <button class="btn btn-primary" onclick="printPDF()">🖨 Imprimer / Enregistrer PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+// ════════════════════════════════════ AUTH
+const CREDS = { email: "maholo.contact@gmail.com", pass: "Maholo_56100" };
+
+function doLogin() {
+  const e = document.getElementById("login-email").value.trim().toLowerCase();
+  const p = document.getElementById("login-pass").value;
+  const err = document.getElementById("login-error");
+  if(e === CREDS.email.toLowerCase() && p === CREDS.pass) {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("app").style.display = "block";
+    initApp();
+  } else {
+    err.style.display = "block";
+    document.getElementById("login-pass").value = "";
+  }
+}
+function doLogout() {
+  document.getElementById("app").style.display = "none";
+  document.getElementById("login-screen").style.display = "flex";
+  document.getElementById("login-pass").value = "";
+  document.getElementById("login-error").style.display = "none";
+}
+
+// ════════════════════════════════════ DATA
+let DB = {
+  clients: [
+    {id:"C001",name:"Nexora Technologies",email:"contact@nexora.io",phone:"+33 6 12 34 56 78",address:"12 Rue de la Paix, 75001 Paris",status:"client",created_at:"2026-01-15"},
+    {id:"C002",name:"Studio Lumière",email:"hello@studiolumiere.fr",phone:"+33 6 98 76 54 32",address:"45 Avenue Montaigne, 75008 Paris",status:"prospect",created_at:"2026-02-01"},
+    {id:"C003",name:"Arkane Solutions",email:"info@arkane.fr",phone:"+33 1 45 67 89 10",address:"8 Quai du Commerce, 69002 Lyon",status:"client",created_at:"2025-11-20"},
+  ],
+  freelances: [
+    {id:"F001",name:"Baptiste Moreau",email:"baptiste@bmoreau.dev",siret:"84123456700012",address:"22 Rue des Arts, 31000 Toulouse",specialty:"Développement React / Node.js",status:"actif",created_at:"2026-01-10"},
+    {id:"F002",name:"Clara Voss",email:"clara@claravoss.design",siret:"79876543200034",address:"5 Impasse des Lilas, 13001 Marseille",specialty:"UI/UX Design & Motion",status:"actif",created_at:"2025-12-05"},
+    {id:"F003",name:"Mehdi Saïd",email:"mehdi@said-dev.fr",siret:"92345678900056",address:"17 Boulevard Haussmann, 75009 Paris",specialty:"DevOps & Infrastructure",status:"inactif",created_at:"2025-10-15"},
+  ],
+  contracts: [
+    {id:"CT001",type:"freelance",number:"CTR-2026-001",client_id:null,freelance_id:"F001",mission_description:"Développement application React Dashboard",conditions:"Réunion de suivi hebdomadaire. Livrables validés par sprint.",acompte:30,lieu:"Télétravail",nda:"standard",amount:8500,start_date:"2026-01-20",end_date:"2026-03-20",status:"signed",created_at:"2026-01-18"},
+    {id:"CT002",type:"client",number:"CTR-2026-002",client_id:"C001",freelance_id:null,mission_description:"Refonte complète plateforme SaaS — Nexora v2",conditions:"Acompte 30% à la signature. Solde à la livraison.",acompte:30,lieu:"Paris + Télétravail",nda:"renforcee",amount:18500,start_date:"2026-02-01",end_date:"2026-05-31",status:"signed",created_at:"2026-01-28"},
+    {id:"CT003",type:"nda",number:"CTR-2026-003",client_id:"C003",freelance_id:null,mission_description:"Accord de confidentialité — Projet Arkane X",conditions:"Durée de confidentialité : 5 ans après la fin du contrat.",acompte:0,lieu:"Lyon",nda:"renforcee",amount:0,start_date:"2026-01-15",end_date:"2027-01-15",status:"signed",created_at:"2026-01-14"},
+  ],
+  quotes: [
+    {id:"Q001",number:"DEV-2026-001",client_id:"C001",description:"Développement Dashboard Analytics + intégration Stripe",amount:12000,status:"accepted",created_at:"2026-01-10"},
+    {id:"Q002",number:"DEV-2026-002",client_id:"C002",description:"Création identité visuelle + site vitrine 5 pages",amount:4800,status:"sent",created_at:"2026-02-05"},
+    {id:"Q003",number:"DEV-2026-003",client_id:"C003",description:"Audit technique infrastructure cloud + recommandations",amount:6500,status:"draft",created_at:"2026-02-10"},
+  ],
+  invoices: [
+    {id:"I001",number:"FAC-2026-001",client_id:"C001",related_quote_id:"Q001",amount:6000,status:"paid",due_date:"2026-02-10",created_at:"2026-01-20"},
+    {id:"I002",number:"FAC-2026-002",client_id:"C001",related_quote_id:"Q001",amount:6000,status:"unpaid",due_date:"2026-03-10",created_at:"2026-02-10"},
+    {id:"I003",number:"FAC-2026-003",client_id:"C003",related_quote_id:null,amount:32000,status:"paid",due_date:"2026-01-31",created_at:"2026-01-15"},
+    {id:"I004",number:"FAC-2026-004",client_id:"C002",related_quote_id:"Q002",amount:4800,status:"late",due_date:"2026-02-01",created_at:"2026-01-15"},
+  ],
+  missions: [
+    {id:"M001",freelance_id:"F001",contract_id:"CT001",description:"Sprint 1 — Architecture & Setup",amount:2500,status:"completed",created_at:"2026-01-20"},
+    {id:"M002",freelance_id:"F001",contract_id:"CT001",description:"Sprint 2 — Core features",amount:3500,status:"in_progress",created_at:"2026-02-05"},
+    {id:"M003",freelance_id:"F002",contract_id:null,description:"Maquettes Figma — Studio Lumière",amount:1800,status:"completed",created_at:"2026-01-28"},
+  ],
+  logs: [
+    {id:"L001",action:"Contrat CTR-2026-001 signé",user:"Direction",timestamp:"2026-01-18 14:32"},
+    {id:"L002",action:"Facture FAC-2026-001 marquée payée",user:"Direction",timestamp:"2026-02-11 09:15"},
+    {id:"L003",action:"Nouveau client créé : Studio Lumière",user:"Direction",timestamp:"2026-02-01 16:44"},
+    {id:"L004",action:"Devis DEV-2026-002 envoyé",user:"Direction",timestamp:"2026-02-05 11:20"},
+  ],
+};
+
+// ════════════════════════════════════ HELPERS
 const uid = () => Math.random().toString(36).substr(2,9).toUpperCase();
-const todayStr = () => new Date().toISOString().split("T")[0];
-const fmt = (n) => Number(n).toLocaleString("fr-FR", { minimumFractionDigits: 2 });
-const fmtDate = (d) => d ? new Date(d + "T12:00:00").toLocaleDateString("fr-FR") : "—";
+const today = () => new Date().toISOString().split("T")[0];
+const fmt = n => Number(n).toLocaleString("fr-FR",{minimumFractionDigits:2});
+const fmtDate = d => d ? new Date(d+"T12:00:00").toLocaleDateString("fr-FR") : "—";
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const genNum = (prefix, list) => {
   const y = new Date().getFullYear();
-  const n = list.filter(i => i.number?.startsWith(`${prefix}-${y}`)).length + 1;
+  const n = list.filter(i=>i.number?.startsWith(`${prefix}-${y}`)).length + 1;
   return `${prefix}-${y}-${String(n).padStart(3,"0")}`;
 };
 
-const INIT = {
-  clients: [
-    { id:"C001", name:"Nexora Technologies", email:"contact@nexora.io", phone:"+33 6 12 34 56 78", address:"12 Rue de la Paix, 75001 Paris", status:"client", created_at:"2026-01-15" },
-    { id:"C002", name:"Studio Lumière", email:"hello@studiolumiere.fr", phone:"+33 6 98 76 54 32", address:"45 Avenue Montaigne, 75008 Paris", status:"prospect", created_at:"2026-02-01" },
-    { id:"C003", name:"Arkane Solutions", email:"info@arkane.fr", phone:"+33 1 45 67 89 10", address:"8 Quai du Commerce, 69002 Lyon", status:"client", created_at:"2025-11-20" },
-  ],
-  freelances: [
-    { id:"F001", name:"Baptiste Moreau", email:"baptiste@bmoreau.dev", siret:"84123456700012", address:"22 Rue des Arts, 31000 Toulouse", specialty:"Développement React / Node.js", status:"actif", created_at:"2026-01-10" },
-    { id:"F002", name:"Clara Voss", email:"clara@claravoss.design", siret:"79876543200034", address:"5 Impasse des Lilas, 13001 Marseille", specialty:"UI/UX Design & Motion", status:"actif", created_at:"2025-12-05" },
-    { id:"F003", name:"Mehdi Saïd", email:"mehdi@said-dev.fr", siret:"92345678900056", address:"17 Boulevard Haussmann, 75009 Paris", specialty:"DevOps & Infrastructure", status:"inactif", created_at:"2025-10-15" },
-  ],
-  contracts: [
-    { id:"CT001", type:"freelance", number:"CTR-2026-001", client_id:null, freelance_id:"F001", mission_description:"Développement application React Dashboard", amount:8500, start_date:"2026-01-20", end_date:"2026-03-20", status:"signed", created_at:"2026-01-18" },
-    { id:"CT002", type:"client", number:"CTR-2026-002", client_id:"C001", freelance_id:null, mission_description:"Refonte complète plateforme SaaS — Nexora v2", amount:18500, start_date:"2026-02-01", end_date:"2026-05-31", status:"signed", created_at:"2026-01-28" },
-    { id:"CT003", type:"nda", number:"CTR-2026-003", client_id:"C003", freelance_id:null, mission_description:"Accord de confidentialité — Projet Arkane X", amount:0, start_date:"2026-01-15", end_date:"2027-01-15", status:"signed", created_at:"2026-01-14" },
-  ],
-  quotes: [
-    { id:"Q001", number:"DEV-2026-001", client_id:"C001", description:"Développement Dashboard Analytics + intégration Stripe", amount:12000, status:"accepted", created_at:"2026-01-10" },
-    { id:"Q002", number:"DEV-2026-002", client_id:"C002", description:"Création identité visuelle + site vitrine 5 pages", amount:4800, status:"sent", created_at:"2026-02-05" },
-    { id:"Q003", number:"DEV-2026-003", client_id:"C003", description:"Audit technique infrastructure cloud + recommandations", amount:6500, status:"draft", created_at:"2026-02-10" },
-  ],
-  invoices: [
-    { id:"I001", number:"FAC-2026-001", client_id:"C001", related_quote_id:"Q001", amount:6000, status:"paid", due_date:"2026-02-10", created_at:"2026-01-20" },
-    { id:"I002", number:"FAC-2026-002", client_id:"C001", related_quote_id:"Q001", amount:6000, status:"unpaid", due_date:"2026-03-10", created_at:"2026-02-10" },
-    { id:"I003", number:"FAC-2026-003", client_id:"C003", related_quote_id:null, amount:32000, status:"paid", due_date:"2026-01-31", created_at:"2026-01-15" },
-    { id:"I004", number:"FAC-2026-004", client_id:"C002", related_quote_id:"Q002", amount:4800, status:"late", due_date:"2026-02-01", created_at:"2026-01-15" },
-  ],
-  missions: [
-    { id:"M001", freelance_id:"F001", contract_id:"CT001", description:"Sprint 1 — Architecture & Setup", amount:2500, status:"completed", created_at:"2026-01-20" },
-    { id:"M002", freelance_id:"F001", contract_id:"CT001", description:"Sprint 2 — Développement core features", amount:3500, status:"in_progress", created_at:"2026-02-05" },
-    { id:"M003", freelance_id:"F002", contract_id:null, description:"Maquettes Figma — Studio Lumière", amount:1800, status:"completed", created_at:"2026-01-28" },
-  ],
-  logs: [
-    { id:"L001", action:"Contrat CTR-2026-001 signé", user:"Admin", timestamp:"2026-01-18 14:32" },
-    { id:"L002", action:"Facture FAC-2026-001 marquée payée", user:"Admin", timestamp:"2026-02-11 09:15" },
-    { id:"L003", action:"Nouveau client créé : Studio Lumière", user:"Admin", timestamp:"2026-02-01 16:44" },
-    { id:"L004", action:"Devis DEV-2026-002 envoyé au client", user:"Admin", timestamp:"2026-02-05 11:20" },
-  ],
+const STAT_CFG = {
+  client:{l:"Client",c:"badge-green"},prospect:{l:"Prospect",c:"badge-amber"},
+  actif:{l:"Actif",c:"badge-green"},inactif:{l:"Inactif",c:"badge-gray"},
+  draft:{l:"Brouillon",c:"badge-gray"},signed:{l:"Signé",c:"badge-green"},
+  completed:{l:"Terminé",c:"badge-purple"},sent:{l:"Envoyé",c:"badge-blue"},
+  accepted:{l:"Accepté",c:"badge-green"},refused:{l:"Refusé",c:"badge-red"},
+  unpaid:{l:"Non payé",c:"badge-amber"},paid:{l:"Payé",c:"badge-green"},
+  late:{l:"En retard",c:"badge-red"},in_progress:{l:"En cours",c:"badge-blue"},
 };
+const badge = s => { const c=STAT_CFG[s]||{l:s,c:"badge-gray"}; return `<span class="badge ${c.c}">${esc(c.l)}</span>`; };
 
-// COLORS
-const cl = {
-  bg:"#F4F6F9", surface:"#FFFFFF", border:"#E2E6EE", borderStrong:"#C5CBDB",
-  text:"#0F172A", textMid:"#334155", textSub:"#64748B", textMute:"#94A3B8",
-  primary:"#1746C8", primaryLight:"#EEF2FF", primaryDark:"#1338A8",
-  green:"#059669", greenLight:"#ECFDF5",
-  amber:"#D97706", amberLight:"#FFFBEB",
-  red:"#DC2626", redLight:"#FEF2F2",
-  purple:"#7C3AED", purpleLight:"#F5F3FF",
-  sidebar:"#15192B", sidebarBorder:"#232843",
-  sidebarText:"#94A3B8", sidebarMute:"#4B5563",
-  sidebarAccent:"#60A5FA",
-};
+// ════════════════════════════════════ INIT
+function initApp() {
+  document.getElementById("tb-date").textContent = new Date().toLocaleDateString("fr-FR",{day:"2-digit",month:"long",year:"numeric"});
+  document.querySelectorAll(".tb-nav-btn").forEach(btn => btn.addEventListener("click", () => navigate(btn.dataset.page)));
+  document.querySelectorAll(".modal-overlay").forEach(o => o.addEventListener("click", e => { if(e.target===o) o.style.display="none"; }));
+  navigate("dashboard");
+}
 
-// BADGE
-const STAT = {
-  client:{l:"Client",c:cl.green,b:cl.greenLight},
-  prospect:{l:"Prospect",c:cl.amber,b:cl.amberLight},
-  actif:{l:"Actif",c:cl.green,b:cl.greenLight},
-  inactif:{l:"Inactif",c:cl.textSub,b:"#F1F5F9"},
-  draft:{l:"Brouillon",c:cl.textSub,b:"#F1F5F9"},
-  signed:{l:"Signé",c:cl.green,b:cl.greenLight},
-  completed:{l:"Terminé",c:cl.purple,b:cl.purpleLight},
-  sent:{l:"Envoyé",c:cl.primary,b:cl.primaryLight},
-  accepted:{l:"Accepté",c:cl.green,b:cl.greenLight},
-  refused:{l:"Refusé",c:cl.red,b:cl.redLight},
-  unpaid:{l:"Non payé",c:cl.amber,b:cl.amberLight},
-  paid:{l:"Payé",c:cl.green,b:cl.greenLight},
-  late:{l:"En retard",c:cl.red,b:cl.redLight},
-  in_progress:{l:"En cours",c:cl.primary,b:cl.primaryLight},
-};
+// ════════════════════════════════════ NAVIGATION
+function navigate(page) {
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.querySelectorAll(".tb-nav-btn").forEach(b=>b.classList.remove("active"));
+  document.getElementById("page-"+page)?.classList.add("active");
+  document.querySelector(`.tb-nav-btn[data-page="${page}"]`)?.classList.add("active");
+  renderPage(page); updateBadges();
+}
+function renderPage(p) {
+  if(p==="dashboard") renderDash();
+  else if(p==="clients") renderClients();
+  else if(p==="freelances") renderFreelances();
+  else if(p==="contracts") renderContracts();
+  else if(p==="quotes") renderQuotes();
+  else if(p==="invoices") renderInvoices();
+  else if(p==="automation") renderAuto();
+  else if(p==="finance") renderFinance();
+  else if(p==="logs") renderLogs();
+}
+function updateBadges() {
+  const lc = DB.invoices.filter(i=>i.status==="late").length;
+  const pill = document.getElementById("late-pill");
+  if(lc>0){ pill.style.display="flex"; document.getElementById("late-pill-txt").textContent=`${lc} facture${lc>1?"s":""} en retard`; }
+  else pill.style.display="none";
+}
 
-const Badge = ({s}) => {
-  const cfg = STAT[s]||{l:s,c:cl.textSub,b:"#F1F5F9"};
-  return <span style={{display:"inline-flex",alignItems:"center",gap:5,padding:"3px 10px",borderRadius:20,fontSize:11,fontWeight:600,letterSpacing:"0.03em",color:cfg.c,background:cfg.b,border:`1px solid ${cfg.c}22`}}><span style={{width:5,height:5,borderRadius:"50%",background:cfg.c,display:"inline-block"}}/>{cfg.l}</span>;
-};
+// ════════════════════════════════════ DASHBOARD
+function renderDash() {
+  document.getElementById("dash-sub").textContent = new Date().toLocaleDateString("fr-FR",{weekday:"long",year:"numeric",month:"long",day:"numeric"});
+  const paid=DB.invoices.filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0);
+  const pending=DB.invoices.filter(i=>i.status==="unpaid").reduce((s,i)=>s+i.amount,0);
+  const late=DB.invoices.filter(i=>i.status==="late").reduce((s,i)=>s+i.amount,0);
+  const total=DB.invoices.reduce((s,i)=>s+i.amount,0);
+  const fcost=DB.missions.reduce((s,m)=>s+m.amount,0);
+  const lc=DB.invoices.filter(i=>i.status==="late").length;
+  const al=document.getElementById("dash-alert");
+  if(lc>0){al.style.display="flex";al.innerHTML=`⚠ &nbsp;${lc} facture(s) en retard de paiement — Action requise`;}else al.style.display="none";
+  document.getElementById("dash-stats").innerHTML=[
+    {l:"Chiffre d'affaires total",v:`${fmt(total)} €`,s:`${DB.invoices.length} factures émises`,color:"#1B3A6B"},
+    {l:"Total encaissé",v:`${fmt(paid)} €`,s:`Taux : ${total?Math.round(paid/total*100):0}%`,color:"#047857"},
+    {l:"En attente de règlement",v:`${fmt(pending)} €`,s:"À recevoir",color:"#B45309"},
+    {l:"Factures en retard",v:`${fmt(late)} €`,s:`${lc} facture(s) impayée(s)`,color:"#B91C1C"},
+    {l:"Coûts prestataires",v:`${fmt(fcost)} €`,s:`${DB.missions.length} missions`,color:"#6D28D9"},
+    {l:"Bénéfice brut estimé",v:`${fmt(paid-fcost)} €`,s:"Encaissé moins coûts",color:"#1B3A6B"},
+  ].map(s=>`<div class="stat-card" style="border-left-color:${s.color}"><div class="stat-label">${s.l}</div><div class="stat-value" style="color:${s.color}">${s.v}</div><div class="stat-sub">${s.s}</div></div>`).join("");
 
-// ICONS
-const Ic = ({n,sz=16,color="currentColor"}) => {
-  const paths={
-    home:"M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z M9 22V12h6v10",
-    users:"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75 M9 7m-4 0a4 4 0 1 0 8 0 4 4 0 1 0-8 0",
-    briefcase:"M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2",
-    check:"M20 6L9 17l-5-5",
-    file:"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8",
-    credit:"M2 5h20a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z M1 10h22",
-    dollar:"M12 1v22 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6",
-    zap:"M13 2L3 14h9l-1 8 10-12h-9l1-8z",
-    log:"M9 12h6 M9 16h6 M9 8h6 M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z",
-    plus:"M12 5v14 M5 12h14",
-    x:"M18 6L6 18 M6 6l12 12",
-    eye:"M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6z",
-    trash:"M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2",
-    alert:"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01",
-    chevRight:"M9 18l6-6-6-6",
-    settings:"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z",
-    download:"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M7 10l5 5 5-5 M12 15V3",
-    info:"M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M12 8h.01 M12 12v4",
-  };
-  return (
-    <svg width={sz} height={sz} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      {(paths[n]||"").split(" M ").filter(Boolean).map((p,i)=><path key={i} d={`${i===0?"":"M"}${p}`}/>)}
-    </svg>
-  );
-};
+  document.getElementById("dash-activity").innerHTML = [...DB.logs].reverse().slice(0,6).map(l=>`
+    <div class="act-item"><div class="act-dot"></div><div><div class="act-text">${esc(l.action)}</div><div class="act-time">${esc(l.timestamp)}</div></div></div>`).join("");
 
-// INPUT COMPONENTS
-const Lbl = ({ch}) => <div style={{fontSize:12,fontWeight:600,color:cl.textMid,marginBottom:5,letterSpacing:"0.01em"}}>{ch}</div>;
-const Inp = ({value,onChange,placeholder,type="text"}) => (
-  <input type={type} value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder}
-    style={{width:"100%",border:`1px solid ${cl.border}`,borderRadius:6,padding:"8px 11px",fontSize:13,color:cl.text,background:cl.surface,outline:"none",boxSizing:"border-box",fontFamily:"inherit"}}
-    onFocus={e=>e.target.style.borderColor=cl.primary} onBlur={e=>e.target.style.borderColor=cl.border}/>
-);
-const Sel = ({value,onChange,children}) => (
-  <select value={value} onChange={e=>onChange(e.target.value)}
-    style={{width:"100%",border:`1px solid ${cl.border}`,borderRadius:6,padding:"8px 11px",fontSize:13,color:cl.text,background:cl.surface,outline:"none",boxSizing:"border-box",fontFamily:"inherit",cursor:"pointer"}}
-    onFocus={e=>e.target.style.borderColor=cl.primary} onBlur={e=>e.target.style.borderColor=cl.border}>
-    {children}
-  </select>
-);
-const Txa = ({value,onChange,placeholder,rows=4}) => (
-  <textarea value={value} onChange={e=>onChange(e.target.value)} placeholder={placeholder} rows={rows}
-    style={{width:"100%",border:`1px solid ${cl.border}`,borderRadius:6,padding:"8px 11px",fontSize:13,color:cl.text,background:cl.surface,outline:"none",boxSizing:"border-box",fontFamily:"inherit",resize:"vertical"}}
-    onFocus={e=>e.target.style.borderColor=cl.primary} onBlur={e=>e.target.style.borderColor=cl.border}/>
-);
+  document.getElementById("dash-overview").innerHTML = [
+    {l:"Clients actifs",v:DB.clients.filter(c=>c.status==="client").length,t:DB.clients.length,c:"#1B3A6B"},
+    {l:"Freelances actifs",v:DB.freelances.filter(f=>f.status==="actif").length,t:DB.freelances.length,c:"#6D28D9"},
+    {l:"Contrats signés",v:DB.contracts.filter(c=>c.status==="signed").length,t:DB.contracts.length,c:"#047857"},
+    {l:"Devis acceptés",v:DB.quotes.filter(q=>q.status==="accepted").length,t:DB.quotes.length,c:"#B45309"},
+    {l:"Factures payées",v:DB.invoices.filter(i=>i.status==="paid").length,t:DB.invoices.length,c:"#047857"},
+  ].map(item=>`<div style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:12px;color:#374151">${item.l}</span><span style="font-size:12px;font-weight:700;color:#1A1A2E">${item.v} / ${item.t}</span></div>
+    <div class="progress"><div class="progress-fill" style="width:${item.t?item.v/item.t*100:0}%;background:${item.c}"></div></div>
+  </div>`).join("");
+}
 
-const Btn = ({ch,onClick,v="primary",sz="md",icon,disabled=false,block=false}) => {
-  const vs={
-    primary:{bg:cl.primary,c:"#fff",b:`1px solid ${cl.primary}`,hov:cl.primaryDark},
-    secondary:{bg:cl.surface,c:cl.textMid,b:`1px solid ${cl.border}`,hov:"#F8FAFC"},
-    danger:{bg:cl.redLight,c:cl.red,b:`1px solid ${cl.red}30`,hov:"#FEE2E2"},
-    success:{bg:cl.green,c:"#fff",b:`1px solid ${cl.green}`,hov:"#047857"},
-    ghost:{bg:"transparent",c:cl.primary,b:"1px solid transparent",hov:cl.primaryLight},
-  };
-  const ss={sm:{p:"5px 11px",f:12},md:{p:"8px 14px",f:13},lg:{p:"10px 20px",f:14}};
-  const cfg=vs[v]||vs.primary; const s=ss[sz]||ss.md;
-  return <button onClick={onClick} disabled={disabled} style={{padding:s.p,fontSize:s.f,borderRadius:6,cursor:disabled?"not-allowed":"pointer",display:"inline-flex",alignItems:"center",gap:6,fontWeight:600,fontFamily:"inherit",background:cfg.bg,color:cfg.c,border:cfg.b,opacity:disabled?0.5:1,transition:"background 0.15s",width:block?"100%":"auto",justifyContent:block?"center":"flex-start"}} onMouseEnter={e=>{if(!disabled)e.currentTarget.style.background=cfg.hov;}} onMouseLeave={e=>{if(!disabled)e.currentTarget.style.background=cfg.bg;}}>{icon&&<Ic n={icon} sz={14} color="currentColor"/>}{ch}</button>;
-};
-
-// MODAL
-const Modal = ({title,subtitle,onClose,ch,wide=false}) => (
-  <div style={{position:"fixed",inset:0,background:"rgba(15,23,42,0.5)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-    <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:12,width:"100%",maxWidth:wide?760:520,maxHeight:"92vh",overflow:"auto",boxShadow:"0 25px 60px rgba(0,0,0,0.2)"}}>
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"18px 24px",borderBottom:`1px solid ${cl.border}`}}>
-        <div><div style={{fontSize:16,fontWeight:700,color:cl.text}}>{title}</div>{subtitle&&<div style={{fontSize:12,color:cl.textSub,marginTop:2}}>{subtitle}</div>}</div>
-        <button onClick={onClose} style={{background:"none",border:"none",cursor:"pointer",color:cl.textSub,padding:6,borderRadius:6,display:"flex"}} onMouseEnter={e=>e.currentTarget.style.background=cl.bg} onMouseLeave={e=>e.currentTarget.style.background="none"}><Ic n="x" sz={18}/></button>
+// ════════════════════════════════════ CLIENTS
+function renderClients() {
+  document.getElementById("clients-sub").textContent = `${DB.clients.length} clients — ${DB.clients.filter(c=>c.status==="client").length} actifs`;
+  const tbody=document.getElementById("clients-tbody");
+  if(!DB.clients.length){tbody.innerHTML=`<tr><td colspan="5"><div class="empty"><div class="empty-title">Aucun client enregistré</div></div></td></tr>`;return;}
+  tbody.innerHTML=DB.clients.map(c=>{
+    const invs=DB.invoices.filter(i=>i.client_id===c.id);
+    const tot=invs.reduce((s,i)=>s+i.amount*1.2,0);
+    return `<tr>
+      <td><div style="font-size:13px;font-weight:700;color:#1A1A2E">${esc(c.name)}</div><div style="font-size:11px;color:#9CA3AF">${esc(c.address)}</div></td>
+      <td><div style="font-size:12px">${esc(c.email)}</div><div style="font-size:11px;color:#9CA3AF">${esc(c.phone)}</div></td>
+      <td>${badge(c.status)}</td>
+      <td class="r"><span style="font-size:13px;font-weight:700;color:#1A1A2E">${fmt(tot)} €</span></td>
+      <td class="r"><div style="display:flex;gap:6px;justify-content:flex-end">
+        <button class="btn btn-secondary" style="font-size:10px;padding:5px 10px" onclick="showClientDetail('${c.id}')">Dossier</button>
+        <button class="btn btn-danger" style="font-size:10px;padding:5px 10px" onclick="deleteClient('${c.id}')">Suppr.</button>
+      </div></td>
+    </tr>`;
+  }).join("");
+}
+function showClientDetail(id) {
+  const c=DB.clients.find(x=>x.id===id); if(!c)return;
+  const invs=DB.invoices.filter(i=>i.client_id===id);
+  const ctrs=DB.contracts.filter(ct=>ct.client_id===id);
+  const qts=DB.quotes.filter(q=>q.client_id===id);
+  document.getElementById("detail-client-title").textContent=c.name;
+  document.getElementById("detail-client-body").innerHTML=`
+    <div class="two-col" style="margin-bottom:20px">
+      <div style="background:#F8F9FB;border:1px solid #D6DAE4;padding:16px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6B7280;margin-bottom:10px;border-bottom:1px solid #E5E7EB;padding-bottom:6px">Coordonnées</div>
+        ${[["Email",c.email],["Téléphone",c.phone],["Adresse",c.address],["Client depuis",fmtDate(c.created_at)]].map(([k,v])=>`
+        <div style="display:flex;gap:10px;margin-bottom:8px;font-size:12px"><span style="color:#6B7280;min-width:90px;flex-shrink:0">${k}</span><span style="color:#1A1A2E;font-weight:600">${esc(v)}</span></div>`).join("")}
+        <div style="margin-top:8px">${badge(c.status)}</div>
       </div>
-      <div style={{padding:24}}>{ch}</div>
+      <div style="background:#F8F9FB;border:1px solid #D6DAE4;padding:16px">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6B7280;margin-bottom:10px;border-bottom:1px solid #E5E7EB;padding-bottom:6px">Résumé financier</div>
+        ${[["Factures émises",invs.length],["Total facturé HT",fmt(invs.reduce((s,i)=>s+i.amount,0))+" €"],["Total encaissé HT",fmt(invs.filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0))+" €"],["Contrats",ctrs.length],["Devis",qts.length]].map(([k,v])=>`
+        <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #E5E7EB;font-size:12px"><span style="color:#6B7280">${k}</span><span style="font-weight:700;color:#1A1A2E">${v}</span></div>`).join("")}
+      </div>
     </div>
-  </div>
-);
+    ${invs.length>0?`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6B7280;margin-bottom:10px">Historique des factures</div>
+    ${invs.map(inv=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#F8F9FB;border:1px solid #D6DAE4;margin-bottom:6px">
+      <span class="mono">${esc(inv.number)}</span>
+      <span style="font-size:13px;font-weight:700;color:#1A1A2E">${fmt(inv.amount)} €</span>
+      <span style="font-size:11px;color:#9CA3AF">Éch. ${fmtDate(inv.due_date)}</span>
+      ${badge(inv.status)}
+    </div>`).join("")}`:""}
+  `;
+  openModal("modal-client-detail");
+}
+function deleteClient(id) {
+  if(DB.invoices.some(i=>i.client_id===id)||DB.contracts.some(c=>c.client_id===id))
+    return showToast("Impossible : documents liés à ce client","error");
+  DB.clients=DB.clients.filter(c=>c.id!==id);
+  showToast("Client supprimé"); renderClients();
+}
+function saveClient() {
+  const name=document.getElementById("c-name").value.trim();
+  const email=document.getElementById("c-email").value.trim();
+  if(!name||!email) return showToast("Nom et email requis","error");
+  DB.clients.push({id:uid(),name,email,phone:document.getElementById("c-phone").value.trim(),address:document.getElementById("c-address").value.trim(),status:document.getElementById("c-status").value,created_at:today()});
+  DB.logs.push({id:uid(),action:`Client créé : ${name}`,user:"Direction",timestamp:new Date().toLocaleString("fr-FR")});
+  closeModal("modal-new-client");
+  ["c-name","c-email","c-phone","c-address"].forEach(i=>document.getElementById(i).value="");
+  showToast("Client créé avec succès"); renderClients();
+}
 
-// TOAST
-const Toast = ({msg,type,onClose}) => {
-  const c=type==="error"?cl.red:cl.green;
-  return <div style={{position:"fixed",bottom:24,right:24,zIndex:9999,background:cl.surface,border:`1px solid ${c}30`,borderLeft:`4px solid ${c}`,borderRadius:8,padding:"12px 18px",color:cl.text,fontSize:13,boxShadow:"0 4px 20px rgba(0,0,0,0.1)",display:"flex",alignItems:"center",gap:10,minWidth:290}}><Ic n={type==="error"?"alert":"check"} sz={16} color={c}/>{msg}</div>;
-};
+// ════════════════════════════════════ FREELANCES
+function renderFreelances() {
+  document.getElementById("freelances-sub").textContent=`${DB.freelances.filter(f=>f.status==="actif").length} actifs sur ${DB.freelances.length} enregistrés`;
+  document.getElementById("freelances-grid").innerHTML=DB.freelances.map(f=>{
+    const m=DB.missions.filter(x=>x.freelance_id===f.id);
+    const earn=m.reduce((s,x)=>s+x.amount,0);
+    const ini=f.name.split(" ").map(n=>n[0]).join("");
+    return `<div class="fl-card">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #D6DAE4">
+        <div class="fl-initials">${esc(ini)}</div>
+        <div><div class="fl-name">${esc(f.name)}</div><div class="fl-spec">${esc(f.specialty)}</div></div>
+      </div>
+      ${badge(f.status)}
+      <div style="margin-top:12px">
+        ${[["Email",f.email],["SIRET",f.siret],["Adresse",f.address]].map(([k,v])=>`
+        <div class="fl-row"><span style="color:#6B7280">${k}</span><span style="color:#374151;font-weight:600;text-align:right;max-width:160px;overflow:hidden;text-overflow:ellipsis">${esc(v)}</span></div>`).join("")}
+      </div>
+      <div class="fl-earn">
+        <div><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6B7280">Total versé</div><div style="font-size:11px;color:#9CA3AF;margin-top:1px">${m.length} mission(s)</div></div>
+        <div style="font-size:18px;font-weight:700;color:#1B3A6B">${fmt(earn)} €</div>
+      </div>
+    </div>`;
+  }).join("");
+}
+function saveFreelance() {
+  const name=document.getElementById("fl-name").value.trim();
+  const email=document.getElementById("fl-email").value.trim();
+  if(!name||!email) return showToast("Nom et email requis","error");
+  DB.freelances.push({id:uid(),name,email,siret:document.getElementById("fl-siret").value.trim(),address:document.getElementById("fl-address").value.trim(),specialty:document.getElementById("fl-specialty").value.trim(),status:document.getElementById("fl-status").value,created_at:today()});
+  DB.logs.push({id:uid(),action:`Freelance ajouté : ${name}`,user:"Direction",timestamp:new Date().toLocaleString("fr-FR")});
+  closeModal("modal-new-freelance");
+  ["fl-name","fl-email","fl-siret","fl-address","fl-specialty"].forEach(i=>document.getElementById(i).value="");
+  showToast("Freelance ajouté"); renderFreelances();
+}
 
-// PAGE HEADER
-const PH = ({title,sub,crumbs,action}) => (
-  <div style={{marginBottom:28}}>
-    {crumbs&&<div style={{display:"flex",alignItems:"center",gap:5,marginBottom:8}}>{crumbs.map((b,i)=><span key={i} style={{display:"flex",alignItems:"center",gap:5}}>{i>0&&<Ic n="chevRight" sz={11} color={cl.textMute}/>}<span style={{fontSize:12,color:i===crumbs.length-1?cl.textMid:cl.textMute}}>{b}</span></span>)}</div>}
-    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between"}}>
-      <div><h1 style={{margin:0,fontSize:22,fontWeight:700,color:cl.text,letterSpacing:"-0.3px"}}>{title}</h1>{sub&&<p style={{margin:"4px 0 0",fontSize:13,color:cl.textSub}}>{sub}</p>}</div>
-      {action}
+// ════════════════════════════════════ CONTRACTS
+function renderContracts() {
+  document.getElementById("contracts-sub").textContent=`${DB.contracts.length} contrats — ${DB.contracts.filter(c=>c.status==="signed").length} signés`;
+  const TYPES={client:"Client",freelance:"Freelance",nda:"NDA",partenariat:"Partenariat"};
+  const tbody=document.getElementById("contracts-tbody");
+  if(!DB.contracts.length){tbody.innerHTML=`<tr><td colspan="8"><div class="empty"><div class="empty-title">Aucun contrat</div></div></td></tr>`;return;}
+  tbody.innerHTML=DB.contracts.map(c=>{
+    const party=c.client_id?DB.clients.find(x=>x.id===c.client_id)?.name||"—":c.freelance_id?DB.freelances.find(x=>x.id===c.freelance_id)?.name||"—":"—";
+    return `<tr>
+      <td><span class="mono">${esc(c.number)}</span></td>
+      <td><span style="font-size:10px;font-weight:700;background:#E8EDF5;color:#1B3A6B;padding:2px 8px;border:1px solid #C5CEDF">${esc(TYPES[c.type]||c.type)}</span></td>
+      <td style="font-size:12px;color:#374151">${esc(party)}</td>
+      <td><span style="font-size:11px;color:#6B7280;max-width:200px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(c.mission_description)}</span></td>
+      <td class="r"><span style="font-size:12px;font-weight:700;color:#1A1A2E">${c.amount>0?fmt(c.amount)+" €":"—"}</span></td>
+      <td><div style="font-size:11px;color:#9CA3AF">${fmtDate(c.start_date)}<br>${fmtDate(c.end_date)}</div></td>
+      <td>${badge(c.status)}</td>
+      <td class="r"><button class="btn btn-secondary" style="font-size:10px;padding:5px 10px" onclick="showPDF('contract','${c.id}')">Aperçu PDF</button></td>
+    </tr>`;
+  }).join("");
+}
+function updateContractParty() {
+  const t=document.getElementById("ct-type").value;
+  document.getElementById("ct-client-wrap").style.display=t==="freelance"?"none":"";
+  document.getElementById("ct-freelance-wrap").style.display=t==="freelance"?"":"none";
+}
+function saveContract() {
+  const desc=document.getElementById("ct-desc").value.trim();
+  if(!desc) return showToast("La description est requise","error");
+  const num=genNum("CTR",DB.contracts);
+  const type=document.getElementById("ct-type").value;
+  DB.contracts.push({id:uid(),type,number:num,created_at:today(),
+    client_id:type!=="freelance"?(document.getElementById("ct-client").value||null):null,
+    freelance_id:type==="freelance"?(document.getElementById("ct-freelance").value||null):null,
+    mission_description:desc,
+    conditions:document.getElementById("ct-conditions").value.trim(),
+    acompte:Number(document.getElementById("ct-acompte").value)||30,
+    lieu:document.getElementById("ct-lieu").value.trim(),
+    nda:document.getElementById("ct-nda").value,
+    amount:Number(document.getElementById("ct-amount").value)||0,
+    start_date:document.getElementById("ct-start").value,
+    end_date:document.getElementById("ct-end").value,
+    status:document.getElementById("ct-status").value,
+  });
+  DB.logs.push({id:uid(),action:`Contrat ${num} créé`,user:"Direction",timestamp:new Date().toLocaleString("fr-FR")});
+  closeModal("modal-new-contract");
+  showToast(`Contrat ${num} créé`); renderContracts();
+}
+
+// ════════════════════════════════════ QUOTES
+function renderQuotes() {
+  document.getElementById("quotes-sub").textContent=`${DB.quotes.filter(q=>q.status==="accepted").length} acceptés — ${DB.quotes.filter(q=>q.status==="sent").length} en attente`;
+  document.getElementById("quotes-tbody").innerHTML=DB.quotes.map(q=>{
+    const client=DB.clients.find(c=>c.id===q.client_id);
+    return `<tr>
+      <td><span class="mono">${esc(q.number)}</span></td>
+      <td style="font-size:12px">${esc(client?.name||"—")}</td>
+      <td><span style="font-size:11px;color:#6B7280;max-width:220px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(q.description)}</span></td>
+      <td class="r"><span style="font-size:12px;font-weight:700;color:#1A1A2E">${fmt(q.amount)} €</span></td>
+      <td style="font-size:11px;color:#9CA3AF">${fmtDate(q.created_at)}</td>
+      <td>${badge(q.status)}</td>
+      <td class="r"><button class="btn btn-secondary" style="font-size:10px;padding:5px 10px" onclick="showPDF('quote','${q.id}')">PDF</button></td>
+    </tr>`;
+  }).join("");
+}
+function saveQuote() {
+  const cid=document.getElementById("q-client").value;
+  const desc=document.getElementById("q-desc").value.trim();
+  const amount=document.getElementById("q-amount").value;
+  if(!cid||!desc||!amount) return showToast("Tous les champs sont requis","error");
+  const num=genNum("DEV",DB.quotes);
+  DB.quotes.push({id:uid(),number:num,client_id:cid,description:desc,amount:Number(amount),status:document.getElementById("q-status").value,created_at:today()});
+  DB.logs.push({id:uid(),action:`Devis ${num} créé`,user:"Direction",timestamp:new Date().toLocaleString("fr-FR")});
+  closeModal("modal-new-quote");
+  ["q-desc","q-amount"].forEach(i=>document.getElementById(i).value="");
+  showToast(`Devis ${num} créé`); renderQuotes();
+}
+
+// ════════════════════════════════════ INVOICES
+function renderInvoices() {
+  const lc=DB.invoices.filter(i=>i.status==="late").length;
+  document.getElementById("invoices-sub").textContent=`${DB.invoices.length} factures — ${lc} en retard`;
+  const total=DB.invoices.reduce((s,i)=>s+i.amount,0);
+  const paid=DB.invoices.filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0);
+  const unpaid=DB.invoices.filter(i=>i.status==="unpaid").reduce((s,i)=>s+i.amount,0);
+  const lateAmt=DB.invoices.filter(i=>i.status==="late").reduce((s,i)=>s+i.amount,0);
+  document.getElementById("inv-totals").innerHTML=[
+    {l:"Total émis HT",v:total,c:"#1B3A6B",b:"#1B3A6B"},
+    {l:"Encaissé HT",v:paid,c:"#047857",b:"#047857"},
+    {l:"En attente HT",v:unpaid,c:"#B45309",b:"#B45309"},
+    {l:"En retard HT",v:lateAmt,c:"#B91C1C",b:"#B91C1C"},
+  ].map(s=>`<div class="inv-tot-card" style="border-top-color:${s.b}"><div class="inv-tot-label">${s.l}</div><div class="inv-tot-val" style="color:${s.c}">${fmt(s.v)} €</div></div>`).join("");
+  document.getElementById("invoices-tbody").innerHTML=DB.invoices.map(inv=>{
+    const client=DB.clients.find(c=>c.id===inv.client_id);
+    const q=inv.related_quote_id?DB.quotes.find(x=>x.id===inv.related_quote_id):null;
+    return `<tr>
+      <td><span class="mono">${esc(inv.number)}</span></td>
+      <td style="font-size:12px">${esc(client?.name||"—")}</td>
+      <td><span style="font-family:'Courier New',monospace;font-size:11px;color:#9CA3AF">${esc(q?.number||"—")}</span></td>
+      <td class="r" style="font-size:12px">${fmt(inv.amount)} €</td>
+      <td class="r"><span style="font-size:12px;font-weight:700;color:#1A1A2E">${fmt(inv.amount*1.2)} €</span></td>
+      <td><span style="font-size:11px;color:${inv.status==="late"?"#B91C1C":"#9CA3AF"};font-weight:${inv.status==="late"?700:400}">${fmtDate(inv.due_date)}</span></td>
+      <td>${badge(inv.status)}</td>
+      <td class="r"><div style="display:flex;gap:6px;justify-content:flex-end">
+        <button class="btn btn-secondary" style="font-size:10px;padding:5px 10px" onclick="showPDF('invoice','${inv.id}')">PDF</button>
+        ${inv.status!=="paid"?`<button class="btn btn-success" style="font-size:10px;padding:5px 10px" onclick="markPaid('${inv.id}')">✓ Payer</button>`:""}
+      </div></td>
+    </tr>`;
+  }).join("");
+}
+function markPaid(id) {
+  const inv=DB.invoices.find(i=>i.id===id); if(!inv)return;
+  inv.status="paid";
+  DB.logs.push({id:uid(),action:`Facture ${inv.number} marquée payée`,user:"Direction",timestamp:new Date().toLocaleString("fr-FR")});
+  showToast(`Facture ${inv.number} payée`); renderInvoices(); updateBadges();
+}
+function saveInvoice() {
+  const cid=document.getElementById("inv-client").value;
+  const amount=document.getElementById("inv-amount").value;
+  if(!cid||!amount) return showToast("Client et montant requis","error");
+  const num=genNum("FAC",DB.invoices);
+  DB.invoices.push({id:uid(),number:num,client_id:cid,related_quote_id:document.getElementById("inv-quote").value||null,amount:Number(amount),status:document.getElementById("inv-status").value,due_date:document.getElementById("inv-due").value,created_at:today()});
+  DB.logs.push({id:uid(),action:`Facture ${num} créée`,user:"Direction",timestamp:new Date().toLocaleString("fr-FR")});
+  closeModal("modal-new-invoice");
+  ["inv-amount","inv-due"].forEach(i=>document.getElementById(i).value="");
+  showToast(`Facture ${num} créée`); renderInvoices(); updateBadges();
+}
+
+// ════════════════════════════════════ AUTOMATION
+function renderAuto() {
+  document.getElementById("auto-client").innerHTML='<option value="">— Sélectionner un client —</option>'+DB.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+}
+function updateAutoRecap() {
+  const amount=Number(document.getElementById("auto-amount").value);
+  const recap=document.getElementById("auto-recap");
+  if(amount>0){
+    recap.style.display="block";
+    recap.innerHTML=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6B7280;margin-bottom:10px">Documents à générer</div>`+
+      [{l:"Devis",d:`${fmt(amount)} € HT`,c:"#1B3A6B"},{l:"Contrat (brouillon)",d:"À compléter et signer",c:"#B45309"},{l:"Facture acompte 30%",d:`${fmt(Math.round(amount*0.3))} € HT`,c:"#047857"}].map(item=>`
+      <div class="recap-item"><div class="recap-dot" style="background:${item.c}"></div><span style="flex:1">${item.l}</span><span style="font-weight:700;color:${item.c}">${item.d}</span></div>`).join("");
+  } else recap.style.display="none";
+}
+function runAuto() {
+  const cid=document.getElementById("auto-client").value;
+  const amount=Number(document.getElementById("auto-amount").value);
+  if(!cid||!amount) return showToast("Client et montant requis","error");
+  const client=DB.clients.find(c=>c.id===cid);
+  const type=document.getElementById("auto-type").value;
+  const desc=document.getElementById("auto-desc").value.trim()||`${type} — ${client.name}`;
+  const ac=Math.round(amount*0.3);
+  const qn=genNum("DEV",DB.quotes),fn=genNum("FAC",DB.invoices),cn=genNum("CTR",DB.contracts);
+  const quote={id:uid(),number:qn,client_id:cid,description:desc,amount,status:"sent",created_at:today()};
+  const invoice={id:uid(),number:fn,client_id:cid,related_quote_id:quote.id,amount:ac,status:"unpaid",due_date:new Date(Date.now()+7*86400000).toISOString().split("T")[0],created_at:today()};
+  const contract={id:uid(),type:"client",number:cn,client_id:cid,freelance_id:null,mission_description:desc,conditions:"Acompte 30% à la signature. Solde à la livraison finale.",acompte:30,lieu:"À définir",nda:"standard",amount,start_date:today(),end_date:"",status:"draft",created_at:today()};
+  DB.quotes.push(quote);DB.invoices.push(invoice);DB.contracts.push(contract);
+  ["[AUTO] Devis "+qn+" généré","[AUTO] Contrat "+cn+" généré","[AUTO] Facture acompte "+fn+" générée"].forEach(a=>DB.logs.push({id:uid(),action:a,user:"Direction",timestamp:new Date().toLocaleString("fr-FR")}));
+  document.getElementById("auto-result").innerHTML=`
+    <div class="alert alert-blue" style="margin-bottom:14px">✓ &nbsp;Pack généré avec succès pour <strong>${esc(client.name)}</strong></div>
+    ${[{l:"Devis créé",item:quote,c:"#1B3A6B"},{l:"Contrat créé",item:contract,c:"#B45309"},{l:"Facture d'acompte",item:invoice,c:"#047857"}].map(({l,item,c})=>`
+    <div class="result-card" style="border-left-color:${c}">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:#6B7280;margin-bottom:4px">${l}</div>
+      <div style="font-family:'Courier New',monospace;font-size:14px;font-weight:700;color:${c};margin-bottom:4px">${esc(item.number)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:11px;color:#9CA3AF">${fmt(item.amount)} € HT</span>${badge(item.status)}</div>
+    </div>`).join("")}
+    <div style="font-size:11px;color:#6B7280;background:#F8F9FB;border:1px solid #D6DAE4;padding:10px 12px;margin-top:4px">Tous les documents sont accessibles dans leurs modules respectifs.</div>`;
+  showToast("Pack complet généré !"); updateBadges();
+}
+
+// ════════════════════════════════════ FINANCE
+function renderFinance() {
+  const total=DB.invoices.reduce((s,i)=>s+i.amount,0);
+  const byClient=DB.clients.map(c=>({c,t:DB.invoices.filter(i=>i.client_id===c.id).reduce((s,i)=>s+i.amount,0),p:DB.invoices.filter(i=>i.client_id===c.id&&i.status==="paid").reduce((s,i)=>s+i.amount,0)})).filter(x=>x.t>0).sort((a,b)=>b.t-a.t);
+  const mx=Math.max(...byClient.map(x=>x.t),1);
+  document.getElementById("finance-content").innerHTML=`
+    <div class="card">
+      <div class="card-header">Chiffre d'affaires par client</div>
+      <div class="card-body">${byClient.map(({c,t,p})=>`
+        <div style="margin-bottom:18px">
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px">
+            <div><div style="font-size:12px;font-weight:700;color:#1A1A2E">${esc(c.name)}</div><div style="font-size:11px;color:#9CA3AF">Encaissé : ${fmt(p)} € — Restant : ${fmt(t-p)} €</div></div>
+            <div style="font-size:14px;font-weight:700;color:#1B3A6B">${fmt(t)} €</div>
+          </div>
+          <div class="progress"><div class="progress-fill" style="width:${t/mx*100}%;background:#1B3A6B"></div></div>
+          <div class="progress" style="margin-top:3px"><div class="progress-fill" style="width:${t?p/t*100:0}%;background:#047857"></div></div>
+          <div style="display:flex;gap:12px;margin-top:3px;font-size:10px;color:#9CA3AF"><span style="color:#1B3A6B">▬ Facturé</span><span style="color:#047857">▬ Encaissé</span></div>
+        </div>`).join("")}
+      </div>
     </div>
-  </div>
-);
+    <div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-header">Répartition des règlements</div>
+        <div class="card-body">${[{l:"Factures payées",s:"paid",c:"#047857"},{l:"En attente",s:"unpaid",c:"#B45309"},{l:"En retard",s:"late",c:"#B91C1C"}].map(x=>{
+          const items=DB.invoices.filter(i=>i.status===x.s);
+          const sum=items.reduce((t,i)=>t+i.amount,0);
+          return `<div class="fin-item">
+            <div style="width:36px;height:36px;background:${x.c}15;border:1px solid ${x.c}30;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px">€</div>
+            <div style="flex:1"><div style="display:flex;justify-content:space-between"><span style="font-size:12px;font-weight:700;color:#374151">${x.l}</span><span style="font-size:14px;font-weight:700;color:${x.c}">${fmt(sum)} €</span></div>
+            <div style="font-size:11px;color:#9CA3AF">${items.length} facture(s) — ${total?Math.round(sum/total*100):0}%</div>
+            <div class="progress" style="margin-top:4px"><div class="progress-fill" style="width:${total?sum/total*100:0}%;background:${x.c}"></div></div></div>
+          </div>`;}).join("")}
+          <div style="margin-top:14px;background:#F8F9FB;border:1px solid #D6DAE4;padding:14px;display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:10px;color:#6B7280;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px">Total facturé HT</div><div style="font-size:20px;font-weight:700;color:#1A1A2E">${fmt(total)} €</div></div>
+            <div style="text-align:right"><div style="font-size:10px;color:#6B7280;margin-bottom:2px;text-transform:uppercase;letter-spacing:.5px">Taux de recouvrement</div><div style="font-size:20px;font-weight:700;color:#047857">${total?Math.round(DB.invoices.filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0)/total*100):0}%</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Coûts prestataires</div>
+        <div class="card-body">${DB.freelances.map(f=>{const m=DB.missions.filter(x=>x.freelance_id===f.id);const t=m.reduce((s,x)=>s+x.amount,0);return `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #EEF0F5"><div><div style="font-size:12px;font-weight:700;color:#1A1A2E">${esc(f.name)}</div><div style="font-size:11px;color:#9CA3AF">${m.length} mission(s)</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:700;color:#1B3A6B">${fmt(t)} €</div>${badge(f.status)}</div></div>`;}).join("")}</div>
+      </div>
+    </div>`;
+}
 
-// STAT CARD
-const SC = ({label,value,sub,icon,color}) => (
-  <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:"18px 20px"}}>
-    <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:10}}>
-      <span style={{fontSize:12,fontWeight:500,color:cl.textSub}}>{label}</span>
-      <div style={{width:34,height:34,borderRadius:8,background:color+"18",display:"flex",alignItems:"center",justifyContent:"center"}}><Ic n={icon} sz={16} color={color}/></div>
+// ════════════════════════════════════ LOGS
+function renderLogs() {
+  document.getElementById("logs-sub").textContent=`${DB.logs.length} entrées enregistrées`;
+  document.getElementById("logs-tbody").innerHTML=[...DB.logs].reverse().map((l,i)=>`<tr>
+    <td><span style="font-family:'Courier New',monospace;font-size:11px;color:#9CA3AF">${String(DB.logs.length-i).padStart(4,"0")}</span></td>
+    <td><div style="display:flex;align-items:center;gap:8px"><div style="width:5px;height:5px;border-radius:50%;background:${l.action.includes("[AUTO]")?"#6D28D9":"#1B3A6B"};flex-shrink:0"></div><span style="font-size:12px">${esc(l.action)}</span></div></td>
+    <td style="font-size:12px;color:#6B7280">${esc(l.user)}</td>
+    <td><span style="font-family:'Courier New',monospace;font-size:11px;color:#9CA3AF">${esc(l.timestamp)}</span></td>
+  </tr>`).join("");
+}
+
+// ════════════════════════════════════ PDF
+function showPDF(type, id) {
+  let data;
+  if(type==="contract") data=DB.contracts.find(c=>c.id===id);
+  else if(type==="quote") data=DB.quotes.find(q=>q.id===id);
+  else if(type==="invoice") data=DB.invoices.find(i=>i.id===id);
+  if(!data) return;
+  const tl={contract:"CONTRAT",quote:"DEVIS",invoice:"FACTURE"}[type];
+  document.getElementById("pdf-modal-title").textContent=`Aperçu ${tl} — ${data.number}`;
+  document.getElementById("pdf-content").innerHTML=buildPDF(type,data);
+  openModal("modal-pdf");
+}
+
+function buildPDF(type, data) {
+  const client=DB.clients.find(c=>c.id===data.client_id);
+  const freelance=DB.freelances.find(f=>f.id===data.freelance_id);
+  const party=client||freelance;
+  const tl={contract:"CONTRAT",quote:"DEVIS",invoice:"FACTURE"}[type];
+  const tva=Number(data.amount)*0.2, ttc=Number(data.amount)*1.2;
+  const acompte=data.acompte||30;
+  const ndaTexts={
+    standard:"Une clause de confidentialité standard est incluse. Les parties s'engagent à ne pas divulguer les informations confidentielles échangées dans le cadre du présent contrat pendant toute sa durée et pour une période de 3 ans après son expiration.",
+    renforcee:"Clause de confidentialité renforcée applicable. Un accord de non-divulgation (NDA) séparé est requis et doit être signé préalablement à l'exécution du présent contrat. Durée de confidentialité : 5 ans après la fin du contrat. Toute violation entraîne une indemnisation forfaitaire.",
+    aucune:"Aucune clause de confidentialité spécifique n'est stipulée dans le présent contrat."
+  };
+  return `<div class="pdf-wrap">
+    <div class="pdf-header">
+      <div>
+        <div class="pdf-logo">CRG INTERNAL</div>
+        <div class="pdf-logo-sub">Direction de Campagne</div>
+        <div class="pdf-logo-sub">maholo.contact@gmail.com</div>
+      </div>
+      <div style="text-align:right">
+        <div class="pdf-doc-title">${tl}</div>
+        <div class="pdf-doc-num">${esc(data.number)}</div>
+        <div style="font-size:10px;color:#666;margin-top:6px">Date d'émission : ${fmtDate(data.created_at)}</div>
+        ${type==="invoice"?`<div style="font-size:10px;color:#B91C1C;font-weight:700;margin-top:2px">Date d'échéance : ${fmtDate(data.due_date)}</div>`:""}
+        ${type==="contract"?`<div style="font-size:10px;color:#555;margin-top:2px">Période : ${fmtDate(data.start_date)} → ${fmtDate(data.end_date)}</div>`:""}
+      </div>
     </div>
-    <div style={{fontSize:24,fontWeight:700,color:cl.text,letterSpacing:"-0.5px",marginBottom:3}}>{value}</div>
-    {sub&&<div style={{fontSize:11,color:cl.textMute}}>{sub}</div>}
-  </div>
-);
-
-// TABLE
-const Tbl = ({cols,rows}) => (
-  <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,overflow:"hidden"}}>
-    <table style={{width:"100%",borderCollapse:"collapse"}}>
-      <thead><tr style={{background:"#F8FAFC",borderBottom:`1px solid ${cl.border}`}}>
-        {cols.map(c=><th key={c.k} style={{padding:"10px 16px",textAlign:c.a||"left",fontSize:11,fontWeight:700,color:cl.textSub,textTransform:"uppercase",letterSpacing:"0.06em",whiteSpace:"nowrap"}}>{c.l}</th>)}
+    <div class="pdf-rule"></div>
+    <div class="pdf-parties">
+      <div class="pdf-party">
+        <div class="pdf-plabel">Émetteur</div>
+        <div class="pdf-pname">CRG Internal</div>
+        <div class="pdf-pinfo">Direction de Campagne</div>
+        <div class="pdf-pinfo">maholo.contact@gmail.com</div>
+      </div>
+      ${party?`<div class="pdf-party">
+        <div class="pdf-plabel">${type==="contract"?"Partie contractante":"Destinataire"}</div>
+        <div class="pdf-pname">${esc(party.name)}</div>
+        ${party.address?`<div class="pdf-pinfo">${esc(party.address)}</div>`:""}
+        <div class="pdf-pinfo">${esc(party.email)}</div>
+        ${party.phone?`<div class="pdf-pinfo">${esc(party.phone)}</div>`:""}
+        ${party.siret?`<div class="pdf-pinfo">SIRET : ${esc(party.siret)}</div>`:""}
+      </div>`:""}
+    </div>
+    <div class="pdf-object"><strong>Objet :</strong> ${esc(data.description||data.mission_description)}</div>
+    ${type==="contract"&&data.lieu?`<div class="pdf-object"><strong>Lieu d'exécution :</strong> ${esc(data.lieu)}</div>`:""}
+    <table class="pdf-table">
+      <thead class="pdf-thead"><tr>
+        <th>Désignation</th><th class="r">Qté</th><th class="r">P.U. HT</th><th class="r">Montant HT</th>
       </tr></thead>
-      <tbody>
-        {rows.map((row,i)=>(
-          <tr key={i} style={{borderBottom:i<rows.length-1?`1px solid ${cl.border}`:"none",transition:"background 0.1s"}}
-            onMouseEnter={e=>e.currentTarget.style.background="#F8FAFC"} onMouseLeave={e=>e.currentTarget.style.background="transparent"}>
-            {cols.map(c=><td key={c.k} style={{padding:"13px 16px",fontSize:13,color:cl.textMid,textAlign:c.a||"left"}}>{row[c.k]}</td>)}
-          </tr>
-        ))}
-        {rows.length===0&&<tr><td colSpan={cols.length} style={{padding:"48px 16px",textAlign:"center",color:cl.textMute,fontSize:13}}>Aucune donnée à afficher</td></tr>}
+      <tbody class="pdf-tbody">
+        <tr>
+          <td>${esc(data.description||data.mission_description)}</td>
+          <td class="r">1</td>
+          <td class="r">${fmt(data.amount)} €</td>
+          <td class="r" style="font-weight:700">${fmt(data.amount)} €</td>
+        </tr>
+        ${type==="contract"&&data.acompte&&data.amount>0?`<tr style="background:#FFFBEB">
+          <td style="font-style:italic;color:#666;font-size:11px">Acompte à la signature (${acompte}%)</td>
+          <td class="r" style="font-size:11px">1</td>
+          <td class="r" style="font-size:11px">${fmt(Math.round(data.amount*acompte/100))} €</td>
+          <td class="r" style="font-weight:700;color:#B45309;font-size:11px">${fmt(Math.round(data.amount*acompte/100))} €</td>
+        </tr>`:""}
       </tbody>
     </table>
-  </div>
-);
-
-// PDF PREVIEW — Police Arial comme demandé
-const PDFPrev = ({type,data,db,onClose}) => {
-  const client=db.clients.find(c=>c.id===data.client_id);
-  const tl={quote:"DEVIS",invoice:"FACTURE",contract:"CONTRAT"}[type]||"DOCUMENT";
-  const tva=Number(data.amount)*0.2, ttc=Number(data.amount)*1.2;
-  return (
-    <Modal title={`Aperçu ${tl} — ${data.number}`} onClose={onClose} wide ch={
-      <div>
-        <div style={{background:"#fff",border:`1px solid ${cl.border}`,borderRadius:6,padding:"44px 52px",fontFamily:"Arial, Helvetica, sans-serif",color:"#111",lineHeight:1.65,fontSize:13}}>
-          {/* En-tête */}
-          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:36}}>
-            <div>
-              <div style={{fontSize:26,fontWeight:900,color:"#0F172A",letterSpacing:-1,fontFamily:"Arial Black, Arial, sans-serif"}}>CRG</div>
-              <div style={{fontSize:11,color:"#555",marginTop:3,fontFamily:"Arial, sans-serif"}}>CRG Business System</div>
-              <div style={{fontSize:11,color:"#555",fontFamily:"Arial, sans-serif"}}>contact@crg.fr — www.crg.fr</div>
-              <div style={{fontSize:11,color:"#555",fontFamily:"Arial, sans-serif"}}>SIRET : 000 000 000 00000 — TVA : FR00000000000</div>
-            </div>
-            <div style={{textAlign:"right"}}>
-              <div style={{fontSize:20,fontWeight:700,color:"#0F172A",fontFamily:"Arial Black, Arial, sans-serif"}}>{tl}</div>
-              <div style={{fontSize:16,fontWeight:700,color:"#1746C8",marginTop:4,fontFamily:"Arial, sans-serif"}}>{data.number}</div>
-              <div style={{fontSize:11,color:"#666",marginTop:6,fontFamily:"Arial, sans-serif"}}>Date d'émission : {fmtDate(data.created_at)}</div>
-              {type==="invoice"&&<div style={{fontSize:11,color:"#DC2626",fontWeight:700,marginTop:2,fontFamily:"Arial, sans-serif"}}>Date d'échéance : {fmtDate(data.due_date)}</div>}
-            </div>
-          </div>
-          <div style={{height:2,background:"#1746C8",marginBottom:28}}/>
-          {/* Parties */}
-          <div style={{display:"flex",gap:48,marginBottom:28,fontFamily:"Arial, sans-serif"}}>
-            <div style={{flex:1}}>
-              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",color:"#888",marginBottom:6}}>Émetteur</div>
-              <div style={{fontWeight:700,fontSize:13}}>CRG Business System</div>
-              <div style={{color:"#555",fontSize:12}}>12 Rue de l'Innovation, 75002 Paris</div>
-              <div style={{color:"#555",fontSize:12}}>contact@crg.fr</div>
-            </div>
-            {client&&<div style={{flex:1}}>
-              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.1em",color:"#888",marginBottom:6}}>{type==="contract"?"Partie contractante":"Destinataire"}</div>
-              <div style={{fontWeight:700,fontSize:13}}>{client.name}</div>
-              <div style={{color:"#555",fontSize:12}}>{client.address}</div>
-              <div style={{color:"#555",fontSize:12}}>{client.email}</div>
-            </div>}
-          </div>
-          {/* Objet */}
-          <div style={{background:"#F8FAFC",border:"1px solid #E2E6EE",borderRadius:4,padding:"10px 14px",marginBottom:22,fontFamily:"Arial, sans-serif",fontSize:13}}>
-            <strong>Objet :</strong> {data.description||data.mission_description}
-          </div>
-          {/* Tableau */}
-          <table style={{width:"100%",borderCollapse:"collapse",marginBottom:20,fontFamily:"Arial, sans-serif"}}>
-            <thead>
-              <tr style={{background:"#1746C8",color:"#fff"}}>
-                {["Désignation","Qté","P.U. HT","Montant HT"].map(h=>(
-                  <th key={h} style={{padding:"9px 12px",textAlign:h==="Désignation"?"left":"right",fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.05em"}}>{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr style={{borderBottom:"1px solid #E2E6EE"}}>
-                <td style={{padding:"11px 12px",fontSize:13}}>{data.description||data.mission_description}</td>
-                <td style={{padding:"11px 12px",textAlign:"right",fontSize:13}}>1</td>
-                <td style={{padding:"11px 12px",textAlign:"right",fontSize:13}}>{fmt(data.amount)} €</td>
-                <td style={{padding:"11px 12px",textAlign:"right",fontSize:13,fontWeight:700}}>{fmt(data.amount)} €</td>
-              </tr>
-            </tbody>
-          </table>
-          {/* Totaux */}
-          <div style={{display:"flex",justifyContent:"flex-end",fontFamily:"Arial, sans-serif"}}>
-            <table style={{borderCollapse:"collapse",minWidth:280}}>
-              <tbody>
-                <tr><td style={{padding:"5px 12px",color:"#555",fontSize:12}}>Sous-total HT</td><td style={{padding:"5px 12px",textAlign:"right",fontSize:12}}>{fmt(data.amount)} €</td></tr>
-                <tr><td style={{padding:"5px 12px",color:"#555",fontSize:12}}>TVA (20%)</td><td style={{padding:"5px 12px",textAlign:"right",fontSize:12}}>{fmt(tva)} €</td></tr>
-                <tr style={{background:"#F8FAFC",borderTop:"2px solid #0F172A"}}>
-                  <td style={{padding:"9px 12px",fontWeight:700,fontSize:14}}>Total TTC</td>
-                  <td style={{padding:"9px 12px",textAlign:"right",fontWeight:900,fontSize:20,color:"#1746C8"}}>{fmt(ttc)} €</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          {/* Conditions contrat */}
-          {type==="contract"&&<div style={{marginTop:28,borderTop:"1px solid #E2E6EE",paddingTop:18,fontFamily:"Arial, sans-serif"}}>
-            <div style={{fontWeight:700,fontSize:11,textTransform:"uppercase",letterSpacing:"0.08em",marginBottom:8,color:"#333"}}>Conditions générales</div>
-            <p style={{margin:0,fontSize:11,color:"#555",lineHeight:1.8}}>Le présent contrat prend effet à la date de signature des deux parties et est régi par le droit français. Toute modification devra faire l'objet d'un avenant écrit signé des deux parties. En cas de litige, les parties s'engagent à tenter une résolution amiable avant toute procédure judiciaire. Tribunal compétent : Paris.</p>
-            <div style={{marginTop:28,display:"flex",gap:48}}>
-              <div style={{flex:1,borderTop:"1px solid #111",paddingTop:8,fontSize:11,color:"#555"}}>Signature et cachet — CRG Business System</div>
-              <div style={{flex:1,borderTop:"1px solid #111",paddingTop:8,fontSize:11,color:"#555"}}>Signature et cachet — {client?.name||"Client"}</div>
-            </div>
-          </div>}
-          {/* Pied */}
-          <div style={{marginTop:32,paddingTop:14,borderTop:"1px solid #E2E6EE",display:"flex",justifyContent:"space-between",fontSize:10,color:"#aaa",fontFamily:"Arial, sans-serif"}}>
-            <span>CRG Business System — Document confidentiel</span>
-            <span>Généré le {new Date().toLocaleDateString("fr-FR")}</span>
-            <span>Page 1 / 1</span>
-          </div>
-        </div>
-        <div style={{display:"flex",gap:10,justifyContent:"flex-end",marginTop:16}}>
-          <Btn v="secondary" onClick={onClose} ch="Fermer"/>
-          <Btn v="primary" icon="download" onClick={()=>alert("Téléchargement PDF...")} ch="Télécharger PDF"/>
-        </div>
-      </div>
-    }/>
-  );
-};
-
-// ─── DASHBOARD ──────────────────────────────────────────────────────────────
-const Dashboard = ({db}) => {
-  const paid=db.invoices.filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0);
-  const pending=db.invoices.filter(i=>i.status==="unpaid").reduce((s,i)=>s+i.amount,0);
-  const late=db.invoices.filter(i=>i.status==="late").reduce((s,i)=>s+i.amount,0);
-  const total=db.invoices.reduce((s,i)=>s+i.amount,0);
-  const fcost=db.missions.reduce((s,m)=>s+m.amount,0);
-  const lateCount=db.invoices.filter(i=>i.status==="late").length;
-  return (
-    <div>
-      <PH title="Tableau de bord" sub={`Bonjour, Admin — ${new Date().toLocaleDateString("fr-FR",{weekday:"long",year:"numeric",month:"long",day:"numeric"})}`} crumbs={["CRG Business","Tableau de bord"]}/>
-      {lateCount>0&&<div style={{background:cl.redLight,border:`1px solid ${cl.red}30`,borderRadius:8,padding:"12px 16px",marginBottom:20,display:"flex",alignItems:"center",gap:10}}><Ic n="alert" sz={16} color={cl.red}/><span style={{fontSize:13,color:cl.red,fontWeight:600}}>{lateCount} facture(s) en retard de paiement — Votre attention est requise</span></div>}
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14,marginBottom:24}}>
-        <SC label="Chiffre d'affaires total" value={`${fmt(total)} €`} sub={`${db.invoices.length} factures émises`} icon="dollar" color={cl.primary}/>
-        <SC label="Total encaissé" value={`${fmt(paid)} €`} sub={`Taux de recouvrement : ${total?Math.round(paid/total*100):0}%`} icon="check" color={cl.green}/>
-        <SC label="En attente de paiement" value={`${fmt(pending)} €`} sub="Règlements à recevoir" icon="credit" color={cl.amber}/>
-        <SC label="Factures en retard" value={`${fmt(late)} €`} sub={`${lateCount} facture(s) impayée(s)`} icon="alert" color={cl.red}/>
-        <SC label="Dépenses prestataires" value={`${fmt(fcost)} €`} sub={`${db.missions.length} missions en cours / terminées`} icon="users" color={cl.purple}/>
-        <SC label="Bénéfice brut estimé" value={`${fmt(paid-fcost)} €`} sub="Encaissé moins coûts prestataires" icon="briefcase" color={cl.primary}/>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
-        <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:"20px 22px"}}>
-          <div style={{fontSize:14,fontWeight:700,color:cl.text,marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${cl.border}`}}>Activité récente</div>
-          {[...db.logs].reverse().slice(0,5).map(l=>(
-            <div key={l.id} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:12}}>
-              <div style={{width:28,height:28,borderRadius:"50%",background:cl.primaryLight,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Ic n="check" sz={12} color={cl.primary}/></div>
-              <div><div style={{fontSize:13,color:cl.textMid}}>{l.action}</div><div style={{fontSize:11,color:cl.textMute,marginTop:1}}>{l.timestamp}</div></div>
-            </div>
-          ))}
-        </div>
-        <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:"20px 22px"}}>
-          <div style={{fontSize:14,fontWeight:700,color:cl.text,marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${cl.border}`}}>Vue d'ensemble du système</div>
-          {[
-            {l:"Clients actifs",v:db.clients.filter(c=>c.status==="client").length,t:db.clients.length,c:cl.primary},
-            {l:"Freelances actifs",v:db.freelances.filter(f=>f.status==="actif").length,t:db.freelances.length,c:cl.purple},
-            {l:"Contrats signés",v:db.contracts.filter(c=>c.status==="signed").length,t:db.contracts.length,c:cl.green},
-            {l:"Devis acceptés",v:db.quotes.filter(q=>q.status==="accepted").length,t:db.quotes.length,c:cl.amber},
-            {l:"Factures payées",v:db.invoices.filter(i=>i.status==="paid").length,t:db.invoices.length,c:cl.green},
-          ].map(item=>(
-            <div key={item.l} style={{marginBottom:14}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}><span style={{fontSize:13,color:cl.textMid}}>{item.l}</span><span style={{fontSize:13,fontWeight:600,color:cl.text}}>{item.v} / {item.t}</span></div>
-              <div style={{height:5,background:cl.bg,borderRadius:3}}><div style={{height:"100%",width:`${item.t?item.v/item.t*100:0}%`,background:item.c,borderRadius:3,transition:"width 0.6s"}}/></div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <div class="pdf-totals-wrap">
+      <table class="pdf-totals">
+        <tr><td>Sous-total HT</td><td class="r">${fmt(data.amount)} €</td></tr>
+        <tr><td>TVA (20%)</td><td class="r">${fmt(tva)} €</td></tr>
+        <tr class="pdf-total-row"><td>Total TTC</td><td class="big">${fmt(ttc)} €</td></tr>
+      </table>
     </div>
-  );
-};
-
-// ─── CLIENTS ────────────────────────────────────────────────────────────────
-const Clients = ({db,setDB,toast}) => {
-  const [modal,setModal]=useState(null);
-  const [detail,setDetail]=useState(null);
-  const [form,setForm]=useState({name:"",email:"",phone:"",address:"",status:"prospect"});
-  const F=(k,v)=>setForm(f=>({...f,[k]:v}));
-  const getInv=id=>db.invoices.filter(i=>i.client_id===id);
-
-  const save=()=>{
-    if(!form.name||!form.email) return toast("Le nom et l'email sont requis","error");
-    const c={...form,id:uid(),created_at:todayStr()};
-    setDB(d=>({...d,clients:[...d.clients,c],logs:[...d.logs,{id:uid(),action:`Client créé : ${form.name}`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")}]}));
-    setModal(null); setForm({name:"",email:"",phone:"",address:"",status:"prospect"});
-    toast("Client créé avec succès");
-  };
-  const del=id=>{
-    if(db.invoices.some(i=>i.client_id===id)||db.contracts.some(c=>c.client_id===id)) return toast("Impossible de supprimer : des documents sont liés à ce client","error");
-    setDB(d=>({...d,clients:d.clients.filter(c=>c.id!==id)})); toast("Client supprimé");
-  };
-
-  return (
-    <div>
-      <PH title="Clients" sub={`${db.clients.length} clients enregistrés — ${db.clients.filter(c=>c.status==="client").length} actifs`} crumbs={["Accueil","Clients"]} action={<Btn ch="Nouveau client" icon="plus" onClick={()=>setModal("new")}/>}/>
-      <Tbl cols={[{k:"name",l:"Client"},{k:"contact",l:"Contact"},{k:"status",l:"Statut"},{k:"invoiced",l:"Facturé",a:"right"},{k:"actions",l:"Actions",a:"right"}]}
-        rows={db.clients.map(c=>({
-          name:<div style={{display:"flex",alignItems:"center",gap:10}}><div style={{width:34,height:34,borderRadius:8,background:cl.primaryLight,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:700,color:cl.primary,flexShrink:0}}>{c.name.charAt(0)}</div><div><div style={{fontSize:14,fontWeight:600,color:cl.text}}>{c.name}</div><div style={{fontSize:11,color:cl.textMute}}>{c.address}</div></div></div>,
-          contact:<div><div style={{fontSize:13,color:cl.textMid}}>{c.email}</div><div style={{fontSize:11,color:cl.textMute}}>{c.phone}</div></div>,
-          status:<Badge s={c.status}/>,
-          invoiced:<span style={{fontSize:13,fontWeight:600,color:cl.text}}>{fmt(getInv(c.id).reduce((s,i)=>s+i.amount,0))} €</span>,
-          actions:<div style={{display:"flex",gap:6,justifyContent:"flex-end"}}><Btn sz="sm" v="secondary" icon="eye" ch="Dossier" onClick={()=>setDetail(c)}/><button onClick={()=>del(c.id)} style={{background:"none",border:`1px solid ${cl.border}`,borderRadius:6,cursor:"pointer",padding:"5px 8px",color:cl.red,display:"flex"}}><Ic n="trash" sz={14}/></button></div>,
-        }))}
-      />
-
-      {modal==="new"&&<Modal title="Créer un client" subtitle="Renseignez les informations du nouveau client" onClose={()=>setModal(null)} ch={
-        <div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px 16px"}}>
-            <div style={{gridColumn:"1/-1"}}><Lbl ch="Raison sociale / Nom"/><Inp value={form.name} onChange={v=>F("name",v)} placeholder="Nexora Technologies"/></div>
-            <div><Lbl ch="Email"/><Inp value={form.email} onChange={v=>F("email",v)} type="email" placeholder="contact@client.fr"/></div>
-            <div><Lbl ch="Téléphone"/><Inp value={form.phone} onChange={v=>F("phone",v)} placeholder="+33 6 00 00 00 00"/></div>
-            <div style={{gridColumn:"1/-1"}}><Lbl ch="Adresse"/><Inp value={form.address} onChange={v=>F("address",v)} placeholder="12 Rue de la Paix, 75001 Paris"/></div>
-            <div style={{gridColumn:"1/-1"}}><Lbl ch="Statut initial"/><Sel value={form.status} onChange={v=>F("status",v)}><option value="prospect">Prospect</option><option value="client">Client</option></Sel></div>
-          </div>
-          <div style={{display:"flex",gap:10,justifyContent:"flex-end",marginTop:20,paddingTop:16,borderTop:`1px solid ${cl.border}`}}><Btn v="secondary" ch="Annuler" onClick={()=>setModal(null)}/><Btn ch="Créer le client" onClick={save}/></div>
-        </div>
-      }/>}
-
-      {detail&&<Modal title={detail.name} subtitle="Dossier client complet" onClose={()=>setDetail(null)} wide ch={
-        <div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16,marginBottom:20}}>
-            <div style={{background:cl.bg,borderRadius:8,padding:16}}>
-              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.07em",color:cl.textSub,marginBottom:12}}>Coordonnées</div>
-              {[["Email",detail.email],["Téléphone",detail.phone],["Adresse",detail.address],["Client depuis",fmtDate(detail.created_at)]].map(([k,v])=>(
-                <div key={k} style={{display:"flex",gap:10,marginBottom:8,fontSize:13}}><span style={{color:cl.textSub,minWidth:90,flexShrink:0}}>{k}</span><span style={{color:cl.text,fontWeight:500}}>{v}</span></div>
-              ))}
-              <div style={{marginTop:8}}><Badge s={detail.status}/></div>
-            </div>
-            <div style={{background:cl.bg,borderRadius:8,padding:16}}>
-              <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.07em",color:cl.textSub,marginBottom:12}}>Résumé financier</div>
-              {[
-                ["Factures émises",getInv(detail.id).length+" factures"],
-                ["Total facturé",fmt(getInv(detail.id).reduce((s,i)=>s+i.amount,0))+" €"],
-                ["Total encaissé",fmt(getInv(detail.id).filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0))+" €"],
-                ["Contrats",db.contracts.filter(c=>c.client_id===detail.id).length+" contrats"],
-                ["Devis",db.quotes.filter(q=>q.client_id===detail.id).length+" devis"],
-              ].map(([k,v])=>(
-                <div key={k} style={{display:"flex",justifyContent:"space-between",padding:"7px 0",borderBottom:`1px solid ${cl.border}`,fontSize:13}}><span style={{color:cl.textSub}}>{k}</span><span style={{fontWeight:600,color:cl.text}}>{v}</span></div>
-              ))}
-            </div>
-          </div>
-          {getInv(detail.id).length>0&&<div>
-            <div style={{fontSize:12,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.07em",color:cl.textSub,marginBottom:10}}>Historique des factures</div>
-            {getInv(detail.id).map(inv=>(
-              <div key={inv.id} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"10px 14px",background:cl.bg,borderRadius:7,marginBottom:6}}>
-                <span style={{fontFamily:"'Courier New',monospace",fontSize:13,fontWeight:600,color:cl.primary}}>{inv.number}</span>
-                <span style={{fontSize:13,fontWeight:600,color:cl.text}}>{fmt(inv.amount)} €</span>
-                <span style={{fontSize:12,color:cl.textMute}}>Éch. {fmtDate(inv.due_date)}</span>
-                <Badge s={inv.status}/>
-              </div>
-            ))}
-          </div>}
-        </div>
-      }/>}
+    ${type==="contract"?`
+    <div class="pdf-section">
+      <div class="pdf-sec-title">Conditions particulières</div>
+      <div class="pdf-sec-text">${esc(data.conditions||"Néant.")}</div>
     </div>
-  );
-};
-
-// ─── FREELANCES ─────────────────────────────────────────────────────────────
-const Freelances = ({db,setDB,toast}) => {
-  const [modal,setModal]=useState(false);
-  const [form,setForm]=useState({name:"",email:"",siret:"",address:"",specialty:"",status:"actif"});
-  const F=(k,v)=>setForm(f=>({...f,[k]:v}));
-  const save=()=>{
-    if(!form.name||!form.email) return toast("Nom et email requis","error");
-    const f={...form,id:uid(),created_at:todayStr()};
-    setDB(d=>({...d,freelances:[...d.freelances,f],logs:[...d.logs,{id:uid(),action:`Freelance ajouté : ${form.name}`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")}]}));
-    setModal(false); setForm({name:"",email:"",siret:"",address:"",specialty:"",status:"actif"});
-    toast("Freelance ajouté avec succès");
-  };
-  return (
-    <div>
-      <PH title="Freelances & Prestataires" sub={`${db.freelances.filter(f=>f.status==="actif").length} actifs sur ${db.freelances.length} enregistrés`} crumbs={["Accueil","Freelances"]} action={<Btn ch="Ajouter un freelance" icon="plus" onClick={()=>setModal(true)}/>}/>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14}}>
-        {db.freelances.map(f=>{
-          const m=db.missions.filter(x=>x.freelance_id===f.id);
-          const earn=m.reduce((s,x)=>s+x.amount,0);
-          return (
-            <div key={f.id} style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:20}}>
-              <div style={{display:"flex",alignItems:"center",gap:12,marginBottom:14,paddingBottom:14,borderBottom:`1px solid ${cl.border}`}}>
-                <div style={{width:44,height:44,borderRadius:10,background:cl.purpleLight,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,fontWeight:700,color:cl.purple,flexShrink:0}}>
-                  {f.name.split(" ").map(n=>n[0]).join("")}
-                </div>
-                <div><div style={{fontSize:15,fontWeight:700,color:cl.text}}>{f.name}</div><div style={{fontSize:12,color:cl.textSub}}>{f.specialty}</div></div>
-              </div>
-              <Badge s={f.status}/>
-              <div style={{marginTop:12}}>
-                {[["Email",f.email],["SIRET",f.siret],["Adresse",f.address]].map(([k,v])=>(
-                  <div key={k} style={{display:"flex",justifyContent:"space-between",padding:"5px 0",borderBottom:`1px solid ${cl.border}`,fontSize:12}}><span style={{color:cl.textSub}}>{k}</span><span style={{color:cl.textMid,fontWeight:500,textAlign:"right",maxWidth:160,overflow:"hidden",textOverflow:"ellipsis"}}>{v}</span></div>
-                ))}
-              </div>
-              <div style={{marginTop:14,background:cl.purpleLight,borderRadius:7,padding:"11px 14px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-                <div><div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.06em",color:cl.purple}}>Total versé</div><div style={{fontSize:11,color:cl.textMute,marginTop:1}}>{m.length} mission(s)</div></div>
-                <div style={{fontSize:20,fontWeight:700,color:cl.purple}}>{fmt(earn)} €</div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-      {modal&&<Modal title="Ajouter un freelance" subtitle="Informations du prestataire indépendant" onClose={()=>setModal(false)} ch={
-        <div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px 16px"}}>
-            <div><Lbl ch="Nom complet"/><Inp value={form.name} onChange={v=>F("name",v)} placeholder="Baptiste Moreau"/></div>
-            <div><Lbl ch="Statut"/><Sel value={form.status} onChange={v=>F("status",v)}><option value="actif">Actif</option><option value="inactif">Inactif</option></Sel></div>
-            <div><Lbl ch="Email professionnel"/><Inp value={form.email} onChange={v=>F("email",v)} type="email" placeholder="contact@freelance.fr"/></div>
-            <div><Lbl ch="N° SIRET"/><Inp value={form.siret} onChange={v=>F("siret",v)} placeholder="84123456700012"/></div>
-            <div style={{gridColumn:"1/-1"}}><Lbl ch="Spécialité / Domaine d'expertise"/><Inp value={form.specialty} onChange={v=>F("specialty",v)} placeholder="Développement React / Node.js"/></div>
-            <div style={{gridColumn:"1/-1"}}><Lbl ch="Adresse"/><Inp value={form.address} onChange={v=>F("address",v)} placeholder="22 Rue des Arts, 31000 Toulouse"/></div>
-          </div>
-          <div style={{display:"flex",gap:10,justifyContent:"flex-end",marginTop:20,paddingTop:16,borderTop:`1px solid ${cl.border}`}}><Btn v="secondary" ch="Annuler" onClick={()=>setModal(false)}/><Btn ch="Ajouter le freelance" onClick={save}/></div>
-        </div>
-      }/>}
+    <div class="pdf-section">
+      <div class="pdf-sec-title">Modalités de paiement</div>
+      <div class="pdf-sec-text">Acompte de ${acompte}% dû à la signature, soit <strong>${fmt(Math.round((data.amount||0)*acompte/100))} € HT</strong>. Solde de ${100-acompte}% dû à la livraison finale, soit <strong>${fmt(Math.round((data.amount||0)*(100-acompte)/100))} € HT</strong>. Paiement par virement bancaire sous 30 jours. Pénalités de retard : 3× le taux d'intérêt légal en vigueur.</div>
     </div>
-  );
-};
-
-// ─── CONTRACTS ──────────────────────────────────────────────────────────────
-const Contracts = ({db,setDB,toast}) => {
-  const [modal,setModal]=useState(false);
-  const [pdf,setPdf]=useState(null);
-  const [form,setForm]=useState({type:"client",client_id:"",freelance_id:"",mission_description:"",amount:"",start_date:"",end_date:"",status:"draft"});
-  const F=(k,v)=>setForm(f=>({...f,[k]:v}));
-  const TYPES={client:"Client",freelance:"Freelance",nda:"NDA",partenariat:"Partenariat"};
-  const getParty=c=>{if(c.client_id)return db.clients.find(x=>x.id===c.client_id)?.name||"—";if(c.freelance_id)return db.freelances.find(x=>x.id===c.freelance_id)?.name||"—";return "—";};
-  const save=()=>{
-    if(!form.mission_description) return toast("La description est requise","error");
-    const num=genNum("CTR",db.contracts);
-    const c={...form,id:uid(),number:num,amount:Number(form.amount),created_at:todayStr()};
-    setDB(d=>({...d,contracts:[...d.contracts,c],logs:[...d.logs,{id:uid(),action:`Contrat ${num} créé`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")}]}));
-    setModal(false); toast(`Contrat ${num} créé avec succès`);
-  };
-  return (
-    <div>
-      <PH title="Contrats" sub={`${db.contracts.length} contrats — ${db.contracts.filter(c=>c.status==="signed").length} signés`} crumbs={["Accueil","Contrats"]} action={<Btn ch="Nouveau contrat" icon="plus" onClick={()=>setModal(true)}/>}/>
-      <Tbl cols={[{k:"num",l:"Référence"},{k:"type",l:"Type"},{k:"party",l:"Partie"},{k:"desc",l:"Objet"},{k:"amt",l:"Montant",a:"right"},{k:"period",l:"Période"},{k:"status",l:"Statut"},{k:"actions",l:"",a:"right"}]}
-        rows={db.contracts.map(c=>({
-          num:<span style={{fontFamily:"'Courier New',monospace",fontSize:13,fontWeight:600,color:cl.primary}}>{c.number}</span>,
-          type:<span style={{fontSize:11,fontWeight:600,color:cl.textSub,background:cl.bg,padding:"3px 8px",borderRadius:4}}>{TYPES[c.type]}</span>,
-          party:<span style={{fontSize:13,color:cl.textMid}}>{getParty(c)}</span>,
-          desc:<span style={{fontSize:12,color:cl.textSub,maxWidth:180,display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.mission_description}</span>,
-          amt:<span style={{fontSize:13,fontWeight:600,color:cl.text}}>{c.amount>0?fmt(c.amount)+" €":"—"}</span>,
-          period:<div style={{fontSize:11,color:cl.textMute}}>{fmtDate(c.start_date)}<br/>{fmtDate(c.end_date)}</div>,
-          status:<Badge s={c.status}/>,
-          actions:<Btn sz="sm" v="secondary" icon="eye" ch="Aperçu" onClick={()=>setPdf(c)}/>,
-        }))}
-      />
-      {modal&&<Modal title="Créer un contrat" subtitle="Définissez les termes du nouveau contrat" onClose={()=>setModal(false)} wide ch={
-        <div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px 16px"}}>
-            <div><Lbl ch="Type de contrat"/><Sel value={form.type} onChange={v=>F("type",v)}><option value="client">Client</option><option value="freelance">Freelance</option><option value="nda">NDA</option><option value="partenariat">Partenariat</option></Sel></div>
-            <div><Lbl ch="Statut"/><Sel value={form.status} onChange={v=>F("status",v)}><option value="draft">Brouillon</option><option value="signed">Signé</option><option value="completed">Terminé</option></Sel></div>
-            {(form.type==="client"||form.type==="nda"||form.type==="partenariat")&&<div style={{gridColumn:"1/-1"}}><Lbl ch="Client associé"/><Sel value={form.client_id} onChange={v=>F("client_id",v)}><option value="">— Sélectionner un client —</option>{db.clients.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</Sel></div>}
-            {form.type==="freelance"&&<div style={{gridColumn:"1/-1"}}><Lbl ch="Freelance associé"/><Sel value={form.freelance_id} onChange={v=>F("freelance_id",v)}><option value="">— Sélectionner un freelance —</option>{db.freelances.map(f=><option key={f.id} value={f.id}>{f.name}</option>)}</Sel></div>}
-            <div style={{gridColumn:"1/-1"}}><Lbl ch="Description / Objet du contrat"/><Txa value={form.mission_description} onChange={v=>F("mission_description",v)} placeholder="Décrivez la mission, les livrables attendus..." rows={3}/></div>
-            <div><Lbl ch="Montant HT (€)"/><Inp value={form.amount} onChange={v=>F("amount",v)} type="number" placeholder="8 500"/></div>
-            <div/>
-            <div><Lbl ch="Date de début"/><Inp value={form.start_date} onChange={v=>F("start_date",v)} type="date"/></div>
-            <div><Lbl ch="Date de fin"/><Inp value={form.end_date} onChange={v=>F("end_date",v)} type="date"/></div>
-          </div>
-          <div style={{display:"flex",gap:10,justifyContent:"flex-end",marginTop:20,paddingTop:16,borderTop:`1px solid ${cl.border}`}}><Btn v="secondary" ch="Annuler" onClick={()=>setModal(false)}/><Btn ch="Créer le contrat" onClick={save}/></div>
-        </div>
-      }/>}
-      {pdf&&<PDFPrev type="contract" data={pdf} db={db} onClose={()=>setPdf(null)}/>}
+    <div class="pdf-section">
+      <div class="pdf-sec-title">Clause de confidentialité</div>
+      <div class="pdf-sec-text">${ndaTexts[data.nda]||ndaTexts.standard}</div>
     </div>
-  );
-};
-
-// ─── QUOTES ─────────────────────────────────────────────────────────────────
-const Quotes = ({db,setDB,toast}) => {
-  const [modal,setModal]=useState(false);
-  const [pdf,setPdf]=useState(null);
-  const [form,setForm]=useState({client_id:"",description:"",amount:"",status:"draft"});
-  const F=(k,v)=>setForm(f=>({...f,[k]:v}));
-  const save=()=>{
-    if(!form.client_id||!form.description||!form.amount) return toast("Tous les champs sont requis","error");
-    const num=genNum("DEV",db.quotes);
-    const q={...form,id:uid(),number:num,amount:Number(form.amount),created_at:todayStr()};
-    setDB(d=>({...d,quotes:[...d.quotes,q],logs:[...d.logs,{id:uid(),action:`Devis ${num} créé`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")}]}));
-    setModal(false); setForm({client_id:"",description:"",amount:"",status:"draft"});
-    toast(`Devis ${num} créé avec succès`);
-  };
-  return (
-    <div>
-      <PH title="Devis" sub={`${db.quotes.filter(q=>q.status==="accepted").length} acceptés — ${db.quotes.filter(q=>q.status==="sent").length} en attente de réponse`} crumbs={["Accueil","Devis"]} action={<Btn ch="Créer un devis" icon="plus" onClick={()=>setModal(true)}/>}/>
-      <Tbl cols={[{k:"num",l:"Référence"},{k:"client",l:"Client"},{k:"desc",l:"Objet"},{k:"amt",l:"Montant HT",a:"right"},{k:"date",l:"Date"},{k:"status",l:"Statut"},{k:"actions",l:"",a:"right"}]}
-        rows={db.quotes.map(q=>({
-          num:<span style={{fontFamily:"'Courier New',monospace",fontSize:13,fontWeight:600,color:cl.primary}}>{q.number}</span>,
-          client:<span style={{fontSize:13,color:cl.textMid}}>{db.clients.find(c=>c.id===q.client_id)?.name||"—"}</span>,
-          desc:<span style={{fontSize:12,color:cl.textSub,maxWidth:220,display:"block",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{q.description}</span>,
-          amt:<span style={{fontSize:13,fontWeight:600,color:cl.text}}>{fmt(q.amount)} €</span>,
-          date:<span style={{fontSize:12,color:cl.textMute}}>{fmtDate(q.created_at)}</span>,
-          status:<Badge s={q.status}/>,
-          actions:<Btn sz="sm" v="secondary" icon="eye" ch="PDF" onClick={()=>setPdf(q)}/>,
-        }))}
-      />
-      {modal&&<Modal title="Créer un devis" subtitle="Préparez un devis pour votre client" onClose={()=>setModal(false)} ch={
-        <div>
-          <Lbl ch="Client destinataire"/><Sel value={form.client_id} onChange={v=>F("client_id",v)}><option value="">— Sélectionner un client —</option>{db.clients.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</Sel>
-          <div style={{marginTop:12}}><Lbl ch="Description / Objet de la prestation"/><Txa value={form.description} onChange={v=>F("description",v)} placeholder="Développement Dashboard Analytics + intégration Stripe..." rows={3}/></div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px 16px",marginTop:12}}>
-            <div><Lbl ch="Montant HT (€)"/><Inp value={form.amount} onChange={v=>F("amount",v)} type="number" placeholder="12 000"/></div>
-            <div><Lbl ch="Statut"/><Sel value={form.status} onChange={v=>F("status",v)}><option value="draft">Brouillon</option><option value="sent">Envoyé</option><option value="accepted">Accepté</option><option value="refused">Refusé</option></Sel></div>
-          </div>
-          <div style={{display:"flex",gap:10,justifyContent:"flex-end",marginTop:20,paddingTop:16,borderTop:`1px solid ${cl.border}`}}><Btn v="secondary" ch="Annuler" onClick={()=>setModal(false)}/><Btn ch="Créer le devis" onClick={save}/></div>
-        </div>
-      }/>}
-      {pdf&&<PDFPrev type="quote" data={pdf} db={db} onClose={()=>setPdf(null)}/>}
+    <div class="pdf-section">
+      <div class="pdf-sec-title">Conditions générales</div>
+      <div class="pdf-sec-text">Le présent contrat prend effet à la date de signature des deux parties et est régi par le droit français. Toute modification devra faire l'objet d'un avenant écrit signé des deux parties. En cas de litige, les parties s'engagent à tenter une résolution amiable avant toute procédure judiciaire. Juridiction compétente : Tribunaux français.</div>
     </div>
-  );
-};
-
-// ─── INVOICES ───────────────────────────────────────────────────────────────
-const Invoices = ({db,setDB,toast}) => {
-  const [modal,setModal]=useState(false);
-  const [pdf,setPdf]=useState(null);
-  const [form,setForm]=useState({client_id:"",related_quote_id:"",amount:"",status:"unpaid",due_date:""});
-  const F=(k,v)=>setForm(f=>({...f,[k]:v}));
-  const save=()=>{
-    if(!form.client_id||!form.amount) return toast("Le client et le montant sont requis","error");
-    const num=genNum("FAC",db.invoices);
-    const inv={...form,id:uid(),number:num,amount:Number(form.amount),created_at:todayStr()};
-    setDB(d=>({...d,invoices:[...d.invoices,inv],logs:[...d.logs,{id:uid(),action:`Facture ${num} créée`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")}]}));
-    setModal(false); setForm({client_id:"",related_quote_id:"",amount:"",status:"unpaid",due_date:""});
-    toast(`Facture ${num} créée avec succès`);
-  };
-  const markPaid=inv=>{
-    setDB(d=>({...d,invoices:d.invoices.map(i=>i.id===inv.id?{...i,status:"paid"}:i),logs:[...d.logs,{id:uid(),action:`Facture ${inv.number} marquée payée`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")}]}));
-    toast(`Facture ${inv.number} payée`);
-  };
-  const totals={total:db.invoices.reduce((s,i)=>s+i.amount,0),paid:db.invoices.filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0),unpaid:db.invoices.filter(i=>i.status==="unpaid").reduce((s,i)=>s+i.amount,0),late:db.invoices.filter(i=>i.status==="late").reduce((s,i)=>s+i.amount,0)};
-  return (
-    <div>
-      <PH title="Factures" sub={`${db.invoices.length} factures — ${db.invoices.filter(i=>i.status==="late").length} en retard de paiement`} crumbs={["Accueil","Factures"]} action={<Btn ch="Nouvelle facture" icon="plus" onClick={()=>setModal(true)}/>}/>
-      <div style={{display:"grid",gridTemplateColumns:"repeat(4,1fr)",gap:12,marginBottom:20}}>
-        {[{l:"Total émis",v:totals.total,c:cl.primary},{l:"Encaissé",v:totals.paid,c:cl.green},{l:"En attente",v:totals.unpaid,c:cl.amber},{l:"En retard",v:totals.late,c:cl.red}].map(s=>(
-          <div key={s.l} style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:8,padding:"14px 16px"}}>
-            <div style={{fontSize:12,fontWeight:500,color:cl.textSub,marginBottom:5}}>{s.l}</div>
-            <div style={{fontSize:20,fontWeight:700,color:s.c}}>{fmt(s.v)} €</div>
-          </div>
-        ))}
-      </div>
-      <Tbl cols={[{k:"num",l:"Référence"},{k:"client",l:"Client"},{k:"linked",l:"Devis lié"},{k:"ht",l:"HT",a:"right"},{k:"ttc",l:"TTC",a:"right"},{k:"due",l:"Échéance"},{k:"status",l:"Statut"},{k:"actions",l:"Actions",a:"right"}]}
-        rows={db.invoices.map(inv=>({
-          num:<span style={{fontFamily:"'Courier New',monospace",fontSize:13,fontWeight:600,color:cl.primary}}>{inv.number}</span>,
-          client:<span style={{fontSize:13,color:cl.textMid}}>{db.clients.find(c=>c.id===inv.client_id)?.name||"—"}</span>,
-          linked:<span style={{fontFamily:"'Courier New',monospace",fontSize:12,color:cl.textMute}}>{inv.related_quote_id?db.quotes.find(q=>q.id===inv.related_quote_id)?.number||"—":"—"}</span>,
-          ht:<span style={{fontSize:13,color:cl.textMid}}>{fmt(inv.amount)} €</span>,
-          ttc:<span style={{fontSize:13,fontWeight:700,color:cl.text}}>{fmt(inv.amount*1.2)} €</span>,
-          due:<span style={{fontSize:12,color:inv.status==="late"?cl.red:cl.textMute,fontWeight:inv.status==="late"?600:400}}>{fmtDate(inv.due_date)}</span>,
-          status:<Badge s={inv.status}/>,
-          actions:<div style={{display:"flex",gap:6,justifyContent:"flex-end"}}><Btn sz="sm" v="secondary" icon="eye" ch="PDF" onClick={()=>setPdf(inv)}/>{inv.status!=="paid"&&<Btn sz="sm" v="success" icon="check" ch="Payer" onClick={()=>markPaid(inv)}/>}</div>,
-        }))}
-      />
-      {modal&&<Modal title="Créer une facture" subtitle="Émission d'une nouvelle facture client" onClose={()=>setModal(false)} ch={
-        <div>
-          <Lbl ch="Client à facturer"/><Sel value={form.client_id} onChange={v=>F("client_id",v)}><option value="">— Sélectionner un client —</option>{db.clients.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</Sel>
-          <div style={{marginTop:12}}><Lbl ch="Devis associé (optionnel)"/><Sel value={form.related_quote_id} onChange={v=>F("related_quote_id",v)}><option value="">Aucun devis lié</option>{db.quotes.filter(q=>q.status==="accepted").map(q=><option key={q.id} value={q.id}>{q.number} — {q.description.slice(0,40)}...</option>)}</Sel></div>
-          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"12px 16px",marginTop:12}}>
-            <div><Lbl ch="Montant HT (€)"/><Inp value={form.amount} onChange={v=>F("amount",v)} type="number" placeholder="6 000"/></div>
-            <div><Lbl ch="Date d'échéance"/><Inp value={form.due_date} onChange={v=>F("due_date",v)} type="date"/></div>
-            <div style={{gridColumn:"1/-1"}}><Lbl ch="Statut"/><Sel value={form.status} onChange={v=>F("status",v)}><option value="unpaid">Non payé</option><option value="paid">Payé</option><option value="late">En retard</option></Sel></div>
-          </div>
-          <div style={{display:"flex",gap:10,justifyContent:"flex-end",marginTop:20,paddingTop:16,borderTop:`1px solid ${cl.border}`}}><Btn v="secondary" ch="Annuler" onClick={()=>setModal(false)}/><Btn ch="Émettre la facture" onClick={save}/></div>
-        </div>
-      }/>}
-      {pdf&&<PDFPrev type="invoice" data={pdf} db={db} onClose={()=>setPdf(null)}/>}
+    <div class="pdf-sigs">
+      <div class="pdf-sig">Signature et cachet<br><strong>CRG Internal — Direction de Campagne</strong><br><br><br></div>
+      <div class="pdf-sig">Signature et cachet<br><strong>${esc(party?.name||"La Partie")}</strong><br><br><br></div>
+    </div>`:""}
+    ${type==="quote"?`<div class="pdf-section"><div class="pdf-sec-title">Conditions de validité</div><div class="pdf-sec-text">Ce devis est valable 30 jours à compter de sa date d'émission. Pour l'accepter, veuillez le retourner signé avec la mention « Bon pour accord ». Un acompte de 30% sera demandé à la signature du bon de commande.</div></div>`:""}
+    ${type==="invoice"?`<div class="pdf-section"><div class="pdf-sec-title">Conditions de règlement</div><div class="pdf-sec-text">Paiement par virement bancaire à réception de facture. En cas de retard, des pénalités de 3× le taux d'intérêt légal seront appliquées, ainsi qu'une indemnité forfaitaire de 40 € pour frais de recouvrement (Art. L441-10 du Code de Commerce).</div></div>`:""}
+    <div class="pdf-foot">
+      <span>CRG Internal — Document confidentiel — Usage strictement interne</span>
+      <span>Généré le ${new Date().toLocaleDateString("fr-FR")}</span>
+      <span>Page 1 / 1</span>
     </div>
-  );
-};
-
-// ─── AUTOMATION ──────────────────────────────────────────────────────────────
-const Automation = ({db,setDB,toast}) => {
-  const [form,setForm]=useState({client_id:"",project_type:"Site vitrine",description:"",amount:""});
-  const [result,setResult]=useState(null);
-  const F=(k,v)=>setForm(f=>({...f,[k]:v}));
-  const TYPES=["Site vitrine","Application web","Audit technique","Refonte complète","Design & Branding","Application mobile"];
-  const run=()=>{
-    if(!form.client_id||!form.amount) return toast("Client et montant requis","error");
-    const client=db.clients.find(c=>c.id===form.client_id);
-    const desc=form.description||`${form.project_type} — ${client.name}`;
-    const amt=Number(form.amount), ac=Math.round(amt*0.3);
-    const qn=genNum("DEV",db.quotes), fn=genNum("FAC",db.invoices), cn=genNum("CTR",db.contracts);
-    const quote={id:uid(),number:qn,client_id:form.client_id,description:desc,amount:amt,status:"sent",created_at:todayStr()};
-    const invoice={id:uid(),number:fn,client_id:form.client_id,related_quote_id:quote.id,amount:ac,status:"unpaid",due_date:new Date(Date.now()+7*86400000).toISOString().split("T")[0],created_at:todayStr()};
-    const contract={id:uid(),type:"client",number:cn,client_id:form.client_id,freelance_id:null,mission_description:desc,amount:amt,start_date:todayStr(),end_date:"",status:"draft",created_at:todayStr()};
-    setDB(d=>({...d,quotes:[...d.quotes,quote],invoices:[...d.invoices,invoice],contracts:[...d.contracts,contract],logs:[...d.logs,{id:uid(),action:`[AUTO] Devis ${qn} généré`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")},{id:uid(),action:`[AUTO] Contrat ${cn} généré`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")},{id:uid(),action:`[AUTO] Facture acompte ${fn} générée`,user:"Admin",timestamp:new Date().toLocaleString("fr-FR")}]}));
-    setResult({quote,invoice,contract,client});
-    toast("Pack complet généré en 1 clic !");
-  };
-  return (
-    <div>
-      <PH title="Automatisation" sub="Générez un pack complet devis + contrat + facture acompte en un seul clic" crumbs={["Accueil","Automatisation"]}/>
-      <div style={{background:cl.primaryLight,border:`1px solid ${cl.primary}25`,borderRadius:8,padding:"12px 16px",marginBottom:24,display:"flex",gap:10,alignItems:"flex-start"}}>
-        <Ic n="info" sz={16} color={cl.primary}/>
-        <div style={{fontSize:13,color:cl.primary,lineHeight:1.5}}><strong>Comment ça fonctionne :</strong> Sélectionnez un client et définissez le montant du projet. Le système génère automatiquement un devis au montant total, un contrat en brouillon, et une facture d'acompte à 30 % avec une échéance à 7 jours.</div>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
-        <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:24}}>
-          <div style={{fontSize:15,fontWeight:700,color:cl.text,marginBottom:18,paddingBottom:14,borderBottom:`1px solid ${cl.border}`}}>Paramètres du projet</div>
-          <Lbl ch="Client bénéficiaire"/><Sel value={form.client_id} onChange={v=>F("client_id",v)}><option value="">— Sélectionner un client —</option>{db.clients.map(c=><option key={c.id} value={c.id}>{c.name}</option>)}</Sel>
-          <div style={{marginTop:14}}><Lbl ch="Type de projet"/><Sel value={form.project_type} onChange={v=>F("project_type",v)}>{TYPES.map(t=><option key={t} value={t}>{t}</option>)}</Sel></div>
-          <div style={{marginTop:14}}><Lbl ch="Description (optionnel)"/><Txa value={form.description} onChange={v=>F("description",v)} placeholder="Détails supplémentaires sur la prestation..." rows={3}/></div>
-          <div style={{marginTop:14}}><Lbl ch="Montant total HT (€)"/><Inp value={form.amount} onChange={v=>F("amount",v)} type="number" placeholder="15 000"/></div>
-          {form.amount&&Number(form.amount)>0&&<div style={{marginTop:16,background:"#F8FAFC",border:`1px solid ${cl.border}`,borderRadius:8,padding:14}}>
-            <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.07em",color:cl.textSub,marginBottom:10}}>Récapitulatif des documents à créer</div>
-            {[{l:"Devis",d:`${fmt(form.amount)} € HT`,c:cl.primary},{l:"Contrat (brouillon)",d:"À signer par les parties",c:cl.amber},{l:"Facture acompte 30%",d:`${fmt(Math.round(Number(form.amount)*0.3))} € HT`,c:cl.green}].map(item=>(
-              <div key={item.l} style={{display:"flex",alignItems:"center",gap:10,padding:"7px 0",borderBottom:`1px solid ${cl.border}`}}>
-                <div style={{width:6,height:6,borderRadius:"50%",background:item.c,flexShrink:0}}/>
-                <span style={{flex:1,fontSize:13,color:cl.textMid}}>{item.l}</span>
-                <span style={{fontSize:12,color:cl.textSub}}>{item.d}</span>
-              </div>
-            ))}
-          </div>}
-          <div style={{marginTop:20}}><Btn ch="Générer le pack complet" icon="zap" sz="lg" block onClick={run}/></div>
-        </div>
-        <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:24}}>
-          <div style={{fontSize:15,fontWeight:700,color:cl.text,marginBottom:18,paddingBottom:14,borderBottom:`1px solid ${cl.border}`}}>Résultat de la génération</div>
-          {!result?<div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",height:260,color:cl.textMute,textAlign:"center",gap:12}}><Ic n="zap" sz={40} color={cl.border}/><div style={{fontSize:14,fontWeight:500}}>En attente de génération</div><div style={{fontSize:12}}>Remplissez le formulaire ci-contre et cliquez sur Générer</div></div>:(
-            <div>
-              <div style={{background:cl.greenLight,border:`1px solid ${cl.green}25`,borderRadius:8,padding:"11px 14px",marginBottom:16,display:"flex",alignItems:"center",gap:8}}><Ic n="check" sz={16} color={cl.green}/><span style={{fontSize:13,fontWeight:600,color:cl.green}}>Pack généré avec succès pour {result.client.name}</span></div>
-              {[{l:"Devis créé",item:result.quote,c:cl.primary},{l:"Contrat créé",item:result.contract,c:cl.amber},{l:"Facture d'acompte",item:result.invoice,c:cl.green}].map(({l,item,c})=>(
-                <div key={item.id} style={{border:`1px solid ${cl.border}`,borderLeft:`3px solid ${c}`,borderRadius:7,padding:"14px 16px",marginBottom:10}}>
-                  <div style={{fontSize:11,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.07em",color:cl.textSub,marginBottom:4}}>{l}</div>
-                  <div style={{fontFamily:"'Courier New',monospace",fontSize:15,fontWeight:700,color:c,marginBottom:3}}>{item.number}</div>
-                  <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}><span style={{fontSize:12,color:cl.textMute}}>{fmt(item.amount)} € HT</span><Badge s={item.status}/></div>
-                </div>
-              ))}
-              <div style={{fontSize:12,color:cl.textSub,background:cl.bg,padding:"10px 12px",borderRadius:6,marginTop:4}}>Tous les documents sont accessibles dans leurs modules respectifs (Devis, Contrats, Factures).</div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ─── FINANCES ────────────────────────────────────────────────────────────────
-const Finances = ({db}) => {
-  const total=db.invoices.reduce((s,i)=>s+i.amount,0);
-  const byClient=db.clients.map(c=>({c,t:db.invoices.filter(i=>i.client_id===c.id).reduce((s,i)=>s+i.amount,0),p:db.invoices.filter(i=>i.client_id===c.id&&i.status==="paid").reduce((s,i)=>s+i.amount,0)})).filter(x=>x.t>0).sort((a,b)=>b.t-a.t);
-  const mx=Math.max(...byClient.map(x=>x.t),1);
-  return (
-    <div>
-      <PH title="Finances" sub="Analyse financière consolidée" crumbs={["Accueil","Finances"]}/>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
-        <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:"20px 22px"}}>
-          <div style={{fontSize:14,fontWeight:700,color:cl.text,marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${cl.border}`}}>Chiffre d'affaires par client</div>
-          {byClient.map(({c,t,p})=>(
-            <div key={c.id} style={{marginBottom:18}}>
-              <div style={{display:"flex",justifyContent:"space-between",marginBottom:5}}><div><div style={{fontSize:13,fontWeight:600,color:cl.text}}>{c.name}</div><div style={{fontSize:11,color:cl.textMute}}>Encaissé : {fmt(p)} € — Restant : {fmt(t-p)} €</div></div><div style={{fontSize:14,fontWeight:700,color:cl.text}}>{fmt(t)} €</div></div>
-              <div style={{height:5,background:cl.bg,borderRadius:3}}><div style={{height:"100%",borderRadius:3,background:cl.primary,width:`${t/mx*100}%`,transition:"width 0.6s"}}/></div>
-              <div style={{marginTop:3,height:3,background:cl.bg,borderRadius:3}}><div style={{height:"100%",borderRadius:3,background:cl.green,width:`${t?p/t*100:0}%`}}/></div>
-              <div style={{display:"flex",gap:12,marginTop:3,fontSize:10,color:cl.textMute}}><span style={{color:cl.primary}}>█ Facturé</span><span style={{color:cl.green}}>█ Encaissé</span></div>
-            </div>
-          ))}
-        </div>
-        <div>
-          <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:"20px 22px",marginBottom:16}}>
-            <div style={{fontSize:14,fontWeight:700,color:cl.text,marginBottom:16,paddingBottom:12,borderBottom:`1px solid ${cl.border}`}}>Répartition des règlements</div>
-            {[{l:"Factures payées",s:"paid",c:cl.green},{l:"En attente",s:"unpaid",c:cl.amber},{l:"En retard",s:"late",c:cl.red}].map(x=>{
-              const items=db.invoices.filter(i=>i.status===x.s);
-              const sum=items.reduce((t,i)=>t+i.amount,0);
-              return <div key={x.s} style={{display:"flex",alignItems:"center",gap:12,padding:"12px 0",borderBottom:`1px solid ${cl.border}`}}>
-                <div style={{width:36,height:36,borderRadius:8,background:x.c+"18",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><Ic n="credit" sz={15} color={x.c}/></div>
-                <div style={{flex:1}}><div style={{display:"flex",justifyContent:"space-between"}}><span style={{fontSize:13,fontWeight:600,color:cl.textMid}}>{x.l}</span><span style={{fontSize:14,fontWeight:700,color:x.c}}>{fmt(sum)} €</span></div><div style={{fontSize:11,color:cl.textMute}}>{items.length} facture(s) — {total?Math.round(sum/total*100):0}%</div><div style={{marginTop:4,height:3,background:cl.bg,borderRadius:2}}><div style={{height:"100%",borderRadius:2,background:x.c,width:`${total?sum/total*100:0}%`}}/></div></div>
-              </div>;
-            })}
-            <div style={{marginTop:14,background:cl.bg,borderRadius:7,padding:"12px 14px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-              <div><div style={{fontSize:11,color:cl.textSub,marginBottom:2}}>Total facturé</div><div style={{fontSize:20,fontWeight:700,color:cl.text}}>{fmt(total)} €</div></div>
-              <div style={{textAlign:"right"}}><div style={{fontSize:11,color:cl.textSub,marginBottom:2}}>Taux de recouvrement</div><div style={{fontSize:20,fontWeight:700,color:cl.green}}>{total?Math.round(db.invoices.filter(i=>i.status==="paid").reduce((s,i)=>s+i.amount,0)/total*100):0}%</div></div>
-            </div>
-          </div>
-          <div style={{background:cl.surface,border:`1px solid ${cl.border}`,borderRadius:10,padding:"20px 22px"}}>
-            <div style={{fontSize:14,fontWeight:700,color:cl.text,marginBottom:12,paddingBottom:10,borderBottom:`1px solid ${cl.border}`}}>Coûts prestataires</div>
-            {db.freelances.map(f=>{const m=db.missions.filter(x=>x.freelance_id===f.id);const t=m.reduce((s,x)=>s+x.amount,0);return <div key={f.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"9px 0",borderBottom:`1px solid ${cl.border}`}}><div><div style={{fontSize:13,fontWeight:600,color:cl.text}}>{f.name}</div><div style={{fontSize:11,color:cl.textMute}}>{m.length} mission(s)</div></div><div style={{textAlign:"right"}}><div style={{fontSize:14,fontWeight:700,color:cl.purple}}>{fmt(t)} €</div><Badge s={f.status}/></div></div>;})}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ─── MISSIONS ────────────────────────────────────────────────────────────────
-const Missions = ({db}) => (
-  <div>
-    <PH title="Missions" sub={`${db.missions.length} missions enregistrées`} crumbs={["Accueil","Missions"]}/>
-    <Tbl cols={[{k:"fl",l:"Freelance"},{k:"desc",l:"Mission"},{k:"ctr",l:"Contrat lié"},{k:"amt",l:"Montant",a:"right"},{k:"status",l:"Statut"}]}
-      rows={db.missions.map(m=>({
-        fl:<span style={{fontSize:13,fontWeight:600,color:cl.text}}>{db.freelances.find(f=>f.id===m.freelance_id)?.name||"—"}</span>,
-        desc:<span style={{fontSize:13,color:cl.textMid}}>{m.description}</span>,
-        ctr:<span style={{fontFamily:"'Courier New',monospace",fontSize:12,color:cl.primary}}>{m.contract_id?db.contracts.find(c=>c.id===m.contract_id)?.number||"—":"—"}</span>,
-        amt:<span style={{fontSize:13,fontWeight:600,color:cl.text}}>{fmt(m.amount)} €</span>,
-        status:<Badge s={m.status}/>,
-      }))}
-    />
-  </div>
-);
-
-// ─── LOGS ───────────────────────────────────────────────────────────────────
-const Logs = ({db}) => (
-  <div>
-    <PH title="Journal d'activité" sub={`${db.logs.length} entrées — Traçabilité complète des actions`} crumbs={["Accueil","Journal"]}/>
-    <Tbl cols={[{k:"idx",l:"#"},{k:"action",l:"Action"},{k:"user",l:"Utilisateur"},{k:"ts",l:"Horodatage"}]}
-      rows={[...db.logs].reverse().map((l,i)=>({
-        idx:<span style={{fontFamily:"'Courier New',monospace",fontSize:12,color:cl.textMute}}>{String(db.logs.length-i).padStart(4,"0")}</span>,
-        action:<div style={{display:"flex",alignItems:"center",gap:8}}><div style={{width:6,height:6,borderRadius:"50%",background:l.action.includes("[AUTO]")?cl.purple:cl.green,flexShrink:0}}/><span style={{fontSize:13,color:cl.textMid}}>{l.action}</span></div>,
-        user:<span style={{fontSize:13,color:cl.textSub}}>{l.user}</span>,
-        ts:<span style={{fontFamily:"'Courier New',monospace",fontSize:12,color:cl.textMute}}>{l.timestamp}</span>,
-      }))}
-    />
-  </div>
-);
-
-// ─── NAVIGATION ──────────────────────────────────────────────────────────────
-const NAV = [
-  {title:"Principal",items:[{id:"dashboard",l:"Tableau de bord",icon:"home"}]},
-  {title:"Gestion",items:[{id:"clients",l:"Clients",icon:"users"},{id:"freelances",l:"Freelances",icon:"briefcase"},{id:"missions",l:"Missions",icon:"check"}]},
-  {title:"Documents",items:[{id:"contracts",l:"Contrats",icon:"file"},{id:"quotes",l:"Devis",icon:"log"},{id:"invoices",l:"Factures",icon:"credit"}]},
-  {title:"Outils",items:[{id:"finance",l:"Finances",icon:"dollar"},{id:"automation",l:"Automatisation",icon:"zap"},{id:"logs",l:"Journal",icon:"settings"}]},
-];
-
-// ─── APP ─────────────────────────────────────────────────────────────────────
-export default function App() {
-  const [db,setDB]=useState(INIT);
-  const [page,setPage]=useState("dashboard");
-  const [toast,setToast]=useState(null);
-  const showToast=useCallback((msg,type="success")=>{setToast({msg,type});setTimeout(()=>setToast(null),3200);},[]);
-  const props={db,setDB,toast:showToast};
-  const lateCount=db.invoices.filter(i=>i.status==="late").length;
-  const allItems=NAV.flatMap(s=>s.items);
-  const currentLabel=allItems.find(i=>i.id===page)?.l||page;
-
-  const PAGES={
-    dashboard:<Dashboard db={db}/>,
-    clients:<Clients {...props}/>,
-    freelances:<Freelances {...props}/>,
-    missions:<Missions db={db}/>,
-    contracts:<Contracts {...props}/>,
-    quotes:<Quotes {...props}/>,
-    invoices:<Invoices {...props}/>,
-    finance:<Finances db={db}/>,
-    automation:<Automation {...props}/>,
-    logs:<Logs db={db}/>,
-  };
-
-  return (
-    <div style={{display:"flex",minHeight:"100vh",background:cl.bg,fontFamily:"'Segoe UI','Helvetica Neue',Arial,sans-serif",fontSize:14,color:cl.text}}>
-      {/* SIDEBAR */}
-      <div style={{width:232,flexShrink:0,background:cl.sidebar,display:"flex",flexDirection:"column",position:"sticky",top:0,height:"100vh",overflow:"hidden"}}>
-        {/* Logo */}
-        <div style={{padding:"18px 16px",borderBottom:`1px solid ${cl.sidebarBorder}`}}>
-          <div style={{display:"flex",alignItems:"center",gap:10}}>
-            <div style={{width:36,height:36,borderRadius:8,background:cl.primary,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}>
-              <span style={{fontSize:14,fontWeight:900,color:"#fff",letterSpacing:-0.5,fontFamily:"Arial Black, Arial, sans-serif"}}>CRG</span>
-            </div>
-            <div>
-              <div style={{fontSize:14,fontWeight:700,color:"#F1F5F9",lineHeight:1.1}}>Business</div>
-              <div style={{fontSize:11,color:cl.sidebarMute,marginTop:2}}>Système de gestion</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Nav */}
-        <nav style={{flex:1,padding:"10px 8px",overflowY:"auto"}}>
-          {NAV.map(section=>(
-            <div key={section.title} style={{marginBottom:4}}>
-              <div style={{fontSize:10,fontWeight:700,textTransform:"uppercase",letterSpacing:"0.12em",color:cl.sidebarMute,padding:"10px 10px 5px"}}>{section.title}</div>
-              {section.items.map(item=>{
-                const active=page===item.id;
-                const badge=item.id==="invoices"&&lateCount>0?lateCount:null;
-                return (
-                  <button key={item.id} onClick={()=>setPage(item.id)} style={{display:"flex",alignItems:"center",gap:9,width:"100%",padding:"8px 10px",borderRadius:6,marginBottom:1,background:active?"rgba(255,255,255,0.1)":"transparent",border:"none",color:active?"#F1F5F9":cl.sidebarText,cursor:"pointer",fontSize:13,fontWeight:active?600:400,fontFamily:"inherit",textAlign:"left",transition:"all 0.12s"}}
-                    onMouseEnter={e=>{if(!active){e.currentTarget.style.background="rgba(255,255,255,0.06)";e.currentTarget.style.color="#CBD5E1";}}}
-                    onMouseLeave={e=>{if(!active){e.currentTarget.style.background="transparent";e.currentTarget.style.color=cl.sidebarText;}}}>
-                    <span style={{opacity:active?1:0.65,flexShrink:0}}><Ic n={item.icon} sz={15} color={active?"#93C5FD":cl.sidebarText}/></span>
-                    <span style={{flex:1}}>{item.l}</span>
-                    {badge&&<span style={{background:"#DC2626",color:"#fff",fontSize:10,fontWeight:700,padding:"1px 6px",borderRadius:10}}>{badge}</span>}
-                    {item.id==="automation"&&<span style={{background:"rgba(245,158,11,0.18)",color:"#FCD34D",fontSize:9,fontWeight:700,padding:"1px 6px",borderRadius:4,textTransform:"uppercase",letterSpacing:"0.05em"}}>Auto</span>}
-                  </button>
-                );
-              })}
-            </div>
-          ))}
-        </nav>
-
-        {/* User */}
-        <div style={{padding:"14px 14px",borderTop:`1px solid ${cl.sidebarBorder}`,display:"flex",alignItems:"center",gap:10}}>
-          <div style={{width:30,height:30,borderRadius:8,background:"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:12,fontWeight:700,color:"#93C5FD",flexShrink:0}}>A</div>
-          <div style={{flex:1,minWidth:0}}>
-            <div style={{fontSize:13,fontWeight:600,color:"#F1F5F9"}}>Admin</div>
-            <div style={{fontSize:11,color:cl.sidebarMute}}>Accès complet</div>
-          </div>
-          <Ic n="settings" sz={14} color={cl.sidebarMute}/>
-        </div>
-      </div>
-
-      {/* MAIN */}
-      <div style={{flex:1,display:"flex",flexDirection:"column",overflow:"hidden"}}>
-        {/* Top bar */}
-        <div style={{background:cl.surface,borderBottom:`1px solid ${cl.border}`,padding:"0 28px",height:52,display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0}}>
-          <div style={{display:"flex",alignItems:"center",gap:6}}>
-            <span style={{fontSize:13,color:cl.textMute}}>CRG Business System</span>
-            <Ic n="chevRight" sz={11} color={cl.textMute}/>
-            <span style={{fontSize:13,fontWeight:600,color:cl.textMid}}>{currentLabel}</span>
-          </div>
-          <div style={{display:"flex",alignItems:"center",gap:12}}>
-            {lateCount>0&&(
-              <div style={{display:"flex",alignItems:"center",gap:6,background:cl.redLight,border:`1px solid ${cl.red}25`,borderRadius:6,padding:"5px 10px",cursor:"pointer"}} onClick={()=>setPage("invoices")}>
-                <Ic n="alert" sz={13} color={cl.red}/>
-                <span style={{fontSize:12,fontWeight:600,color:cl.red}}>{lateCount} facture{lateCount>1?"s":""} en retard</span>
-              </div>
-            )}
-            <div style={{fontSize:12,color:cl.textMute,background:cl.bg,padding:"5px 10px",borderRadius:6}}>
-              {new Date().toLocaleDateString("fr-FR",{day:"2-digit",month:"long",year:"numeric"})}
-            </div>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div style={{flex:1,overflowY:"auto",padding:"28px 32px"}}>
-          {PAGES[page]}
-        </div>
-      </div>
-
-      {toast&&<Toast msg={toast.msg} type={toast.type} onClose={()=>setToast(null)}/>}
-    </div>
-  );
+  </div>`;
 }
+
+function printPDF() {
+  const content=document.getElementById("pdf-content").innerHTML;
+  const win=window.open("","_blank");
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Document CRG Internal</title><style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,Helvetica,sans-serif;padding:40px;color:#111;line-height:1.7;font-size:12px}
+    .pdf-wrap{max-width:800px;margin:0 auto}
+    .pdf-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:30px}
+    .pdf-logo{font-size:22px;font-weight:700;color:#1B3A6B;letter-spacing:2px}
+    .pdf-logo-sub{font-size:10px;color:#666;margin-top:2px}
+    .pdf-doc-title{font-size:18px;font-weight:700;color:#1B3A6B;text-align:right;text-transform:uppercase;letter-spacing:1px}
+    .pdf-doc-num{font-size:14px;font-weight:700;color:#374151;margin-top:4px;text-align:right}
+    .pdf-rule{height:2px;background:#1B3A6B;margin-bottom:24px}
+    .pdf-parties{display:flex;gap:48px;margin-bottom:22px}
+    .pdf-party{flex:1}
+    .pdf-plabel{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#999;margin-bottom:5px;border-bottom:1px solid #E5E7EB;padding-bottom:4px}
+    .pdf-pname{font-weight:700;font-size:13px;margin-bottom:2px}
+    .pdf-pinfo{color:#555;font-size:11px}
+    .pdf-object{background:#F8F9FB;border:1px solid #E5E7EB;padding:9px 12px;margin-bottom:18px;font-size:12px}
+    .pdf-table{width:100%;border-collapse:collapse;margin-bottom:16px}
+    .pdf-thead tr{background:#1B3A6B;color:#fff}
+    .pdf-thead th{padding:8px 12px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+    .pdf-thead th.r,.pdf-tbody td.r{text-align:right}
+    .pdf-tbody td{padding:10px 12px;border-bottom:1px solid #E5E7EB;font-size:12px}
+    .pdf-totals-wrap{display:flex;justify-content:flex-end;margin-bottom:16px}
+    .pdf-totals{border-collapse:collapse;min-width:260px}
+    .pdf-totals td{padding:4px 12px;font-size:11px;color:#555}
+    .pdf-totals td.r{text-align:right}
+    .pdf-total-row td{padding:9px 12px;font-weight:700;font-size:13px;border-top:2px solid #1B3A6B;background:#F8F9FB}
+    .pdf-total-row td.big{font-size:18px;font-weight:700;color:#1B3A6B;text-align:right}
+    .pdf-section{margin-top:20px;border-top:1px solid #E5E7EB;padding-top:14px}
+    .pdf-sec-title{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#1B3A6B;margin-bottom:6px}
+    .pdf-sec-text{font-size:10.5px;color:#444;line-height:1.8}
+    .pdf-sigs{margin-top:24px;display:flex;gap:48px}
+    .pdf-sig{flex:1;border-top:1px solid #999;padding-top:6px;font-size:10px;color:#666}
+    .pdf-foot{margin-top:28px;padding-top:12px;border-top:1px solid #E5E7EB;display:flex;justify-content:space-between;font-size:9px;color:#bbb}
+    @media print{body{padding:20px}}
+  </style></head><body>${content}</body></html>`);
+  win.document.close();
+  win.onload=()=>win.print();
+}
+
+// ════════════════════════════════════ MODAL HELPERS
+function openModal(id) {
+  if(id==="modal-new-contract"||id==="modal-new-quote"||id==="modal-new-invoice") populateSelects();
+  document.getElementById(id).style.display="flex";
+}
+function closeModal(id) { document.getElementById(id).style.display="none"; }
+function populateSelects() {
+  ["ct-client","q-client","inv-client"].forEach(sid=>{
+    const s=document.getElementById(sid); if(!s)return;
+    s.innerHTML='<option value="">— Sélectionner un client —</option>'+DB.clients.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  });
+  const fl=document.getElementById("ct-freelance");
+  if(fl) fl.innerHTML='<option value="">— Sélectionner un freelance —</option>'+DB.freelances.map(f=>`<option value="${f.id}">${esc(f.name)}</option>`).join("");
+  const iq=document.getElementById("inv-quote");
+  if(iq) iq.innerHTML='<option value="">Aucun devis lié</option>'+DB.quotes.filter(q=>q.status==="accepted").map(q=>`<option value="${q.id}">${esc(q.number)} — ${esc(q.description.slice(0,40))}</option>`).join("");
+}
+
+// ════════════════════════════════════ TOAST
+function showToast(msg, type="success") {
+  const t=document.createElement("div");
+  t.className=`toast ${type}`;
+  t.textContent=msg;
+  document.getElementById("toast-container").appendChild(t);
+  setTimeout(()=>t.remove(),3000);
+}
+</script>
+</body>
+</html>
